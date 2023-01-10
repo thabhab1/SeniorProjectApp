@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
-export default function HelpScreen() {
+export default function Help() {
     return(
         <View style={styles.container}>
             <Text>Mwahahah no help 4 u</Text>

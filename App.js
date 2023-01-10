@@ -1,7 +1,7 @@
 import React from 'react';
 import WelcomeScreen from './app/screens/WelcomeScreen';
 import Modules from "./app/screens/Modules";
-import HelpScreen from './app/screens/HelpScreen';
+import Help from './app/screens/Help';
 import Account from './app/screens/Account';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -22,8 +22,8 @@ export default function App() {
       options={{title: "My Modules"}}
     />
     <Stack.Screen
-    name='HelpScreen'
-    component={HelpScreen}
+    name='Help'
+    component={Help}
     />
     <Stack.Screen
       name="Account"
