@@ -1,6 +1,8 @@
 import React from 'react';
+import WelcomeScreen from './app/screens/WelcomeScreen';
 import Modules from "./app/screens/Modules";
 import HelpScreen from './app/screens/HelpScreen';
+import Account from './app/screens/Account';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -22,6 +24,16 @@ export default function App() {
     <Stack.Screen
     name='HelpScreen'
     component={HelpScreen}
+    />
+    <Stack.Screen
+      name="Account"
+      component={Account}
+      options={{title: "Account"}}
+    />
+    <Stack.Screen
+      name="WelcomeScreen"
+      component={WelcomeScreen}
+      options={{title: "WelcomeScreen"}}
     />
     </Stack.Navigator>
   </NavigationContainer>
