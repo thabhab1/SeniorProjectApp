@@ -1,10 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
-export default function WelcomeScreen() {
+export default function Help() {
     return(
         <View style={styles.container}>
-            <Text>Welcome</Text>
+            <Text>Mwahahah no help 4 u</Text>
             <StatusBar style="auto" />
         </View>
     );

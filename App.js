@@ -1,35 +1,43 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import LoginScreen from './app/screens/LoginScreen';
-import NavigationBar from './app/screens/Navigation/NavigationBar';
+import React from 'react';
+import WelcomeScreen from './app/screens/WelcomeScreen';
+import Modules from "./app/screens/Modules";
+import Help from './app/screens/Help';
+import Account from './app/screens/Account';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import RegisterScreen from './app/screens/RegisterScreen';
+console.log('Modules', Modules);
+console.log('NavigationContainer', NavigationContainer);
+console.log('createNativeStackNavigator', createNativeStackNavigator);
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    //navigation container to navigate between screens
-    // <NavigationContainer>
-    //   <Stack.Navigator style={styles.container}>
-        
-    //     <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>        
-    //     <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}} />
-        
-
-    //   </Stack.Navigator>
-    // </NavigationContainer>
-    <NavigationBar/>
-    
-    
+  <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen
+      name="Modules"
+      component={Modules}
+      options={{title: "My Modules"}}
+    />
+    <Stack.Screen
+    name='Help'
+    component={Help}
+    />
+    <Stack.Screen
+      name="Account"
+      component={Account}
+      options={{title: "Account"}}
+    />
+    <Stack.Screen
+      name="WelcomeScreen"
+      component={WelcomeScreen}
+      options={{title: "WelcomeScreen"}}
+    />
+    </Stack.Navigator>
+  </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
