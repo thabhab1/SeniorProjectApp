@@ -7,7 +7,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import Modules from './Modules';
 import Account from './Account';
 import Help from './Help';
-
 const Tab = createBottomTabNavigator();
 
 const modulesName = 'Modules';

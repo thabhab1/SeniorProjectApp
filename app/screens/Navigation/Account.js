@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import {firebase} from '../../../Firebase/firebase';
 
 function Account(props) {
     return (
@@ -9,7 +10,7 @@ function Account(props) {
             <Text style={styles.sectionTitle}>My Account</Text>
             
             {/* user input buttons */}
-            <TouchableOpacity style={styles.inputButton} onPress={() => {}}>
+            <TouchableOpacity style={styles.inputButton} onPress={() => {console.log(firebase);}}>
                 <Text style={styles.inputTextStyle}>Log Out</Text>
             </TouchableOpacity>
 
