@@ -1,6 +1,8 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { doc, getDoc } from "firebase/firestore";
+import { db } from './firebase';
 
 function Account(props) {
     return (
@@ -9,7 +11,11 @@ function Account(props) {
             <Text style={styles.sectionTitle}>My Account</Text>
             
             {/* user input buttons */}
-            <TouchableOpacity style={styles.inputButton} onPress={() => {}}>
+            <TouchableOpacity style={styles.inputButton} onPress={() => {
+                getDoc(doc(db,"test","testDoc")).then(docData =>{
+                    console.log(docData.data());
+                })
+            }}>
                 <Text style={styles.inputTextStyle}>Log Out</Text>
             </TouchableOpacity>
 
