@@ -1,32 +1,30 @@
-import React from 'react';
-<<<<<<< Updated upstream
+import React, {useEffect, useState} from 'react'
 import { Text, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import PdfReader from '@bildau/rn-pdf-reader';
+import {collection, doc, getDoc,getDocs} from "firebase/firestore";
+import { db } from './firebase';
+/*  Code to pull from database... 
+    as of right now only pulls 1 value
+    
 
+    const [data, setData] = useState('');
 
-export default function Modules(props) {
-    return(
-        <View style = {styles.container}>
-            <PdfReader
-            source={ {
-                uri: 'https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf',
-            }}
-            />
-        </View>
-    );
-}
+    useEffect(() => {
+        async function fetchData() {
+        const querySnapshot = await getDocs(collection(db, 'test'));
+        const docData = querySnapshot.docs.map((doc) => doc.data().data);
+        setData(JSON.stringify(docData));
+        }
+        fetchData();
+    }, []);
 
- 
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-       
-    }
-})
-=======
+    **This was just to format the data**
+    var output = data.substr(1,data.length -2)
+    output = output.substring(1, output.length-1);
+    console.log(output)
+*/
 import {
   StyleSheet,
   Text,
@@ -88,4 +86,3 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },})
   export default App;
->>>>>>> Stashed changes
