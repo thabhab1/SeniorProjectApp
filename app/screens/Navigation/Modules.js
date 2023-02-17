@@ -1,7 +1,3 @@
-import React, {useEffect, useState} from 'react'
-import { Text, View } from 'react-native';
-import { StyleSheet } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import PdfReader from '@bildau/rn-pdf-reader';
 import {collection, doc, getDoc,getDocs} from "firebase/firestore";
 import { db } from './firebase';
@@ -27,6 +23,8 @@ import { db } from './firebase';
 */
 import {
   StyleSheet,
+  useState,
+  useEffect,
   Text,
   View,
   SafeAreaView,
