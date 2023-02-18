@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, TextInput, Image, TouchableOpacity, StatusBar } from 'react-native';
 import { MaterialIcons } from 'react-native-vector-icons/MaterialIcons';
 import { db } from './Navigation/firebase';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { collection, addDoc} from "firebase/firestore";
+
+const auth = getAuth();
 
 function RegisterScreen(props) {
 
@@ -16,19 +19,30 @@ function RegisterScreen(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleRegister = async () => {
-        try {
-            const docRef = await addDoc(collection(db, 'users'), {
-                email: email,
-                password: password,
-            });
-            console.log("user created with id", docRef.id);
-            return true;
-        } catch(error) {
-            console.error("no boyo", error)
-            return false;
-        }
-    }
+    const handleRegister = () => {
+        const auth = getAuth();
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            console.log('User registered: ', user.uid);
+            addDoc(collection(db, 'users'), {
+              email: user.email,
+              password: user.password,
+            })
+              .then(() => {
+                console.log('User added to Firestore');
+              })
+              .catch((error) => {
+                console.error('Error adding user to Firestore: ', error);
+              });
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error('Error adding user: ', errorMessage, errorCode);
+          });
+      };
 
 
     return (

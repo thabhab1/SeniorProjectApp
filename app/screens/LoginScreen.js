@@ -1,16 +1,41 @@
+import { firebase } from '@react-native-firebase/auth';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, TextInput, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { MaterialIcons } from 'react-native-vector-icons/MaterialIcons';
-
+import { db } from './Navigation/firebase';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+import { useNavigation } from '@react-navigation/native';
+import Modules from './Navigation/Modules';
+const auth = getAuth();
 
 function LoginScreen(props) {
 
-    // RegExp to determine if email is valid
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+
+   {/* // RegExp to determine if email is valid
     const emailRegex = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
     function isValidEmail(email) {        
         return emailRegex.test(email);
     }
+    */}
+
+    const handleLogin = () => {
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            console.log('User logged in:');
+            // Successfully signed in, navigate to the next screen
+      
+
+          })
+          .catch((error) => {
+            console.log('Error signing in:', error);
+          });
+      };
 
     return (
 
@@ -29,16 +54,28 @@ function LoginScreen(props) {
                 {/* User info input fields */}
                 <View style={styles.userInput}>
                     {/* <MaterialIcons name='alternate-email' size={20} color="#666" /> */}
-                    <TextInput placeholder='Email'/>                    
+                    <TextInput 
+                    placeholder='Email'
+                    value={email}
+                    onChangeText={(text) => setEmail(text)}
+                    autoCompleteType="email"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    />                    
                 </View> 
 
                 <View style={(styles.userInput)}>
                     <View style={{justifyContent: 'space-between'}}>
-                        <TextInput placeholder='Password' secureTextEntry={true} style={{}}/>
+                        <TextInput 
+                        placeholder='Password' 
+                        value={password}
+                        onChangeText={(text) => setPassword(text)}
+                        secureTextEntry={true} 
+                        style={{}}/>
                     </View>                    
                 </View>
 
-                <TouchableOpacity style={styles.inputButton} onPress={() => {}}>
+                <TouchableOpacity style={styles.inputButton} onPress={handleLogin}>
                     <Text style={styles.inputTextStyle}>Login</Text>
                 </TouchableOpacity>
                 
