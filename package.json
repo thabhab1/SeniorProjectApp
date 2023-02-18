@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@bildau/rn-pdf-reader": "^4.2.7",
+    "@firebase/auth": "^0.21.3",
+    "@react-native-firebase/auth": "^17.3.0",
+    "@react-native-firebase/firestore": "^17.3.0",
     "@react-navigation/bottom-tabs": "^6.5.3",
     "@react-navigation/native": "^6.1.2",
     "@react-navigation/native-stack": "^6.9.8",

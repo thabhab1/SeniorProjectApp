@@ -8,9 +8,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 const Stack = createNativeStackNavigator();
-let isSignedIn = true;
+let isSignedIn = false;
 
 export default function App() {
+  
   return (
     //navigation container to navigate between screens
     isSignedIn ? (<NavigationBar/>) : 
@@ -31,6 +32,7 @@ export default function App() {
     
     
   );
+
 }
 
 const styles = StyleSheet.create({

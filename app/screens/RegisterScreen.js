@@ -1,16 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, TextInput, Image, TouchableOpacity, StatusBar } from 'react-native';
 import { MaterialIcons } from 'react-native-vector-icons/MaterialIcons';
-
+import { db } from './Navigation/firebase';
+import { collection, addDoc} from "firebase/firestore";
 
 function RegisterScreen(props) {
 
     // RegExp to determine if email is valid
-    const emailRegex = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+   {/* const emailRegex = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
     function isValidEmail(email) {        
         return emailRegex.test(email);
     }
-    
+*/}
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleRegister = async () => {
+        try {
+            const docRef = await addDoc(collection(db, 'users'), {
+                email: email,
+                password: password,
+            });
+            console.log("user created with id", docRef.id);
+            return true;
+        } catch(error) {
+            console.error("no boyo", error)
+            return false;
+        }
+    }
+
+
     return (
 
         <SafeAreaView style={styles.container}>
@@ -28,24 +48,37 @@ function RegisterScreen(props) {
                 {/* User info input fields */}
                 <View style={styles.userInput}>
                     {/* <MaterialIcons name='alternate-email' size={20} color="#666" /> */}
-                    <TextInput placeholder='Email'/>                    
+                    <TextInput 
+                    placeholder='Email'
+                    value={email}
+                    onChangeText={setEmail}
+                    autoCompleteType="email"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    />                    
                 </View> 
 
-                <View style={styles.userInput}>
-                    {/* <MaterialIcons name='alternate-email' size={20} color="#666" /> */}
+               {/* <View style={styles.userInput}>
+                    {/* <MaterialIcons name='alternate-email' size={20} color="#666" /> 
                     <TextInput placeholder='Username'/>                    
-                </View> 
-
+                </View> */}
+                
                 <View style={styles.userInput}>
-                    <TextInput placeholder='Password' secureTextEntry={true}/>
+                    <TextInput 
+                    placeholder='Password' 
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry={true}
+                    />
                 </View>
 
-                <View style={styles.userInput}>
+               {/* <View style={styles.userInput}>
                     <TextInput placeholder='Confirm' secureTextEntry={true}/>
                 </View>
+                */}
 
                 <TouchableOpacity style={styles.inputButton}>
-                    <Text style={styles.inputTextStyle}>Register</Text>
+                    <Text style={styles.inputTextStyle} onPress={handleRegister} >Register</Text>
                 </TouchableOpacity>
                 
                 <View style={{flexDirection: 'row', justifyContent: 'center'}}>
