@@ -51,8 +51,8 @@ return(
       sections={DATA}
       keyExtractor={(item, index) => item + index}
       renderItem={({item}) => (
-        <TouchableOpacity onPress={() => {props.navigate('Reader',{poop : poop }
-        )}} style={styles.item} >
+        <TouchableOpacity onPress={() => {props.navigate('Reader',{ link : poop })
+        }} style={styles.item} >
           <Text style={styles.title}>{item}</Text>
         </TouchableOpacity>
       )}
@@ -64,7 +64,7 @@ return(
 <FlatList
         data={data}
 
-        renderItem={({item}) => <Button title={item.title} onPress={() => {}}/>}
+        renderItem={({item}) => <Button title={item.title} onPress={() => {props.navigate('Reader',{ link : item.link })}}/>}
 
         keyExtractor={item => item.id}
       />

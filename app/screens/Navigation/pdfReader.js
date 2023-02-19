@@ -9,7 +9,9 @@ import { db } from './firebase';
 
 export default function pdfReader(props) {
     const [data, setData] = useState('');
-const show = props.work;
+
+console.log(props);
+const test = props.route.params.link;
     useEffect(() => {
         async function fetchData() {
         const querySnapshot = await getDocs(collection(db, 'test'));
@@ -24,7 +26,12 @@ const show = props.work;
     console.log(output)
     return(
         <View style = {styles.container}>
-           <Text> {show}</Text>
+           <Text> {test}</Text>
+           <PdfReader
+            source={ {
+                uri: test,
+            }}
+            />
            
         
         </View>
