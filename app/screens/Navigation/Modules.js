@@ -1,28 +1,10 @@
-import PdfReader from '@bildau/rn-pdf-reader';
+
 import {collection, doc, getDoc,getDocs, query, querySnapshot, where} from "firebase/firestore";
 import { db } from './firebase';
 import React, {useEffect, useState} from 'react'
 import { NavigationContainer } from '@react-navigation/native';
-/*  Code to pull from database... 
-    as of right now only pulls 1 value
-    
-
-    const [data, setData] = useState('');
-
-    useEffect(() => {
-        async function fetchData() {
-        const querySnapshot = await getDocs(collection(db, 'test'));
-        const docData = querySnapshot.docs.map((doc) => doc.data().data);
-        setData(JSON.stringify(docData));
-        }
-        fetchData();
-    }, []);
-
-    **This was just to format the data**
-    var output = data.substr(1,data.length -2)
-    output = output.substring(1, output.length-1);
-    console.log(output)
-*/
+import pdfReader from './pdfReader'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   StyleSheet,
   Text,
@@ -38,13 +20,14 @@ import {
 
 
 
+
 const Item = ({title}) => (
   <View>
     <Text>{title}</Text>
   </View>
 );
 
-function Modules(props, navigation){
+function Modules(props){
   const [data, setData] = useState('');
 
   useEffect(() => {
@@ -60,7 +43,7 @@ function Modules(props, navigation){
     fetchData();
 }, []);
 console.log(data);
-
+const poop = 'poop';
 return(
     
   <SafeAreaView style={styles.container}>
@@ -68,7 +51,8 @@ return(
       sections={DATA}
       keyExtractor={(item, index) => item + index}
       renderItem={({item}) => (
-        <TouchableOpacity onPress={() => {navigation.navigate('pdfReader')}} style={styles.item} >
+        <TouchableOpacity onPress={() => {props.navigate('Reader',{poop : poop }
+        )}} style={styles.item} >
           <Text style={styles.title}>{item}</Text>
         </TouchableOpacity>
       )}
@@ -80,7 +64,7 @@ return(
 <FlatList
         data={data}
 
-        renderItem={({item}) => <Button title={item.title} onPress={() => {console.log(item.link);}}/>}
+        renderItem={({item}) => <Button title={item.title} onPress={() => {}}/>}
 
         keyExtractor={item => item.id}
       />
