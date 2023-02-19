@@ -1,4 +1,3 @@
-
 import {collection, doc, getDoc,getDocs, query, querySnapshot, where} from "firebase/firestore";
 import { db } from './firebase';
 import React, {useEffect, useState} from 'react'
@@ -16,10 +15,8 @@ import {
   Alert,
   Button,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
-
-
-
 
 const Item = ({title}) => (
   <View>
@@ -41,37 +38,39 @@ function Modules(props){
     setData(docData);
     }
     fetchData();
-}, []);
-console.log(data);
-const poop = 'poop';
-return(
-    
-  <SafeAreaView style={styles.container}>
-    <SectionList 
-      sections={DATA}
-      keyExtractor={(item, index) => item + index}
-      renderItem={({item}) => (
-        <TouchableOpacity onPress={() => {props.navigate('Reader',{ link : poop })
-        }} style={styles.item} >
-          <Text style={styles.title}>{item}</Text>
-        </TouchableOpacity>
-      )}
-      renderSectionHeader={({section: {title}}) => (
-        <Text style={styles.header}>{title}</Text>
-      )}
-    />
+  }, []);
 
-<FlatList
-        data={data}
-
-        renderItem={({item}) => <Button title={item.title} onPress={() => {props.navigate('Reader',{ link : item.link })}}/>}
-
-        keyExtractor={item => item.id}
-      />
-  </SafeAreaView>
+  const poop = 'poop';
   
-);
-      }
+  return(
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <SectionList 
+          sections={DATA}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({item}) => (
+            <TouchableOpacity onPress={() => {props.navigate('Reader',{ link : poop })}} style={styles.item} >
+              <Text style={styles.title}>{item}</Text>
+            </TouchableOpacity>
+          )}
+          renderSectionHeader={({section: {title}}) => (
+            <Text style={styles.header}>{title}</Text>
+          )}
+        />
+
+        <FlatList
+          data={data}
+          renderItem={({item}) => <TouchableOpacity style={styles.item}  onPress={() => {props.navigate('Reader',{ link : item.link })}}>
+            <Text style={styles.title}>{item.title}</Text>
+            </TouchableOpacity>
+            }
+          keyExtractor={item => item.id}
+        />
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
 const DATA = [
   {
     title: 'Popular Articles',
@@ -85,9 +84,7 @@ const DATA = [
     title: 'All Modules',
     data: [],
   },
-  
 ];
-
 
 const styles = StyleSheet.create({
   container: {
@@ -104,7 +101,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 32,
     backgroundColor: 'white',
-  },})
-
+  },
+});
 
 export default Modules;
