@@ -8,7 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 const Stack = createNativeStackNavigator();
-let isSignedIn = false;
+let isSignedIn = true;
 
 export default function App() {
   

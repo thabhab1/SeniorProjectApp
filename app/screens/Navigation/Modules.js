@@ -1,6 +1,8 @@
 import PdfReader from '@bildau/rn-pdf-reader';
-import {collection, doc, getDoc,getDocs} from "firebase/firestore";
+import {collection, doc, getDoc,getDocs, query, querySnapshot, where} from "firebase/firestore";
 import { db } from './firebase';
+import React, {useEffect, useState} from 'react'
+import { NavigationContainer } from '@react-navigation/native';
 /*  Code to pull from database... 
     as of right now only pulls 1 value
     
@@ -23,17 +25,69 @@ import { db } from './firebase';
 */
 import {
   StyleSheet,
-  useState,
-  useEffect,
   Text,
   View,
   SafeAreaView,
+  FlatList,
   SectionList,
   StatusBar,
   Alert,
+  Button,
   TouchableOpacity,
 } from 'react-native';
 
+
+
+const Item = ({title}) => (
+  <View>
+    <Text>{title}</Text>
+  </View>
+);
+
+function Modules(props, navigation){
+  const [data, setData] = useState('');
+
+  useEffect(() => {
+    async function fetchData() {
+    const querySnapshot = await getDocs(collection(db, 'test'));
+    const docData = [];
+
+    querySnapshot.forEach((doc)=>{
+      docData.push(doc.data());
+    });
+    setData(docData);
+    }
+    fetchData();
+}, []);
+console.log(data);
+
+return(
+    
+  <SafeAreaView style={styles.container}>
+    <SectionList 
+      sections={DATA}
+      keyExtractor={(item, index) => item + index}
+      renderItem={({item}) => (
+        <TouchableOpacity onPress={() => {navigation.navigate('pdfReader')}} style={styles.item} >
+          <Text style={styles.title}>{item}</Text>
+        </TouchableOpacity>
+      )}
+      renderSectionHeader={({section: {title}}) => (
+        <Text style={styles.header}>{title}</Text>
+      )}
+    />
+
+<FlatList
+        data={data}
+
+        renderItem={({item}) => <Button title={item.title} onPress={() => {console.log(item.link);}}/>}
+
+        keyExtractor={item => item.id}
+      />
+  </SafeAreaView>
+  
+);
+      }
 const DATA = [
   {
     title: 'Popular Articles',
@@ -44,28 +98,12 @@ const DATA = [
     data: ['Basic part 1', 'Basic part 2', 'Basic part 3'],
   },
   {
-    title: 'Bookmarks',
+    title: 'All Modules',
     data: [],
   },
   
 ];
 
-const App = () => (
-  <SafeAreaView style={styles.container}>
-    <SectionList 
-      sections={DATA}
-      keyExtractor={(item, index) => item + index}
-      renderItem={({item}) => (
-        <TouchableOpacity onPress={() => {Alert.alert("It work")}} style={styles.item} >
-          <Text style={styles.title}>{item}</Text>
-        </TouchableOpacity>
-      )}
-      renderSectionHeader={({section: {title}}) => (
-        <Text style={styles.header}>{title}</Text>
-      )}
-    />
-  </SafeAreaView>
-);
 
 const styles = StyleSheet.create({
   container: {
@@ -83,4 +121,6 @@ const styles = StyleSheet.create({
     fontSize: 32,
     backgroundColor: 'white',
   },})
-  export default App;
+
+
+export default Modules;

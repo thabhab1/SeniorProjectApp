@@ -1,12 +1,13 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-
+import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Modules from './Modules';
 import Account from './Account';
 import Help from './Help';
+import pdfReader from './pdfReader';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,7 +44,7 @@ function NavigationBar(props) {
                 })}>
                         
                     
-                <Tab.Screen name={modulesName} component={Modules} options={{headerShown: false}}/>        
+                <Tab.Screen name={modulesName} component={HomeStackScreen} options={{headerShown: false}}/>        
                 <Tab.Screen name={accountName} component={Account} options={{headerShown: false}}/>        
                 <Tab.Screen name={helpName} component={Help} options={{headerShown: false}}/>
 
@@ -54,5 +55,53 @@ function NavigationBar(props) {
         
     );
 }
+
+
+
+
+  
+  function HomeScreen({ navigation }) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Home screen</Text>
+        <Button
+          title="Go to Details"
+          onPress={() => navigation.navigate('SettingsScreen')}
+        />
+      </View>
+    );
+  }
+  
+  function SettingsScreen({ navigation }) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Settings screen</Text>
+        <Button
+          title="Go to Details"
+          
+        />
+      </View>
+    );
+  }
+  
+  const HomeStack = createStackNavigator();
+  
+  function HomeStackScreen() {
+    return (
+      <HomeStack.Navigator>
+        <HomeStack.Screen name="Modules" component={Modules} />
+        <HomeStack.Screen name="pdfReader" component={pdfReader} />
+      </HomeStack.Navigator>
+    );
+  }
+  
+  
+  
+ 
+
+
+
+
+
 
 export default NavigationBar;
