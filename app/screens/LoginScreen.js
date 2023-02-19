@@ -1,19 +1,20 @@
 import { firebase } from '@react-native-firebase/auth';
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, View, Text, TextInput, Image, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { SafeAreaView, StyleSheet, View, Text, TextInput, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { MaterialIcons } from 'react-native-vector-icons/MaterialIcons';
 import { db } from './Navigation/firebase';
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import Modules from './Navigation/Modules';
+
+
 const auth = getAuth();
 
 function LoginScreen(props) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
 
    {/* // RegExp to determine if email is valid
     const emailRegex = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
@@ -22,20 +23,31 @@ function LoginScreen(props) {
     }
     */}
 
+    //logs the user in with email password combo.
     const handleLogin = () => {
         signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-            console.log('User logged in:');
+
+            if(auth.currentUser) {console.log("logged in")}
+
             // Successfully signed in, navigate to the next screen
       
 
           })
           .catch((error) => {
-            console.log('Error signing in:', error);
+            console.log('Error signing in:', error, );
+            console.log();
+            
+            Alert.alert(
+                'Email not found',
+                'This email does not exist, or password is incorrect.',
+                [{text: 'Okay'},]
+            )
+            
           });
-      };
+    };
 
     return (
 

@@ -5,16 +5,30 @@ import ForgotScreen from './app/screens/ForgotScreen';
 import NavigationBar from './app/screens/Navigation/NavigationBar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import React, { useContext, useState, useEffect} from 'react';
+import { getAuth, onAuthStateChanged } from '@firebase/auth';
 
 const Stack = createNativeStackNavigator();
-let isSignedIn = true;
+
+const auth = getAuth();
 
 export default function App() {
-  
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  //listener to check if a user is logged in to firebase
+  useEffect(() => {
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        setIsSignedIn(true);
+      } else {
+        setIsSignedIn(false);
+      }
+    });
+  }, []);
+
   return (
     //navigation container to navigate between screens
-    isSignedIn ? (<NavigationBar/>) : 
+
+    auth.currentUser ? (<NavigationBar/>) : 
     (
       <NavigationContainer>
         <Stack.Navigator style={styles.container}>
@@ -26,8 +40,7 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
       
-    )
-    
+    )     
     
     
     

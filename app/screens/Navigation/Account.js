@@ -1,15 +1,28 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { getAuth, signOut } from '@firebase/auth';
 
 function Account(props) {
+    const auth = getAuth();
+
+    const handleLogout = () => {
+        signOut(auth)
+            .then(() => {
+                console.log("User has been logged out.");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             
             <Text style={styles.sectionTitle}>My Account</Text>
             
             {/* user input buttons */}
-            <TouchableOpacity style={styles.inputButton} onPress={() => {}}>
+            <TouchableOpacity style={styles.inputButton} onPress={handleLogout}>
                 <Text style={styles.inputTextStyle}>Log Out</Text>
             </TouchableOpacity>
 

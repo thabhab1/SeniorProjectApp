@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, View, Text, TextInput, Image, TouchableOpacity, StatusBar } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Text, TextInput, Image, TouchableOpacity, StatusBar, Alert } from 'react-native';
 import { MaterialIcons } from 'react-native-vector-icons/MaterialIcons';
 import { db } from './Navigation/firebase';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
@@ -18,30 +18,49 @@ function RegisterScreen(props) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [reenter, setReenter] = useState('');
 
     const handleRegister = () => {
         const auth = getAuth();
-        createUserWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            console.log('User registered: ', user.uid);
-            addDoc(collection(db, 'users'), {
-              email: user.email,
-              password: user.password,
+
+        if(password != reenter || password.length < 6) {
+            Alert.alert(
+                'Invalid Password',
+                'Passwords do not match, or are less than 6 characters. ',
+                [{text: 'Okay'},
+                ]
+            )
+        }
+        else {            
+            createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                console.log('User registered: ', user.uid);
+                addDoc(collection(db, 'users'), {
+                email: email,
+                password: password,
+                })
+                .then(() => {
+                    console.log('User added to Firestore');
+                })
+                .catch((error) => {
+                    console.error('Error adding user to Firestore: ', error);
+                });
             })
-              .then(() => {
-                console.log('User added to Firestore');
-              })
-              .catch((error) => {
-                console.error('Error adding user to Firestore: ', error);
-              });
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.error('Error adding user: ', errorMessage, errorCode);
-          });
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.error('Error adding user: ', errorMessage, errorCode);
+                if(errorCode == 'auth/email-already-in-use') {
+                    Alert.alert(
+                        'Email already in use',
+                        'This email already has an account associated with it.',
+                        [{text: 'Okay'},]
+                    )
+                }
+            });
+        }
       };
 
 
@@ -82,6 +101,15 @@ function RegisterScreen(props) {
                     placeholder='Password' 
                     value={password}
                     onChangeText={setPassword}
+                    secureTextEntry={true}
+                    />
+                </View>
+                {/* reenter passwords to make sure that the user knows what password theyre setting */}
+                <View style={styles.userInput}>
+                    <TextInput 
+                    placeholder='Re-enter Password' 
+                    value={reenter}
+                    onChangeText={setReenter}
                     secureTextEntry={true}
                     />
                 </View>
