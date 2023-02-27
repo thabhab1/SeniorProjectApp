@@ -27,22 +27,23 @@ const Item = ({title}) => (
 const auth = getAuth();
 function Modules(props){
   const [data, setData] = useState('');
-console.log(auth.currentUser.email);
-  useEffect(() => {
-    async function fetchData() {
-    const querySnapshot = await getDocs(collection(db, 'users'));
+//console.log(auth.currentUser.email);
+useEffect(() => {
+  async function fetchData() {
+    const querySnapshot = await getDocs(query(collection(db, 'users'), where('email', '==', auth.currentUser.email)));
     
-    const docData = [];
-
-    querySnapshot.forEach((doc)=>{
-      docData.push(doc.data());
-    });
-    setData(docData);
+    if (querySnapshot.docs.length > 0) {
+      const userData = querySnapshot.docs[0].data();
+      const userEmail = userData.email;
+      console.log(userEmail); // log the user's email to the console
+    } else {
+      console.log('User not found');
     }
-    fetchData();
-  }, []);
+  }
+  fetchData();
+}, []);
   
-console.log(data.email)
+console.log(data[1]);
 const i = 0;
 
   useEffect(() => {
