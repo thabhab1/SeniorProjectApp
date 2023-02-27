@@ -26,7 +26,7 @@ const test = props.route.params.link;
     console.log(output)
     return(
         <View style = {styles.container}>
-           <Text> {test}</Text>
+           <Text>{test}</Text>
            <PdfReader
             source={ {
                 uri: test,
