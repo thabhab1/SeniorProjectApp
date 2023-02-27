@@ -3,6 +3,7 @@ import { db } from './firebase';
 import React, {useEffect, useState} from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import pdfReader from './pdfReader'
+import {getAuth} from 'firebase/auth'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   StyleSheet,
@@ -23,9 +24,26 @@ const Item = ({title}) => (
     <Text>{title}</Text>
   </View>
 );
-
+const auth = getAuth();
 function Modules(props){
   const [data, setData] = useState('');
+console.log(auth.currentUser.email);
+  useEffect(() => {
+    async function fetchData() {
+    const querySnapshot = await getDocs(collection(db, 'users'));
+    
+    const docData = [];
+
+    querySnapshot.forEach((doc)=>{
+      docData.push(doc.data());
+    });
+    setData(docData);
+    }
+    fetchData();
+  }, []);
+  
+console.log(data.email)
+const i = 0;
 
   useEffect(() => {
     async function fetchData() {

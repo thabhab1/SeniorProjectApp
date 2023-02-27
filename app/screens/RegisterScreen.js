@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, View, Text, TextInput, Image, TouchableOpacity, StatusBar, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Text, TextInput,ScrollView, Image, TouchableOpacity, StatusBar, Alert} from 'react-native';
 import { MaterialIcons } from 'react-native-vector-icons/MaterialIcons';
 import { db } from './Navigation/firebase';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { collection, addDoc} from "firebase/firestore";
-
+import RadioButtonRN from 'radio-buttons-react-native'
 const auth = getAuth();
-
+const data = [
+    {
+      label: 'Media Training'
+     },
+     {
+      label: 'Media Training for Public Safety'
+     },
+     {
+        label: 'Public Speaking'
+       },
+       {
+        label: 'Public Speaking and Speeches'
+       }
+    ];
 function RegisterScreen(props) {
 
     // RegExp to determine if email is valid
@@ -19,6 +32,7 @@ function RegisterScreen(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [reenter, setReenter] = useState('');
+    const [accountType, setAccountType] = useState('');
 
     const handleRegister = () => {
         const auth = getAuth();
@@ -32,7 +46,7 @@ function RegisterScreen(props) {
             )
         }
         else {            
-            createUserWithEmailAndPassword(auth, email, password)
+            createUserWithEmailAndPassword(auth, email, password, accountType)
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;
@@ -40,6 +54,7 @@ function RegisterScreen(props) {
                 addDoc(collection(db, 'users'), {
                 email: email,
                 password: password,
+                accountType: accountType,
                 })
                 .then(() => {
                     console.log('User added to Firestore');
@@ -63,10 +78,11 @@ function RegisterScreen(props) {
         }
       };
 
-
+      
     return (
 
         <SafeAreaView style={styles.container}>
+            <ScrollView>
             <View>
                 {/* Login Image */}
                 <View>
@@ -113,7 +129,17 @@ function RegisterScreen(props) {
                     secureTextEntry={true}
                     />
                 </View>
+                <View>
+                    <Text>Please choose an account type</Text>
+                <RadioButtonRN 
+    selectedBtn={(e) => setAccountType(e.label)}
+  data={data}
+  
+/>
 
+
+
+                </View>
                {/* <View style={styles.userInput}>
                     <TextInput placeholder='Confirm' secureTextEntry={true}/>
                 </View>
@@ -137,6 +163,7 @@ function RegisterScreen(props) {
                 <StatusBar style='auto'/>
 
             </View>
+            </ScrollView>
         </SafeAreaView>
     );
 }

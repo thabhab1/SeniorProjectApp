@@ -29,7 +29,7 @@ function LoginScreen(props) {
           .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-
+            console.log(auth.currentUser.email);
             if(auth.currentUser) {console.log("logged in")}
 
             // Successfully signed in, navigate to the next screen
