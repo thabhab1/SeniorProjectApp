@@ -9,6 +9,7 @@ import Modules from './Modules';
 import Account from './Account';
 import Help from './Help';
 import pdfReader from './pdfReader'
+import Quiz from './Quiz';
 
 const Tab = createBottomTabNavigator();
 
@@ -63,6 +64,7 @@ function Root(props) {
     <Stack.Navigator>
       <Stack.Screen name="Modules" component={loadReader} />
       <Stack.Screen name="Reader" component={pdfReader} />
+      <Stack.Screen name="Quiz" component={Quiz} />
     </Stack.Navigator>
   );
 }
