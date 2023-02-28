@@ -26,61 +26,69 @@ const Item = ({title}) => (
 );
 const auth = getAuth();
 function Modules(props){
-  const [data, setData] = useState('');
-//console.log(auth.currentUser.email);
-useEffect(() => {
-  async function fetchData() {
-    const querySnapshot = await getDocs(query(collection(db, 'users'), where('email', '==', auth.currentUser.email)));
-    
-    if (querySnapshot.docs.length > 0) {
-      const userData = querySnapshot.docs[0].data();
-      const userEmail = userData.email;
-      console.log(userEmail); // log the user's email to the console
-    } else {
-      console.log('User not found');
+  const [data, setData] = useState()
+  const [type, setType] = useState("");
+
+  useEffect(() => {
+    async function fetchType() {
+      const querySnapshot =  await getDocs(query(collection(db, 'users'), where('email', '==', auth.currentUser.email)));
+      if (querySnapshot.docs.length > 0) {
+        const userData = querySnapshot.docs[0].data();
+        setType(userData.accountType);
+      } else {
+        console.log('User not found');
+      }
     }
-  }
-  fetchData();
-}, []);
-  
-console.log(data[1]);
-const i = 0;
+    fetchType();
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
-    const querySnapshot = await getDocs(collection(db, 'test'));
-    const docData = [];
+      if (!type) {
+        return;
+      }
+      let querySnap;
+      switch (type) {
+        case 'Public Speaking':
+          querySnap = await getDocs(collection(db, 'PublicSpeaking'));
+          break;
+        case 'Public Speaking And Speeches':
+          querySnap = await getDocs(collection(db, 'PublicSpeakingAndSpeeches'));
+          break;
+        case 'Media Training':
+          querySnap = await getDocs(collection(db, 'MediaTraining'));
+          break;
+        case 'Media Training For PublicSafety':
+          querySnap = await getDocs(collection(db, 'MediaTrainingForPublicSafety'));
+          break;
+        default:
+          console.log('Invalid account type');
+          return;
+      }
+      const docData = [];
 
-    querySnapshot.forEach((doc)=>{
-      docData.push(doc.data());
-    });
-    setData(docData);
+      querySnap.forEach((doc)=>{
+        docData.push(doc.data());
+      });
+
+      setData(docData);
     }
     fetchData();
-  }, []);
+  }, [type]);
 
-  const poop = 'poop';
-  
+
+
+
+  const modulesTitle = "My Modules";
   return(
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <SectionList 
-          sections={DATA}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({item}) => (
-            <TouchableOpacity onPress={() => {props.navigate('Reader',{ link : poop })}} style={styles.item} >
-              <Text style={styles.title}>{item}</Text>
-            </TouchableOpacity>
-          )}
-          renderSectionHeader={({section: {title}}) => (
-            <Text style={styles.header}>{title}</Text>
-          )}
-        />
-
+        
+      <Text style={styles.sectionTitle}>{modulesTitle}</Text>
         <FlatList
           data={data}
-          renderItem={({item}) => <TouchableOpacity style={styles.item}  onPress={() => {props.navigate('Reader',{ link : item.link })}}>
-            <Text style={styles.title}>{item.title}</Text>
+          renderItem={({item}) => <TouchableOpacity style={styles.inputButton}  onPress={() => {props.navigate('Reader',{ link : item.link })}}>
+            <Text style={styles.inputTextStyle}>{item.title}</Text>
             </TouchableOpacity>
             }
           keyExtractor={item => item.id}
@@ -90,37 +98,41 @@ const i = 0;
   );
 }
 
-const DATA = [
-  {
-    title: 'Popular Articles',
-    data: ['De-escalation', 'Public Speaking Basics', 'Speech Writing'],
-  },
-  {
-    title: 'Recently Viewed',
-    data: ['Basic part 1', 'Basic part 2', 'Basic part 3'],
-  },
-  {
-    title: 'All Modules',
-    data: [],
-  },
-];
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: StatusBar.currentHeight,
-    marginHorizontal: 16,
-    backgroundColor: 'white',
+      flex: 1,
+      paddingHorizontal: 20,
+      backgroundColor: 'white',
   },
-  item: {
-    backgroundColor: '#f8deaa',
-    padding: 20,
-    marginVertical: 8,
+  inputButton: {
+      backgroundColor: '#f8deaa',
+      padding: 20,
+      borderRadius: 10,
+      marginBottom: 20,
+      shadowColor: 'black',
+      shadowOffset: {height: 2, width: 0.5},
+      shadowOpacity: 0.5,
+      shadowRadius: 6,
+      elevation: 3, 
+      
   },
-  header: {
-    fontSize: 32,
-    backgroundColor: 'white',
+  inputTextStyle: {
+      textAlign: 'center',
+      fontWeight: '700',
+      color: 'black',
+      fontSize: 16,
   },
-});
-
+  sectionTitle: {
+      marginTop: 50,
+      marginBottom: 40,
+      color: '#333',
+      fontSize: 30,
+      paddingBottom: 25,
+      borderBottomColor: 'lightgray',
+      borderBottomWidth: 2,
+      borderRadius: 5,
+      fontWeight: '600',
+  },
+})
 export default Modules;

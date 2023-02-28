@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import PdfReader from '@bildau/rn-pdf-reader';
 import {collection, doc, getDoc,getDocs} from "firebase/firestore";
 import { db } from './firebase';
-
-
 
 
 export default function pdfReader(props) {
@@ -34,15 +32,11 @@ const test = props.route.params.link;
                 uri: test,
             }}
             />
-           
            <TouchableOpacity style={styles.inputButton} onPress={() => props.navigation.navigate('Quiz')}>
                  <Text style={styles.inputTextStyle}>Take Quiz</Text>
            </TouchableOpacity>
-
-
         
         </View>
-
     );
 }
 
@@ -90,10 +84,10 @@ const styles = StyleSheet.create({
         borderBottomColor: '#ccc',
         borderBottomWidth: 2,
         marginBottom: 25,
-        
+
     },
-    
-    
+
+
 
 
 })

@@ -10,7 +10,6 @@ import Account from './Account';
 import Help from './Help';
 import pdfReader from './pdfReader'
 import Quiz from './Quiz';
-
 const Tab = createBottomTabNavigator();
 
 const modulesName = 'Modules';
