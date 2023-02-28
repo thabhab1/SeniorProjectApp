@@ -11,13 +11,13 @@ const data = [
       label: 'Media Training'
      },
      {
-      label: 'Media Training for Public Safety'
+      label: 'Media Training For Public Safety'
      },
      {
         label: 'Public Speaking'
        },
        {
-        label: 'Public Speaking and Speeches'
+        label: 'Public Speaking And Speeches'
        }
     ];
 function RegisterScreen(props) {
