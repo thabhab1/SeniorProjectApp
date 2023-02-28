@@ -7,11 +7,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { addDoc, collection } from '@firebase/firestore';
 
 function Quiz(props) {
-  
+
   const [mediaTrainingQuestion, setMediaTrainingQuestion] = useState('');
   const [mediaTrainingAnswer, setMediaTrainingAnswer] = useState('');
-  const [mediaTrainingForPublicSpeakingQuestion, setMediaTrainingForPublicSpeakingQuestion] = useState('');
-  const [mediaTrainingForPublicSpeakingAnswer, setMediaTrainingForPublicSpeakingAnswer] = useState('');
+  const [mediaTrainingForPublicSafetyQuestion, setMediaTrainingForPublicSafetyQuestion] = useState('');
+  const [mediaTrainingForPublicSafetyAnswer, setMediaTrainingForPublicSafetyAnswer] = useState('');
   const [publicSpeakingQuestion, setPublicSpeakingQuestion] = useState('');
   const [publicSpeakingAnswer, setPublicSpeakingAnswer] = useState('');
   const [publicSpeakingAndSpeechesQuestion, setPublicSpeakingAndSpeechesQuestion] = useState('');
@@ -33,12 +33,12 @@ function Quiz(props) {
 
   const handleMediaTrainingForPublicSpeakingSubmit = async () => {
     try {
-      await addDoc(collection(db, 'MediaTrainingForPublicSpeaking'), {
-        question: mediaTrainingForPublicSpeakingQuestion,
-        answer: mediaTrainingForPublicSpeakingAnswer,
+      await addDoc(collection(db, 'MediaTrainingForPublicSafety'), {
+        question: mediaTrainingForPublicSafetyQuestion,
+        answer: mediaTrainingForPublicSafetyAnswer,
       });
-      setMediaTrainingForPublicSpeakingQuestion('');
-      setMediaTrainingForPublicSpeakingAnswer('');
+      setMediaTrainingForPublicSafetyQuestion('');
+      setMediaTrainingForPublicSafetyAnswer('');
     } catch (error) {
       console.log(error);
     }
@@ -93,17 +93,17 @@ function Quiz(props) {
         </View>
         
         <View style={{ marginBottom: 16 }}>
-          <Text category='h5'>Media Training for Public Speaking Questions</Text>
+          <Text category='h5'>Media Training for Public Safety Questions</Text>
           <TextInput
             style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingForPublicSpeakingQuestion}
-            value={mediaTrainingForPublicSpeakingQuestion}
+            onChangeText={setMediaTrainingForPublicSafetyQuestion}
+            value={mediaTrainingForPublicSafetyQuestion}
             placeholder='Question'
             />
             <TextInput
             style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingForPublicSpeakingAnswer}
-            value={mediaTrainingForPublicSpeakingAnswer}
+            onChangeText={setMediaTrainingForPublicSafetyAnswer}
+            value={mediaTrainingForPublicSafetyAnswer}
             placeholder='Answer'
             />
             <Button title='Submit' onPress={handleMediaTrainingForPublicSpeakingSubmit} />
