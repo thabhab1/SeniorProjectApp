@@ -87,7 +87,7 @@ function Modules(props){
       <Text style={styles.sectionTitle}>{modulesTitle}</Text>
         <FlatList
           data={data}
-          renderItem={({item}) => <TouchableOpacity style={styles.inputButton}  onPress={() => {props.navigate('Reader',{ link : item.link })}}>
+          renderItem={({item}) => <TouchableOpacity style={styles.inputButton}  onPress={() => {props.navigate('Reader',{ item : item})}}>
             <Text style={styles.inputTextStyle}>{item.title}</Text>
             </TouchableOpacity>
             }

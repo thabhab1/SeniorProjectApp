@@ -8,14 +8,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import Modules from './Modules';
 import Account from './Account';
 import Help from './Help';
-import pdfReader from './pdfReader'
+import pdfReader from './pdfReader';
 import Quiz from './Quiz';
 const Tab = createBottomTabNavigator();
-
+import AdminQuiz from './AdminQuiz';
 const modulesName = 'Modules';
 const accountName = 'Account';
 const helpName = 'Help';
-
+const isAd = true;
 function NavigationBar(props) {
     return (
         <NavigationContainer>        
@@ -48,7 +48,9 @@ function NavigationBar(props) {
                 <Tab.Screen name={modulesName} component={Root} options={{headerShown: false}}/>        
                 <Tab.Screen name={accountName} component={Account} options={{headerShown: false}}/>        
                 <Tab.Screen name={helpName} component={Help} options={{headerShown: false}}/>
-
+                <Tab.Screen name={"Admin"} component={AdminQuiz} 
+                options={{headerShown: false,
+                tabBarVisible: isAd}}/>
             </Tab.Navigator>
         
             
@@ -63,12 +65,16 @@ function Root(props) {
     <Stack.Navigator>
       <Stack.Screen name="Modules" component={loadReader} />
       <Stack.Screen name="Reader" component={pdfReader} />
-      <Stack.Screen name="Quiz" component={Quiz} />
+      <Stack.Screen name="Quiz" component={loadQuiz} />
     </Stack.Navigator>
   );
 }
 function loadReader(props)
 {
     return Modules(props.navigation);
+}
+function loadQuiz(props)
+{
+    return Quiz(props);
 }
 export default NavigationBar;
