@@ -1,151 +1,99 @@
 import React, { useState } from 'react';
-import { Text, View, TextInput, Button } from 'react-native';
-import { ApplicationProvider, Layout } from '@ui-kitten/components';
-import { mapping, light as lightTheme } from '@eva-design/eva';
-import { db } from './firebase';
-import { ScrollView } from 'react-native-gesture-handler';
-import { addDoc, collection } from '@firebase/firestore';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
-function Quiz(props) {
+const Quiz = () => {
 
-  const [mediaTrainingQuestion, setMediaTrainingQuestion] = useState('');
-  const [mediaTrainingAnswer, setMediaTrainingAnswer] = useState('');
-  const [mediaTrainingForPublicSafetyQuestion, setMediaTrainingForPublicSafetyQuestion] = useState('');
-  const [mediaTrainingForPublicSafetyAnswer, setMediaTrainingForPublicSafetyAnswer] = useState('');
-  const [publicSpeakingQuestion, setPublicSpeakingQuestion] = useState('');
-  const [publicSpeakingAnswer, setPublicSpeakingAnswer] = useState('');
-  const [publicSpeakingAndSpeechesQuestion, setPublicSpeakingAndSpeechesQuestion] = useState('');
-  const [publicSpeakingAndSpeechesAnswer, setPublicSpeakingAndSpeechesAnswer] = useState('');
+  // define the quiz questions and possible answers
+  const quiz = [
+    {
+      question: 'What is the capital of France?',
+      options: [
+        {label: 'Paris', value: 0},
+        {label: 'Rome', value: 1},
+        {label: 'Madrid', value: 2},
+        {label: 'Berlin', value: 3},
+      ],
+      answer: 0, // the index of the correct answer in the options array
+    },
+    {
+      question: 'What is the largest country in the world by land area?',
+      options: [
+        {label: 'Russia', value: 0},
+        {label: 'China', value: 1},
+        {label: 'United States', value: 2},
+        {label: 'Brazil', value: 3},
+      ],
+      answer: 0,
+    },
+    // add more quiz questions here
+  ];
 
+  const [currentQuestion, setCurrentQuestion] = useState(0); // the index of the current question being displayed
+  const [score, setScore] = useState(0); // the user's score
 
-  const handleMediaTrainingSubmit = async () => {
-    try {
-      await addDoc(collection(db, 'MediaTraining'), {
-        question: mediaTrainingQuestion,
-        answer: mediaTrainingAnswer,
-      });
-      setMediaTrainingQuestion('');
-      setMediaTrainingAnswer('');
-    } catch (error) {
-      console.log(error);
+  const handleAnswer = (value) => {
+    if (value === quiz[currentQuestion].answer) {
+      setScore(score + 1); // increase the user's score if the answer is correct
     }
-  };
-
-  const handleMediaTrainingForPublicSpeakingSubmit = async () => {
-    try {
-      await addDoc(collection(db, 'MediaTrainingForPublicSafety'), {
-        question: mediaTrainingForPublicSafetyQuestion,
-        answer: mediaTrainingForPublicSafetyAnswer,
-      });
-      setMediaTrainingForPublicSafetyQuestion('');
-      setMediaTrainingForPublicSafetyAnswer('');
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handlePublicSpeakingSubmit = async () => {
-    try {
-      await addDoc(collection(db, 'PublicSpeaking'), {
-        question: publicSpeakingQuestion,
-        answer: publicSpeakingAnswer,
-      });
-      setPublicSpeakingQuestion('');
-      setPublicSpeakingAnswer('');
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handlePublicSpeakingAndSpeechesSubmit = async () => {
-    try {
-      await addDoc(collection(db, 'PublicSpeakingAndSpeeches'), {
-        question: publicSpeakingAndSpeechesQuestion,
-        answer: publicSpeakingAndSpeechesAnswer,
-      });
-      setPublicSpeakingAndSpeechesQuestion('');
-      setPublicSpeakingAndSpeechesAnswer('');
-    } catch (error) {
-      console.log(error);
+    if (currentQuestion < quiz.length - 1) {
+      setCurrentQuestion(currentQuestion + 1); // move to the next question
+    } else {
+      // quiz is complete, show the user's score
+      alert(`Quiz complete! You scored ${score}/${quiz.length}`);
     }
   };
 
   return (
-    <ApplicationProvider mapping={mapping} theme={lightTheme}>
-      <Layout style={{ flex: 1, padding: 16 }}>
-      <ScrollView>
-        <View style={{ marginBottom: 16 }}>
-          
-          <Text category='h5'>Media Training Questions</Text>
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingQuestion}
-            value={mediaTrainingQuestion}
-            placeholder='Question'
-          />
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingAnswer}
-            value={mediaTrainingAnswer}
-            placeholder='Answer'
-          />
-          <Button title='Submit' onPress={handleMediaTrainingSubmit} />
-        </View>
-        
-        <View style={{ marginBottom: 16 }}>
-          <Text category='h5'>Media Training for Public Safety Questions</Text>
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingForPublicSafetyQuestion}
-            value={mediaTrainingForPublicSafetyQuestion}
-            placeholder='Question'
+    <View style={styles.container}>
+      <Text style={styles.question}>{quiz[currentQuestion].question}</Text>
+      <RadioForm>
+        {quiz[currentQuestion].options.map((option, index) => (
+          <RadioButton key={index}>
+            <RadioButtonInput
+              obj={option}
+              index={index}
+              isSelected={false}
+              onPress={(value) => handleAnswer(value)}
             />
-            <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingForPublicSafetyAnswer}
-            value={mediaTrainingForPublicSafetyAnswer}
-            placeholder='Answer'
+            <RadioButtonLabel
+              obj={option}
+              index={index}
+              labelHorizontal={true}
+              onPress={(value) => handleAnswer(value)}
             />
-            <Button title='Submit' onPress={handleMediaTrainingForPublicSpeakingSubmit} />
-            </View>
-            <View style={{ marginBottom: 16 }}>
-      <Text category='h5'>Public Speaking Questions</Text>
-      <TextInput
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-        onChangeText={setPublicSpeakingQuestion}
-        value={publicSpeakingQuestion}
-        placeholder='Question'
-      />
-      <TextInput
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-        onChangeText={setPublicSpeakingAnswer}
-        value={publicSpeakingAnswer}
-        placeholder='Answer'
-      />
-      <Button title='Submit' onPress={handlePublicSpeakingSubmit} />
+          </RadioButton>
+        ))}
+      </RadioForm>
+      <TouchableOpacity style={styles.button} onPress={() => handleAnswer()}>
+        <Text style={styles.buttonText}>Next</Text>
+      </TouchableOpacity>
     </View>
+  );
+};
 
-    <View style={{ marginBottom: 16 }}>
-      <Text category='h5'>Public Speaking and Speeches Questions</Text>
-      <TextInput
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-        onChangeText={setPublicSpeakingAndSpeechesQuestion}
-        value={publicSpeakingAndSpeechesQuestion}
-        placeholder='Question'
-      />
-      <TextInput
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-        onChangeText={setPublicSpeakingAndSpeechesAnswer}
-        value={publicSpeakingAndSpeechesAnswer}
-        placeholder='Answer'
-      />
-      <Button title='Submit' onPress={handlePublicSpeakingAndSpeechesSubmit} />
-    </View>
-    </ScrollView>
-  </Layout>
-</ApplicationProvider>
-
-);
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  question: {
+    fontSize: 20,
+    marginBottom: 20,
+  },
+  button: {
+    marginTop: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#2196F3',
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+});
 
 export default Quiz;

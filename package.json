@@ -34,6 +34,7 @@
     "react-native-ui-kitten": "^4.4.1",
     "react-native-video": "^5.2.1",
     "react-native-webview": "^11.26.0",
+    "react-native-youtube-iframe": "^2.2.2",
     "react-pdf-js": "^5.1.0"
   },
   "devDependencies": {
