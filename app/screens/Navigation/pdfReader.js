@@ -49,7 +49,6 @@ const test = props.route.params.item.link;
                 uri: test,
             }}
             />
-<<<<<<< Updated upstream
 
         <YoutubePlayer
         height={300}
@@ -61,9 +60,6 @@ const test = props.route.params.item.link;
       <Button title={playing ? "pause" : "play"} onPress={togglePlaying} />
 
            <TouchableOpacity style={styles.inputButton} onPress={() => props.navigation.navigate('Quiz')}>
-=======
-           <TouchableOpacity style={styles.inputButton} onPress={() => props.navigation.navigate('Quiz', {data : props.route.params.item})}>
->>>>>>> Stashed changes
                  <Text style={styles.inputTextStyle}>Take Quiz</Text>
            </TouchableOpacity>
         
