@@ -5,11 +5,28 @@ import { StatusBar } from 'expo-status-bar';
 import PdfReader from '@bildau/rn-pdf-reader';
 import {collection, doc, getDoc,getDocs} from "firebase/firestore";
 import { db } from './firebase';
-
+import YoutubePlayer from "react-native-youtube-iframe";
+import { useCallback } from 'react';
+import { Button } from 'react-native';
+import { Alert } from 'react-native';
 
 export default function pdfReader(props) {
     const [data, setData] = useState('');
 
+    const [playing, setPlaying] = useState(false);
+
+  const onStateChange = useCallback((state) => {
+    if (state === "ended") {
+      setPlaying(false);
+      Alert.alert("video has finished playing!");
+    }
+  }, []);
+
+  const togglePlaying = useCallback(() => {
+    setPlaying((prev) => !prev);
+  }, []);
+
+  
 console.log(props);
 const test = props.route.params.link;
     useEffect(() => {
@@ -32,6 +49,16 @@ const test = props.route.params.link;
                 uri: test,
             }}
             />
+
+        <YoutubePlayer
+        height={300}
+        play={playing}
+        videoId={"DfEnIFV2-mc"}
+        onChangeState={onStateChange}
+        
+      />
+      <Button title={playing ? "pause" : "play"} onPress={togglePlaying} />
+
            <TouchableOpacity style={styles.inputButton} onPress={() => props.navigation.navigate('Quiz')}>
                  <Text style={styles.inputTextStyle}>Take Quiz</Text>
            </TouchableOpacity>

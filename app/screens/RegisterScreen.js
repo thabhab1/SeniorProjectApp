@@ -19,6 +19,7 @@ const data = [
        {
         label: 'Public Speaking And Speeches'
        }
+       
     ];
 function RegisterScreen(props) {
 
@@ -33,6 +34,7 @@ function RegisterScreen(props) {
     const [password, setPassword] = useState('');
     const [reenter, setReenter] = useState('');
     const [accountType, setAccountType] = useState('');
+    const [isAdmin, setIsAdmin] = useState(false); // <-- new state for isAdmin
 
     const handleRegister = () => {
         const auth = getAuth();
@@ -55,6 +57,8 @@ function RegisterScreen(props) {
                 email: email,
                 password: password,
                 accountType: accountType,
+                isAdmin: isAdmin, // <-- include isAdmin in the data sent to Firestore
+                //type: "normal",
                 })
                 .then(() => {
                     console.log('User added to Firestore');
