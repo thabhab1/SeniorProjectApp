@@ -15,7 +15,7 @@ import AdminQuiz from './AdminQuiz';
 const modulesName = 'Modules';
 const accountName = 'Account';
 const helpName = 'Help';
-const isAd = true;
+const isAdmin = true;
 function NavigationBar(props) {
     return (
         <NavigationContainer>        
@@ -50,7 +50,7 @@ function NavigationBar(props) {
                 <Tab.Screen name={helpName} component={Help} options={{headerShown: false}}/>
                 <Tab.Screen name={"Admin"} component={AdminQuiz} 
                 options={{headerShown: false,
-                tabBarVisible: isAd}}/>
+                tabBarVisible: isAdmin}}/>
             </Tab.Navigator>
         
             

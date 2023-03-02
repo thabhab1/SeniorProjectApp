@@ -9,7 +9,7 @@ import YoutubePlayer from "react-native-youtube-iframe";
 import { useCallback } from 'react';
 import { Button } from 'react-native';
 import { Alert } from 'react-native';
-
+import { ScrollView } from 'react-native-gesture-handler';
 export default function pdfReader(props) {
     const [data, setData] = useState('');
 
@@ -42,12 +42,14 @@ const test = props.route.params.item.link;
     output = output.substring(1, output.length-1);
     console.log(output)
     return(
+        <ScrollView>
         <View style = {styles.container}>
            <Text>{test}</Text>
            <PdfReader
             source={ {
                 uri: test,
             }}
+            style={{ flex: 1, height: 500 }}
             />
 
         <YoutubePlayer
@@ -64,6 +66,7 @@ const test = props.route.params.item.link;
            </TouchableOpacity>
         
         </View>
+        </ScrollView>
     );
 }
 
