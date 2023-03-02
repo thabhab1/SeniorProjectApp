@@ -9,10 +9,11 @@ import YoutubePlayer from "react-native-youtube-iframe";
 import { useCallback } from 'react';
 import { Button } from 'react-native';
 import { Alert } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-export default function pdfReader(props) {
-    const [data, setData] = useState('');
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
+export default function pdfReader(props) {
+
+    const [data, setData] = useState('');
     const [playing, setPlaying] = useState(false);
 
   const onStateChange = useCallback((state) => {
@@ -41,35 +42,59 @@ const test = props.route.params.item.link;
     var output = data.substr(1,data.length -2)
     output = output.substring(1, output.length-1);
     console.log(output)
-    return(
-        <ScrollView>
-        <View style = {styles.container}>
-           <Text>{test}</Text>
-           <PdfReader
-            source={ {
-                uri: test,
+
+try{
+    return (
+        <View>
+          <FlatList
+            data={[{ key: "pdf" }, { key: "video" }]}
+            renderItem={({ item }) => {
+              switch (item.key) {
+                case "pdf":
+                  return (
+                    <View>
+                      <Text style={styles.headerTextStyle}>Module</Text>
+                      <PdfReader
+                        source={{ uri: test }}
+                        style={{ flex: 1, height: 500 }}
+                      />
+                    </View>
+                  );
+                case "video":
+                  return (
+                    <View>
+                      <Text style={styles.headerTextStyle}>Module Video</Text>
+                      <YoutubePlayer
+                        height={300}
+                        play={playing}
+                        videoId={"DfEnIFV2-mc"}
+                        onChangeState={onStateChange}
+                        onError={(e) => console.log("Error:", e)}
+                      />
+                      <Button
+                        title={playing ? "pause" : "play"}
+                        onPress={togglePlaying}
+                      />
+
+                      <TouchableOpacity style={styles.inputButton} onPress={() => props.navigation.navigate('Quiz', {data : props.route.params.item})}>
+                    <Text style={styles.inputTextStyle}>Take Quiz</Text>
+                  </TouchableOpacity>
+
+                    </View>
+                  );
+                default:
+                  return null;
+              }
             }}
-            style={{ flex: 1, height: 500 }}
-            />
-
-        <YoutubePlayer
-        height={300}
-        play={playing}
-        videoId={"DfEnIFV2-mc"}
-        onChangeState={onStateChange}
-        
-      />
-      <Button title={playing ? "pause" : "play"} onPress={togglePlaying} />
-
-           <TouchableOpacity style={styles.inputButton} onPress={() => props.navigation.navigate('Quiz')}>
-                 <Text style={styles.inputTextStyle}>Take Quiz</Text>
-           </TouchableOpacity>
-        
+            windowSize={10} // <-- added windowSize prop to improve performance
+          />
         </View>
-        </ScrollView>
-    );
-}
-
+      );
+        } catch (error) {
+            console.log("Error:", error);
+            return <Text>An error occurred.</Text>;
+        }
+    }
  
 
 const styles = StyleSheet.create({
@@ -116,6 +141,12 @@ const styles = StyleSheet.create({
         marginBottom: 25,
 
     },
+    headerTextStyle: {
+        fontSize: 28,
+        fontWeight: '500',
+        color: '#333',
+        marginBottom: 30,
+    }
 
 
 
