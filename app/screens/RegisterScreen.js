@@ -52,6 +52,7 @@ function RegisterScreen(props) {
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;
+                
                 console.log('User registered: ', user.uid);
                 addDoc(collection(db, 'users'), {
                 email: email,
@@ -60,8 +61,9 @@ function RegisterScreen(props) {
                 isAdmin: isAdmin, // <-- include isAdmin in the data sent to Firestore
                 //type: "normal",
                 })
-                .then(() => {
+                .then((docRef) => {
                     console.log('User added to Firestore');
+                    console.log("Document ID: " , docRef.id);
                 })
                 .catch((error) => {
                     console.error('Error adding user to Firestore: ', error);
