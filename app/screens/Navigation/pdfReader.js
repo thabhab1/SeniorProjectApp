@@ -44,14 +44,15 @@ const test = props.route.params.item.link;
     return(
         <ScrollView>
         <View style = {styles.container}>
-           <Text>{test}</Text>
+           <Text style = {styles.headerTitle}>Modules</Text>
            <PdfReader
             source={ {
                 uri: test,
             }}
-            style={{ flex: 1, height: 500 }}
+            style={{ flex: 1, height: 500, marginBottom: 20}}
             />
 
+        <Text style = {styles.headerTitle} >Module Video:</Text>
         <YoutubePlayer
         height={300}
         play={playing}
@@ -59,7 +60,7 @@ const test = props.route.params.item.link;
         onChangeState={onStateChange}
         
       />
-      <Button title={playing ? "pause" : "play"} onPress={togglePlaying} />
+     
 
            <TouchableOpacity style={styles.inputButton} onPress={() => props.navigation.navigate('Quiz')}>
                  <Text style={styles.inputTextStyle}>Take Quiz</Text>
@@ -117,7 +118,15 @@ const styles = StyleSheet.create({
 
     },
 
+    headerTitle: {
+        textAlign: 'center',
+        fontSize: 28,
+        fontWeight: '500',
+        color: '#333',
+        marginBottom: 20,
+        flex: 1,
 
+    },
 
 
 })
