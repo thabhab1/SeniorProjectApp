@@ -7,6 +7,68 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { addDoc, collection } from '@firebase/firestore';
 import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getDoc, doc } from '@firebase/firestore';
+
+// Get a reference to the Firebase storage service
+const storage = getStorage();
+
+// Create a reference to the "Media Training" folder
+const mediaTrainingRef = ref(storage, 'Media Training');
+
+const MediaTrainingUpload = async (uri) => {
+    try {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const fileRef = ref(mediaTrainingRef, 'filename.pdf');
+      await uploadBytes(fileRef, blob);
+      console.log('File uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading file: ', error);
+    }
+  };
+
+const mediaTrainingForPublicSafetyRef = ref(storage, 'Media Training For Public Safety');
+
+const MediaTrainingForPublicSafetyUpload = async (uri) => {
+    try {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const fileRef = ref(mediaTrainingForPublicSafetyRef, 'filename.pdf');
+      await uploadBytes(fileRef, blob);
+      console.log('File uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading file: ', error);
+    }
+  };
+
+const PublicSpeakingRef = ref(storage, 'Public Speaking');
+
+const PublicSpeakingUpload = async (uri) => {
+    try {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const fileRef = ref(PublicSpeakingRef, 'filename.pdf');
+      await uploadBytes(fileRef, blob);
+      console.log('File uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading file: ', error);
+    }
+  };
+
+  const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches');
+
+ const PublicSpeakingAndSpeechesUpload = async (uri) => {
+    try {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const fileRef = ref(PublicSpeakingAndSpeechesRef, 'filename.pdf');
+      await uploadBytes(fileRef, blob);
+      console.log('File uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading file: ', error);
+    }
+  };
 
 function Quiz(props) {
 
@@ -38,6 +100,7 @@ function Quiz(props) {
         link: mediaTrainingLink,
         pdf: mediaTrainingPDF,
       });
+      await MediaTrainingUpload(mediaTrainingPDF);
       setMediaTrainingQuestion('');
       setMediaTrainingAnswer('');
       setMediaTrainingLink('');
@@ -47,6 +110,8 @@ function Quiz(props) {
     }
   };
 
+  
+
   const handleMediaTrainingForPublicSafetySubmit = async () => {
     try {
       await addDoc(collection(db, 'MediaTrainingForPublicSafety'), {
@@ -55,6 +120,7 @@ function Quiz(props) {
         link: mediaTrainingForPublicSafetyLink,
         pdf: mediaTrainingForPublicSafetyPDF
       });
+      await MediaTrainingForPublicSafetyUpload(mediaTrainingForPublicSafetyPDF);
       setMediaTrainingForPublicSafetyQuestion('');
       setMediaTrainingForPublicSafetyAnswer('');
       setMediaTrainingForPublicSafetyLink('');
@@ -72,6 +138,7 @@ function Quiz(props) {
         link: publicSpeakingLink,
         pdf: publicSpeakingPDF
       });
+      await PublicSpeakingUpload(publicSpeakingPDF);
       setPublicSpeakingQuestion('');
       setPublicSpeakingAnswer('');
       setPublicSpeakingLink('');
@@ -89,6 +156,7 @@ function Quiz(props) {
         link: publicSpeakingAndSpeechesLink,
         pdf: publicSpeakingAndSpeechesPDF
       });
+      await PublicSpeakingAndSpeechesUpload(publicSpeakingAndSpeechesPDF);
       setPublicSpeakingAndSpeechesQuestion('');
       setPublicSpeakingAndSpeechesAnswer('');
       setPublicSpeakingAndSpeechesLink('');
