@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import { Text, View } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -12,13 +11,16 @@ import pdfReader from './pdfReader';
 import Quiz from './Quiz';
 import {getAuth} from 'firebase/auth'
 import { db } from './firebase';
-import {collection, doc, getDoc,getDocs, query, querySnapshot, where} from "firebase/firestore";
+import {collection, getDocs, query, where} from "firebase/firestore";
 const Tab = createBottomTabNavigator();
-import AdminQuiz from './AdminQuiz';
+import AdminScreen from './AdminScreen';
+
+
 const modulesName = 'Modules';
 const accountName = 'Account';
 const helpName = 'Help';
-const isAdmin = true;
+
+
 function NavigationBar(props) {
     const [type, setType] = useState("");
     const auth = getAuth();
@@ -69,7 +71,7 @@ function NavigationBar(props) {
                 {type ? (
                         <Tab.Screen
                             name={"Admin"}
-                            component={AdminQuiz}
+                            component={AdminScreen}
                             options={{ headerShown: false }}
                         />
                         ) : null}

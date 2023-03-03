@@ -37,10 +37,27 @@ const test = props.route.params.item.link;
         }
         fetchData();
     }, []);
+
     //var output = data.replace(/^\[(.+)\]$/,'$1');
     var output = data.substr(1,data.length -2)
     output = output.substring(1, output.length-1);
     console.log(output)
+
+    
+    const videoTest = props.route.params.item.videoLink;
+    
+    useEffect(() => {
+        async function fetchData() {
+        const querySnapshot = await getDocs(collection(db, 'test'));
+        const docData = querySnapshot.docs.map((doc) => doc.data().data);
+        setData(JSON.stringify(docData));
+        }
+        fetchData();
+    }, []);
+    var str = videoTest.substring(videoTest.indexOf("=") + 1);
+    console.log(str);
+
+
     return(
         <ScrollView>
         <View style = {styles.container}>
@@ -56,7 +73,7 @@ const test = props.route.params.item.link;
         <YoutubePlayer
         height={300}
         play={playing}
-        videoId={"DfEnIFV2-mc"}
+        videoId={str}
         onChangeState={onStateChange}
         
       />
