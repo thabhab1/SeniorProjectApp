@@ -6,6 +6,7 @@ import { db } from './firebase';
 import { ScrollView } from 'react-native-gesture-handler';
 import { addDoc, collection } from '@firebase/firestore';
 import { StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 function Quiz(props) {
 
@@ -46,7 +47,7 @@ function Quiz(props) {
     }
   };
 
-  const handleMediaTrainingForPublicSpeakingSubmit = async () => {
+  const handleMediaTrainingForPublicSafetySubmit = async () => {
     try {
       await addDoc(collection(db, 'MediaTrainingForPublicSafety'), {
         question: mediaTrainingForPublicSafetyQuestion,
@@ -57,7 +58,7 @@ function Quiz(props) {
       setMediaTrainingForPublicSafetyQuestion('');
       setMediaTrainingForPublicSafetyAnswer('');
       setMediaTrainingForPublicSafetyLink('');
-      setMediaTrainingForPublicSafetyLink('');
+      setMediaTrainingForPublicSafetyPDF('');
     } catch (error) {
         console.error('Error adding document: ', error);
     }
@@ -107,7 +108,7 @@ function Quiz(props) {
          Media Training
         */}
         <View style={{ marginBottom: 16 }}>
-          <Text category='h5'>Media Training Questions</Text>
+          <Text style = {styles.titleText}>Media Training Questions</Text>
           <TextInput
             style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
             onChangeText={setMediaTrainingQuestion}
@@ -132,7 +133,9 @@ function Quiz(props) {
             value={mediaTrainingPDF}
             placeholder='PDF Link'
           />
-          <Button title='Create Module' onPress={handleMediaTrainingSubmit} />
+          <TouchableOpacity style={styles.button} onPress={handleMediaTrainingSubmit}>
+            <Text style={styles.buttonText}>Create Module</Text>
+          </TouchableOpacity>
         </View>
         
          {/* 
@@ -140,7 +143,7 @@ function Quiz(props) {
         */}
         <View style={{ marginBottom: 16 }}>
           
-          <Text category='h5'>Media Training For Public Safety Questions</Text>
+          <Text style = {styles.titleText}>Media Training For Public Safety Questions</Text>
           <TextInput
             style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
             onChangeText={setMediaTrainingForPublicSafetyQuestion}
@@ -165,7 +168,9 @@ function Quiz(props) {
             value={mediaTrainingForPublicSafetyPDF}
             placeholder='PDF Link'
           />
-          <Button title='Create Module' onPress={handleMediaTrainingForPublicSpeakingSubmit} />
+          <TouchableOpacity style={styles.button} onPress={handleMediaTrainingForPublicSafetySubmit}>
+            <Text style={styles.buttonText}>Create Module</Text>
+          </TouchableOpacity>
         </View>
 
         {/* 
@@ -173,7 +178,7 @@ function Quiz(props) {
         */}
          <View style={{ marginBottom: 16 }}>
           
-          <Text category='h5'>Public Speaking Questions</Text>
+          <Text style = {styles.titleText}>Public Speaking Questions</Text>
           <TextInput
             style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
             onChangeText={setPublicSpeakingQuestion}
@@ -198,7 +203,9 @@ function Quiz(props) {
             value={publicSpeakingPDF}
             placeholder='PDF Link'
           />
-          <Button title='Create Module' onPress={handlePublicSpeakingSubmit}/>
+          <TouchableOpacity style={styles.button} onPress={handlePublicSpeakingSubmit}>
+            <Text style={styles.buttonText}>Create Module</Text>
+          </TouchableOpacity>
         </View>
 
          {/* 
@@ -206,7 +213,7 @@ function Quiz(props) {
         */}
          <View style={{ marginBottom: 16 }}>
           
-          <Text category='h5'>Public Speaking And Speeches Questions</Text>
+          <Text style = {styles.titleText}>Public Speaking And Speeches Questions</Text>
           <TextInput
             style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
             onChangeText={setPublicSpeakingAndSpeechesQuestion}
@@ -231,7 +238,9 @@ function Quiz(props) {
             value={publicSpeakingAndSpeechesPDF}
             placeholder='PDF Link'
           />
-          <Button title='Create Module' onPress={handlePublicSpeakingAndSpeechesSubmit}/>
+          <TouchableOpacity style={styles.button} onPress={handlePublicSpeakingAndSpeechesSubmit}>
+            <Text style={styles.buttonText}>Create Module</Text>
+          </TouchableOpacity>
         </View>
         
     </ScrollView>
@@ -262,14 +271,28 @@ const styles = StyleSheet.create({
       marginBottom: 10,
     },
     button: {
-      backgroundColor: 'blue',
-      padding: 10,
-      borderRadius: 5,
-      marginTop: 20,
+        backgroundColor: '#f8deaa',
+        padding: 20,
+        borderRadius: 10,
+        marginBottom: 20,
+        shadowColor: 'black',
+        shadowOffset: {height: 2, width: 0.5},
+        shadowOpacity: 0.5,
+        shadowRadius: 6,
+        elevation: 3, 
     },
     buttonText: {
-      color: 'white',
-      fontWeight: 'bold',
-      textAlign: 'center',
+        textAlign: 'center',
+        fontWeight: '700',
+        color: 'black',
+        fontSize: 16,
+    },
+    titleText: {
+        textAlign: 'center',
+        fontWeight: '500',
+        color: 'black',
+        fontSize: 16,
+        marginBottom: 8,
+        marginTop: 10
     },
   });

@@ -46,14 +46,6 @@ const test = props.route.params.item.link;
     
     const videoTest = props.route.params.item.videoLink;
     
-    useEffect(() => {
-        async function fetchData() {
-        const querySnapshot = await getDocs(collection(db, 'test'));
-        const docData = querySnapshot.docs.map((doc) => doc.data().data);
-        setData(JSON.stringify(docData));
-        }
-        fetchData();
-    }, []);
     var str = videoTest.substring(videoTest.indexOf("=") + 1);
     console.log(str);
 
