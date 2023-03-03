@@ -33,7 +33,6 @@ function LoginScreen(props) {
             if(auth.currentUser) {console.log("logged in")}
 
             // Successfully signed in, navigate to the next screen
-      
 
           })
           .catch((error) => {
@@ -166,5 +165,4 @@ const styles = StyleSheet.create({
 
 
 })
-
 export default LoginScreen;

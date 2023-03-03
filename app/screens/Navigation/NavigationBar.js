@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react'
 import { Text, View } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -10,6 +10,9 @@ import Account from './Account';
 import Help from './Help';
 import pdfReader from './pdfReader';
 import Quiz from './Quiz';
+import {getAuth} from 'firebase/auth'
+import { db } from './firebase';
+import {collection, doc, getDoc,getDocs, query, querySnapshot, where} from "firebase/firestore";
 const Tab = createBottomTabNavigator();
 import AdminQuiz from './AdminQuiz';
 const modulesName = 'Modules';
@@ -17,6 +20,21 @@ const accountName = 'Account';
 const helpName = 'Help';
 const isAdmin = true;
 function NavigationBar(props) {
+    const [type, setType] = useState("");
+    const auth = getAuth();
+    useEffect(() => {
+      async function fetchType() {
+        const querySnapshot =  await getDocs(query(collection(db, 'users'), where('email', '==', auth.currentUser.email)));
+        if (querySnapshot.docs.length > 0) {
+          const userData = querySnapshot.docs[0].data();
+          setType(userData.isAdmin);
+        } else {
+
+          console.log('stinky doo doo');
+        }
+      }
+      fetchType();
+    }, []);
     return (
         <NavigationContainer>        
             <Tab.Navigator 
@@ -48,9 +66,15 @@ function NavigationBar(props) {
                 <Tab.Screen name={modulesName} component={Root} options={{headerShown: false}}/>        
                 <Tab.Screen name={accountName} component={Account} options={{headerShown: false}}/>        
                 <Tab.Screen name={helpName} component={Help} options={{headerShown: false}}/>
-                <Tab.Screen name={"Admin"} component={AdminQuiz} 
-                options={{headerShown: false,
-                tabBarVisible: isAdmin}}/>
+                {type ? (
+                        <Tab.Screen
+                            name={"Admin"}
+                            component={AdminQuiz}
+                            options={{ headerShown: false }}
+                        />
+                        ) : null}
+
+                
             </Tab.Navigator>
         
             
