@@ -16,17 +16,15 @@ const storage = getStorage();
 // Create a reference to the "Media Training" folder
 const mediaTrainingRef = ref(storage, 'Media Training');
 
-const MediaTrainingUpload = async (uri) => {
-    try {
-      const response = await fetch(uri);
-      const blob = await response.blob();
-      const fileRef = ref(mediaTrainingRef, 'filename.pdf');
-      await uploadBytes(fileRef, blob);
-      console.log('File uploaded successfully');
-    } catch (error) {
-      console.error('Error uploading file: ', error);
-    }
-  };
+const MediaTrainingUpload = async (filePath) => {
+  try {
+    const fileRef = ref(mediaTrainingRef, 'filename.pdf');
+    await uploadBytes(fileRef, filePath);
+    console.log('File uploaded successfully');
+  } catch (error) {
+    console.error('Error uploading file: ', error);
+  }
+};
 
 const mediaTrainingForPublicSafetyRef = ref(storage, 'Media Training For Public Safety');
 
