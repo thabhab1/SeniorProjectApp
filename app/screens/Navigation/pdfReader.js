@@ -71,7 +71,7 @@ const test = props.route.params.item.link;
       />
      
 
-           <TouchableOpacity style={styles.inputButton} onPress={() => props.navigation.navigate('Quiz')}>
+           <TouchableOpacity style={styles.inputButton} onPress={() => props.navigation.navigate('Quiz', {item: props.route.params.item})}>
                  <Text style={styles.inputTextStyle}>Take Quiz</Text>
            </TouchableOpacity>
         

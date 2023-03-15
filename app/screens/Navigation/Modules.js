@@ -28,7 +28,7 @@ const auth = getAuth();
 function Modules(props){
   const [data, setData] = useState()
   const [type, setType] = useState("");
-
+  console.log(props)
   useEffect(() => {
     async function fetchType() {
       const querySnapshot =  await getDocs(query(collection(db, 'users'), where('email', '==', auth.currentUser.email)));
@@ -58,7 +58,7 @@ function Modules(props){
         case 'Media Training':
           querySnap = await getDocs(collection(db, 'MediaTraining'));
           break;
-        case 'Media Training For PublicSafety':
+        case 'Media Training For Public Safety':
           querySnap = await getDocs(collection(db, 'MediaTrainingForPublicSafety'));
           break;
         default:

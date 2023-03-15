@@ -2,27 +2,42 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
-const Quiz = () => {
+function Quiz(props) {
+  console.log(props)
+  data = props.route.params.item
+  q1 = data.questions[0]
+  q2 = data.questions[1]
+  q3 = data.questions[2]
 
   // define the quiz questions and possible answers
   const quiz = [
     {
-      question: 'What is the capital of France?',
+      question: q1.question,
       options: [
-        {label: 'Paris', value: 0},
-        {label: 'Rome', value: 1},
-        {label: 'Madrid', value: 2},
-        {label: 'Berlin', value: 3},
+        {label: q1.options[0], value: 0},
+        {label: q1.options[1], value: 1},
+        {label: q1.options[2], value: 2},
+        {label: q1.options[3], value: 3},
       ],
       answer: 0, // the index of the correct answer in the options array
     },
     {
-      question: 'What is the largest country in the world by land area?',
+      question: q2.question,
       options: [
-        {label: 'Russia', value: 0},
-        {label: 'China', value: 1},
-        {label: 'United States', value: 2},
-        {label: 'Brazil', value: 3},
+        {label: q2.options[0], value: 0},
+        {label: q2.options[1], value: 1},
+        {label: q2.options[2], value: 2},
+        {label: q2.options[3], value: 3},
+      ],
+      answer: 0,
+    },
+    {
+      question: q3.question,
+      options: [
+        {label: q3.options[0], value: 0},
+        {label: q3.options[1], value: 1},
+        {label: q3.options[2], value: 2},
+        {label: q3.options[3], value: 3},
       ],
       answer: 0,
     },
@@ -31,69 +46,101 @@ const Quiz = () => {
 
   const [currentQuestion, setCurrentQuestion] = useState(0); // the index of the current question being displayed
   const [score, setScore] = useState(0); // the user's score
+  const [selectedAnswer, setSelectedAnswer] = useState(null); // the index of the selected answer
 
-  const handleAnswer = (value) => {
-    if (value === quiz[currentQuestion].answer) {
-      setScore(score + 1); // increase the user's score if the answer is correct
-    }
-    if (currentQuestion < quiz.length - 1) {
-      setCurrentQuestion(currentQuestion + 1); // move to the next question
-    } else {
-      // quiz is complete, show the user's score
-      alert(`Quiz complete! You scored ${score}/${quiz.length}`);
+  const handleAnswer = () => {
+    if (selectedAnswer !== null) {
+      if (selectedAnswer === quiz[currentQuestion].answer) {
+        setScore(score + 1); // increase the user's score if the answer is correct
+      }
+      if (currentQuestion < quiz.length - 1) {
+        setCurrentQuestion(currentQuestion + 1); // move to the next question
+        setSelectedAnswer(null); // clear the selected answer
+      } else {
+        // quiz is complete, show the user's score
+        alert(`Quiz complete! You scored ${score}/${quiz.length}`);
+      }
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.question}>{quiz[currentQuestion].question}</Text>
+      <Text style={styles.inputTextStyle}>{quiz[currentQuestion].question}</Text>
       <RadioForm>
         {quiz[currentQuestion].options.map((option, index) => (
-          <RadioButton key={index}>
+          <RadioButton style={styles.inputButton} key={index}>
             <RadioButtonInput
               obj={option}
               index={index}
-              isSelected={false}
-              onPress={(value) => handleAnswer(value)}
+              isSelected={selectedAnswer === index}
+              onPress={() => setSelectedAnswer(index)}
             />
             <RadioButtonLabel
+              style={styles.inputButton}
               obj={option}
               index={index}
               labelHorizontal={true}
-              onPress={(value) => handleAnswer(value)}
+              onPress={() => setSelectedAnswer(index)}
             />
           </RadioButton>
         ))}
       </RadioForm>
-      <TouchableOpacity style={styles.button} onPress={() => handleAnswer()}>
-        <Text style={styles.buttonText}>Next</Text>
+      <TouchableOpacity style={styles.inputButton} onPress={handleAnswer}>
+        <Text style={styles.inputTextStyle}>Next</Text>
       </TouchableOpacity>
     </View>
   );
+
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+      flex: 1,
+      justifyContent: 'center',
+      paddingHorizontal: 20,
+      backgroundColor: 'white',
+
   },
-  question: {
-    fontSize: 20,
-    marginBottom: 20,
+  imageStyle: {
+      height: 200,
+      width: 200,
+      marginBottom: 30,
+      alignSelf: 'center',
   },
-  button: {
-    marginTop: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#2196F3',
-    borderRadius: 5,
+  inputButton: {
+      backgroundColor: '#f8deaa',
+      padding: 20,
+      borderRadius: 10,
+      marginBottom: 20,
+      shadowColor: 'black',
+      shadowOffset: {height: 2, width: 0.5},
+      shadowOpacity: 0.5,
+      shadowRadius: 6,
+      elevation: 3, 
   },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
+  inputTextStyle: {
+      textAlign: 'center',
+      fontWeight: '700',
+      color: 'black',
+      fontSize: 16,
   },
-});
+  sectionTitle: {
+      fontSize: 28,
+      fontWeight: '500',
+      color: '#333',
+      marginBottom: 30,
+
+  },
+  userInput: {
+      borderBottomColor: '#ccc',
+      borderBottomWidth: 2,
+      marginBottom: 25,
+      
+  },
+  
+  
+
+
+})
 
 export default Quiz;
