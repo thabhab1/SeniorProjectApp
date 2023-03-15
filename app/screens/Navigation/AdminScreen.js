@@ -33,11 +33,12 @@ const storage = getStorage();
 // Create a reference to the "Media Training" folder
 const mediaTrainingRef = ref(storage, 'Media Training');
 
-const MediaTrainingUpload = async (filePath) => {
-  console.log('filePath:', filePath);
+const MediaTrainingUpload = async (uri) => {
   try {
-    const fileRef = ref(mediaTrainingRef, 'filename.pdf');
-    await uploadBytes(fileRef, filePath);
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const fileRef = ref(mediaTrainingRef, 'filenamed.pdf');
+    await uploadBytes(fileRef, blob);
     console.log('File uploaded successfully');
   } catch (error) {
     console.error('Error uploading file: ', error);
@@ -78,7 +79,7 @@ const PublicSpeakingUpload = async (uri) => {
     try {
       const response = await fetch(uri);
       const blob = await response.blob();
-      const fileRef = ref(PublicSpeakingAndSpeechesRef, 'filename.pdf');
+      const fileRef = ref(PublicSpeakingAndSpeechesRef, 'filenamed.pdf');
       await uploadBytes(fileRef, blob);
       console.log('File uploaded successfully');
     } catch (error) {
@@ -126,12 +127,16 @@ function Quiz(props) {
 
   const handleMediaTrainingSubmit = async () => {
     try {
-      const docRef = await addDoc(collection(db, 'MediaTraining'), {
+      await addDoc(collection(db, 'MediaTraining'), {
         title: mediaTrainingTitle,
         questions: mediaTrainingQuestions,
+        link: mediaTrainingLink,
+        pdf: mediaTrainingPDF
       });
-      await MediaTrainingUpload(docRef.id, mediaTrainingQuestions);
+      await MediaTrainingUpload(mediaTrainingPDF);
       setMediaTrainingTitle('');
+      setMediaTrainingLink('');
+      setMediaTrainingPDF('');
       setMediaTrainingQuestions([
         { question: '', options: ['', '', '', ''] },
         { question: '', options: ['', '', '', ''] },
