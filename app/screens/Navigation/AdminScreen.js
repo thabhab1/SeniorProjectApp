@@ -87,7 +87,7 @@ const PublicSpeakingUpload = async (uri) => {
     }
   };
 
-function Quiz(props) {
+function AdminScreen(props) {
 
   const [mediaTrainingQuestions, setMediaTrainingQuestions] = useState([
     {
@@ -110,20 +110,65 @@ function Quiz(props) {
   const [mediaTrainingPDF, setMediaTrainingPDF] = useState('');
   const [mediaTrainingTitle, setMediaTrainingTitle] = useState('');
 
-  const [mediaTrainingForPublicSafetyQuestion, setMediaTrainingForPublicSafetyQuestion] = useState('');
+  const [mediaTrainingForPublicSafetyQuestions, setMediaTrainingForPublicSafetyQuestions] = useState([
+    {
+    question: '',
+    options: ['', '', '', ''],
+  },
+  {
+    question: '',
+    options: ['', '', '', ''],
+  },
+  {
+    question: '',
+    options: ['', '', '', ''],
+  },
+  ]);
+
   const [mediaTrainingForPublicSafetyAnswer, setMediaTrainingForPublicSafetyAnswer] = useState('');
   const [mediaTrainingForPublicSafetyLink, setMediaTrainingForPublicSafetyLink] = useState ('');
   const [mediaTrainingForPublicSafetyPDF, setMediaTrainingForPublicSafetyPDF] = useState ('');
+  const [mediaTrainingForPublicSafetyTitle, setMediaTrainingForPublicSafetyTitle] = useState ('');
 
-  const [publicSpeakingQuestion, setPublicSpeakingQuestion] = useState('');
+  const [publicSpeakingQuestions, setPublicSpeakingQuestions] = useState([
+    {
+    question: '',
+    options: ['', '', '', ''],
+  },
+  {
+    question: '',
+    options: ['', '', '', ''],
+  },
+  {
+    question: '',
+    options: ['', '', '', ''],
+  },
+  ]);
+
   const [publicSpeakingAnswer, setPublicSpeakingAnswer] = useState('');
   const [publicSpeakingLink, setPublicSpeakingLink] = useState('');
   const [publicSpeakingPDF, setPublicSpeakingPDF] = useState('');
+  const [publicSpeakingTitle, setPublicSpeakingTitle] = useState('');
 
-  const [publicSpeakingAndSpeechesQuestion, setPublicSpeakingAndSpeechesQuestion] = useState('');
+  const [publicSpeakingAndSpeechesQuestions, setPublicSpeakingAndSpeechesQuestions] = useState([
+    {
+    question: '',
+    options: ['', '', '', ''],
+  },
+  {
+    question: '',
+    options: ['', '', '', ''],
+  },
+  {
+    question: '',
+    options: ['', '', '', ''],
+  },
+  ]);
+  
   const [publicSpeakingAndSpeechesAnswer, setPublicSpeakingAndSpeechesAnswer] = useState('');
   const [publicSpeakingAndSpeechesLink, setPublicSpeakingAndSpeechesLink] = useState('');
   const [publicSpeakingAndSpeechesPDF, setPublicSpeakingAndSpeechesPDF] = useState('');
+  const [publicSpeakingAndSpeechesTitle, setPublicSpeakingAndSpeechesTitle] = useState('');
 
   const handleMediaTrainingSubmit = async () => {
     try {
@@ -151,16 +196,20 @@ function Quiz(props) {
   const handleMediaTrainingForPublicSafetySubmit = async () => {
     try {
       await addDoc(collection(db, 'MediaTrainingForPublicSafety'), {
-        question: mediaTrainingForPublicSafetyQuestion,
-        answer: mediaTrainingForPublicSafetyAnswer,
+        title: mediaTrainingForPublicSafetyTitle,
+        question: mediaTrainingForPublicSafetyQuestions,
         link: mediaTrainingForPublicSafetyLink,
         pdf: mediaTrainingForPublicSafetyPDF
       });
       await MediaTrainingForPublicSafetyUpload(mediaTrainingForPublicSafetyPDF);
-      setMediaTrainingForPublicSafetyQuestion('');
-      setMediaTrainingForPublicSafetyAnswer('');
+      setMediaTrainingForPublicSafetyTitle('');
       setMediaTrainingForPublicSafetyLink('');
       setMediaTrainingForPublicSafetyPDF('');
+      setMediaTrainingQuestions([
+        { question: '', options: ['', '', '', ''] },
+        { question: '', options: ['', '', '', ''] },
+        { question: '', options: ['', '', '', ''] },
+      ]);
     } catch (error) {
         console.error('Error adding document: ', error);
     }
@@ -169,16 +218,20 @@ function Quiz(props) {
   const handlePublicSpeakingSubmit = async () => {
     try {
       await addDoc(collection(db, 'PublicSpeaking'), {
-        question: publicSpeakingQuestion,
-        answer: publicSpeakingAnswer,
+        title: publicSpeakingTitle,
+        question: publicSpeakingQuestions,
         link: publicSpeakingLink,
         pdf: publicSpeakingPDF
       });
       await PublicSpeakingUpload(publicSpeakingPDF);
-      setPublicSpeakingQuestion('');
-      setPublicSpeakingAnswer('');
+      setPublicSpeakingTitle('');
       setPublicSpeakingLink('');
       setPublicSpeakingPDF('');
+      setPublicSpeakingQuestions([
+        { question: '', options: ['', '', '', ''] },
+        { question: '', options: ['', '', '', ''] },
+        { question: '', options: ['', '', '', ''] },
+      ]);
     } catch (error) {
         console.error('Error adding document: ', error);
     }
@@ -187,16 +240,20 @@ function Quiz(props) {
   const handlePublicSpeakingAndSpeechesSubmit = async () => {
     try {
       await addDoc(collection(db, 'PublicSpeakingAndSpeeches'), {
-        question: publicSpeakingAndSpeechesQuestion,
-        answer: publicSpeakingAndSpeechesAnswer,
+        title: publicSpeakingAndSpeechesTitle,
+        question: publicSpeakingAndSpeechesQuestions,
         link: publicSpeakingAndSpeechesLink,
         pdf: publicSpeakingAndSpeechesPDF
       });
       await PublicSpeakingAndSpeechesUpload(publicSpeakingAndSpeechesPDF);
-      setPublicSpeakingAndSpeechesQuestion('');
-      setPublicSpeakingAndSpeechesAnswer('');
+      setPublicSpeakingAndSpeechesTitle('');
       setPublicSpeakingAndSpeechesLink('');
       setPublicSpeakingAndSpeechesPDF('');
+      setPublicSpeakingAndSpeechesQuestions([
+        { question: '', options: ['', '', '', ''] },
+        { question: '', options: ['', '', '', ''] },
+        { question: '', options: ['', '', '', ''] },
+      ]);
     } catch (error) {
         console.error('Error adding document: ', error);
     }
@@ -278,117 +335,183 @@ function Quiz(props) {
 )}
 
         
-         {/* 
-         Media Training For Public Safety
-        */}
-        {accountType === 'Media Training For Public Safety' && (
-        <View style={{ marginBottom: 16 }}>
-          
-          <Text style = {styles.titleText}>Media Training For Public Safety Questions</Text>
+         {/* Media Training For Public Safety */}
+    
+         {accountType === 'Media Training For Public Safety' && (
+         <View style={{ marginBottom: 16 }}>
+          <Text style={styles.titleText}>Media Training For Public Safety Questions</Text>
+
           <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingForPublicSafetyQuestion}
-            value={mediaTrainingForPublicSafetyQuestion}
-            placeholder='Question'
-          />
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={setMediaTrainingForPublicSafetyTitle}
+          value={mediaTrainingForPublicSafetyTitle}
+          placeholder='Title'
+        />
+         <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={setMediaTrainingForPublicSafetyLink}
+          value={mediaTrainingForPublicSafetyLink}
+          placeholder='Video Link'
+        />
+         <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={setMediaTrainingForPublicSafetyPDF}
+          value={mediaTrainingForPublicSafetyPDF}
+          placeholder='PDF Link'
+        />
+          {mediaTrainingForPublicSafetyQuestions.map(({ question, options }, index) => (
+          <View key={index}>
+
+        <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={(text) => {
+            const updatedQuestions = [...mediaTrainingForPublicSafetyQuestions];
+            updatedQuestions[index].question = text;
+            setMediaTrainingForPublicSafetyQuestions(updatedQuestions);
+          }}
+          value={question}
+          placeholder={`Question ${index + 1}`}
+        />
+        {options.map((option, optionIndex) => (
           <TextInput
+            key={optionIndex}
             style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingForPublicSafetyAnswer}
-            value={mediaTrainingForPublicSafetyAnswer}
-            placeholder='Answer'
+            onChangeText={(text) => {
+              const updatedQuestions = [...mediaTrainingForPublicSafetyQuestions];
+              updatedQuestions[index].options[optionIndex] = text;
+              setMediaTrainingForPublicSafetyQuestions(updatedQuestions);
+            }}
+            value={option}
+            placeholder={`Option ${optionIndex + 1}`}
           />
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingForPublicSafetyLink}
-            value={mediaTrainingForPublicSafetyLink}
-            placeholder='Video Link'
-          />
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingForPublicSafetyPDF}
-            value={mediaTrainingForPublicSafetyPDF}
-            placeholder='PDF Link'
-          />
-          <TouchableOpacity style={styles.button} onPress={handleMediaTrainingForPublicSafetySubmit}>
-            <Text style={styles.buttonText}>Create Module</Text>
-          </TouchableOpacity>
-        </View>
-        )}
+        ))}
+        
+      </View>
+    ))}
+    <TouchableOpacity style={styles.button} onPress={handleMediaTrainingForPublicSafetySubmit}>
+      <Text style={styles.buttonText}>Create Module</Text>
+    </TouchableOpacity>
+  </View>
+)}
         
         
-        {/* 
-         Public Speaking
-        */}
+        {/* Public Speaking */}
+    
         {accountType === 'Public Speaking' && (
          <View style={{ marginBottom: 16 }}>
-          
-          <Text style = {styles.titleText}>Public Speaking Questions</Text>
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setPublicSpeakingQuestion}
-            value={publicSpeakingQuestion}
-            placeholder='Question'
-          />
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setPublicSpeakingAnswer}
-            value={publicSpeakingAnswer}
-            placeholder='Answer'
-          />
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setPublicSpeakingLink}
-            value={publicSpeakingLink}
-            placeholder='Video Link'
-          />
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setPublicSpeakingPDF}
-            value={publicSpeakingPDF}
-            placeholder='PDF Link'
-          />
-          <TouchableOpacity style={styles.button} onPress={handlePublicSpeakingSubmit}>
-            <Text style={styles.buttonText}>Create Module</Text>
-          </TouchableOpacity>
-        </View>
-        )}
+          <Text style={styles.titleText}>Public Speaking Questions</Text>
 
-         {/* 
-         Public Speaking And Speeches
-        */}
+          <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={setPublicSpeakingTitle}
+          value={publicSpeakingTitle}
+          placeholder='Title'
+        />
+         <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={setPublicSpeakingLink}
+          value={publicSpeakingLink}
+          placeholder='Video Link'
+        />
+         <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={setPublicSpeakingPDF}
+          value={publicSpeakingPDF}
+          placeholder='PDF Link'
+        />
+          {publicSpeakingQuestions.map(({ question, options }, index) => (
+          <View key={index}>
+
+        <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={(text) => {
+            const updatedQuestions = [...publicSpeakingQuestions];
+            updatedQuestions[index].question = text;
+            setPublicSpeakingQuestions(updatedQuestions);
+          }}
+          value={question}
+          placeholder={`Question ${index + 1}`}
+        />
+        {options.map((option, optionIndex) => (
+          <TextInput
+            key={optionIndex}
+            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+            onChangeText={(text) => {
+              const updatedQuestions = [...publicSpeakingQuestions];
+              updatedQuestions[index].options[optionIndex] = text;
+              setPublicSpeakingQuestions(updatedQuestions);
+            }}
+            value={option}
+            placeholder={`Option ${optionIndex + 1}`}
+          />
+        ))}
+        
+      </View>
+    ))}
+    <TouchableOpacity style={styles.button} onPress={handlePublicSpeakingSubmit}>
+      <Text style={styles.buttonText}>Create Module</Text>
+    </TouchableOpacity>
+  </View>
+)}
+
+        {/* Public Speaking And Speeches */}
+    
         {accountType === 'Public Speaking And Speeches' && (
          <View style={{ marginBottom: 16 }}>
-          
-          <Text style = {styles.titleText}>Public Speaking And Speeches Questions</Text>
+          <Text style={styles.titleText}>Public Speaking And Speeches Questions</Text>
+
           <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setPublicSpeakingAndSpeechesQuestion}
-            value={publicSpeakingAndSpeechesQuestion}
-            placeholder='Question'
-          />
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={setPublicSpeakingAndSpeechesTitle}
+          value={publicSpeakingAndSpeechesTitle}
+          placeholder='Title'
+        />
+         <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={setPublicSpeakingAndSpeechesLink}
+          value={publicSpeakingAndSpeechesLink}
+          placeholder='Video Link'
+        />
+         <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={setPublicSpeakingAndSpeechesPDF}
+          value={publicSpeakingAndSpeechesPDF}
+          placeholder='PDF Link'
+        />
+          {publicSpeakingAndSpeechesQuestions.map(({ question, options }, index) => (
+          <View key={index}>
+
+        <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={(text) => {
+            const updatedQuestions = [...publicSpeakingAndSpeechesQuestions];
+            updatedQuestions[index].question = text;
+            setPublicSpeakingAndSpeechesQuestions(updatedQuestions);
+          }}
+          value={question}
+          placeholder={`Question ${index + 1}`}
+        />
+        {options.map((option, optionIndex) => (
           <TextInput
+            key={optionIndex}
             style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setPublicSpeakingAndSpeechesAnswer}
-            value={publicSpeakingAndSpeechesAnswer}
-            placeholder='Answer'
+            onChangeText={(text) => {
+              const updatedQuestions = [...publicSpeakingAndSpeechesQuestions];
+              updatedQuestions[index].options[optionIndex] = text;
+              setPublicSpeakingAndSpeechesQuestions(updatedQuestions);
+            }}
+            value={option}
+            placeholder={`Option ${optionIndex + 1}`}
           />
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setPublicSpeakingAndSpeechesLink}
-            value={publicSpeakingAndSpeechesLink}
-            placeholder='Video Link'
-          />
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setPublicSpeakingAndSpeechesPDF}
-            value={publicSpeakingAndSpeechesPDF}
-            placeholder='PDF Link'
-          />
-          <TouchableOpacity style={styles.button} onPress={handlePublicSpeakingAndSpeechesSubmit}>
-            <Text style={styles.buttonText}>Create Module</Text>
-          </TouchableOpacity>
-        </View>
-        )}
+        ))}
+        
+      </View>
+    ))}
+    <TouchableOpacity style={styles.button} onPress={handlePublicSpeakingAndSpeechesSubmit}>
+      <Text style={styles.buttonText}>Create Module</Text>
+    </TouchableOpacity>
+  </View>
+)}
 
     </ScrollView>
   </Layout>
@@ -397,7 +520,7 @@ function Quiz(props) {
 );
 }
 
-export default Quiz;
+export default AdminScreen;
 
 const styles = StyleSheet.create({
     container: {
