@@ -8,8 +8,25 @@ import { addDoc, collection } from '@firebase/firestore';
 import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
-import { getDoc, doc } from '@firebase/firestore';
+import RadioButtonRN from 'radio-buttons-react-native';
 
+const data = [
+  {
+    label: 'Media Training'
+   },
+   {
+    label: 'Media Training For Public Safety'
+   },
+   {
+      label: 'Public Speaking'
+     },
+     {
+      label: 'Public Speaking And Speeches'
+     }
+     
+  ];
+
+  
 // Get a reference to the Firebase storage service
 const storage = getStorage();
 
@@ -17,6 +34,7 @@ const storage = getStorage();
 const mediaTrainingRef = ref(storage, 'Media Training');
 
 const MediaTrainingUpload = async (filePath) => {
+  console.log('filePath:', filePath);
   try {
     const fileRef = ref(mediaTrainingRef, 'filename.pdf');
     await uploadBytes(fileRef, filePath);
@@ -70,10 +88,26 @@ const PublicSpeakingUpload = async (uri) => {
 
 function Quiz(props) {
 
-  const [mediaTrainingQuestion, setMediaTrainingQuestion] = useState('');
+  const [mediaTrainingQuestions, setMediaTrainingQuestions] = useState([
+    {
+    question: '',
+    options: ['', '', '', ''],
+  },
+  {
+    question: '',
+    options: ['', '', '', ''],
+  },
+  {
+    question: '',
+    options: ['', '', '', ''],
+  },
+  ]);
+
+  
   const [mediaTrainingAnswer, setMediaTrainingAnswer] = useState('');
   const [mediaTrainingLink, setMediaTrainingLink] = useState('');
   const [mediaTrainingPDF, setMediaTrainingPDF] = useState('');
+  const [mediaTrainingTitle, setMediaTrainingTitle] = useState('');
 
   const [mediaTrainingForPublicSafetyQuestion, setMediaTrainingForPublicSafetyQuestion] = useState('');
   const [mediaTrainingForPublicSafetyAnswer, setMediaTrainingForPublicSafetyAnswer] = useState('');
@@ -92,22 +126,21 @@ function Quiz(props) {
 
   const handleMediaTrainingSubmit = async () => {
     try {
-      await addDoc(collection(db, 'MediaTraining'), {
-        question: mediaTrainingQuestion,
-        answer: mediaTrainingAnswer,
-        link: mediaTrainingLink,
-        pdf: mediaTrainingPDF,
+      const docRef = await addDoc(collection(db, 'MediaTraining'), {
+        title: mediaTrainingTitle,
+        questions: mediaTrainingQuestions,
       });
-      await MediaTrainingUpload(mediaTrainingPDF);
-      setMediaTrainingQuestion('');
-      setMediaTrainingAnswer('');
-      setMediaTrainingLink('');
-      setMediaTrainingPDF('');
+      await MediaTrainingUpload(docRef.id, mediaTrainingQuestions);
+      setMediaTrainingTitle('');
+      setMediaTrainingQuestions([
+        { question: '', options: ['', '', '', ''] },
+        { question: '', options: ['', '', '', ''] },
+        { question: '', options: ['', '', '', ''] },
+      ]);
     } catch (error) {
-        console.error('Error adding document: ', error);
+      console.error('Error adding document: ', error);
     }
   };
-
   
 
   const handleMediaTrainingForPublicSafetySubmit = async () => {
@@ -165,48 +198,85 @@ function Quiz(props) {
   };
   
 
+  const [accountType, setAccountType] = useState('')
+
   return (
     <ApplicationProvider mapping={mapping} theme={lightTheme}>
       <Layout style={{ flex: 1, padding: 16 }}>
       <ScrollView>
-
-         {/* 
-         Media Training
-        */}
-        <View style={{ marginBottom: 16 }}>
-          <Text style = {styles.titleText}>Media Training Questions</Text>
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingQuestion}
-            value={mediaTrainingQuestion}
-            placeholder='Question'
-          />
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingAnswer}
-            value={mediaTrainingAnswer}
-            placeholder='Answer'
-          />
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingLink}
-            value={mediaTrainingLink}
-            placeholder='Video Link'
-          />
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingPDF}
-            value={mediaTrainingPDF}
-            placeholder='PDF Link'
-          />
-          <TouchableOpacity style={styles.button} onPress={handleMediaTrainingSubmit}>
-            <Text style={styles.buttonText}>Create Module</Text>
-          </TouchableOpacity>
+        
+        <View>
+        <Text>Please choose an account type</Text>
+                <RadioButtonRN
+                selectedBtn={(e) => setAccountType(e.label)}
+                data={data}
+                />
         </View>
+
+         {/* Media Training */}
+    
+         {accountType === 'Media Training' && (
+         <View style={{ marginBottom: 16 }}>
+          <Text style={styles.titleText}>Media Training Questions</Text>
+
+          <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={setMediaTrainingTitle}
+          value={mediaTrainingTitle}
+          placeholder='Title'
+        />
+         <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={setMediaTrainingLink}
+          value={mediaTrainingLink}
+          placeholder='Video Link'
+        />
+         <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={setMediaTrainingPDF}
+          value={mediaTrainingPDF}
+          placeholder='PDF Link'
+        />
+          {mediaTrainingQuestions.map(({ question, options }, index) => (
+          <View key={index}>
+
+        <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={(text) => {
+            const updatedQuestions = [...mediaTrainingQuestions];
+            updatedQuestions[index].question = text;
+            setMediaTrainingQuestions(updatedQuestions);
+          }}
+          value={question}
+          placeholder={`Question ${index + 1}`}
+        />
+        {options.map((option, optionIndex) => (
+          <TextInput
+            key={optionIndex}
+            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+            onChangeText={(text) => {
+              const updatedQuestions = [...mediaTrainingQuestions];
+              updatedQuestions[index].options[optionIndex] = text;
+              setMediaTrainingQuestions(updatedQuestions);
+            }}
+            value={option}
+            placeholder={`Option ${optionIndex + 1}`}
+          />
+        ))}
+        
+      </View>
+    ))}
+    <TouchableOpacity style={styles.button} onPress={handleMediaTrainingSubmit}>
+      <Text style={styles.buttonText}>Create Module</Text>
+    </TouchableOpacity>
+  </View>
+)}
+
         
          {/* 
          Media Training For Public Safety
         */}
+        {accountType === 'Media Training For Public Safety' && (
         <View style={{ marginBottom: 16 }}>
           
           <Text style = {styles.titleText}>Media Training For Public Safety Questions</Text>
@@ -238,10 +308,13 @@ function Quiz(props) {
             <Text style={styles.buttonText}>Create Module</Text>
           </TouchableOpacity>
         </View>
-
+        )}
+        
+        
         {/* 
          Public Speaking
         */}
+        {accountType === 'Public Speaking' && (
          <View style={{ marginBottom: 16 }}>
           
           <Text style = {styles.titleText}>Public Speaking Questions</Text>
@@ -273,10 +346,12 @@ function Quiz(props) {
             <Text style={styles.buttonText}>Create Module</Text>
           </TouchableOpacity>
         </View>
+        )}
 
          {/* 
          Public Speaking And Speeches
         */}
+        {accountType === 'Public Speaking And Speeches' && (
          <View style={{ marginBottom: 16 }}>
           
           <Text style = {styles.titleText}>Public Speaking And Speeches Questions</Text>
@@ -308,7 +383,8 @@ function Quiz(props) {
             <Text style={styles.buttonText}>Create Module</Text>
           </TouchableOpacity>
         </View>
-        
+        )}
+
     </ScrollView>
   </Layout>
 </ApplicationProvider>

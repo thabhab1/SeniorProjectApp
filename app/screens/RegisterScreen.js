@@ -5,7 +5,9 @@ import { db } from './Navigation/firebase';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { collection, addDoc} from "firebase/firestore";
 import RadioButtonRN from 'radio-buttons-react-native'
+
 const auth = getAuth();
+
 const data = [
     {
       label: 'Media Training'
