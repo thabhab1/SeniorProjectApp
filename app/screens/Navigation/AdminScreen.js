@@ -1,38 +1,42 @@
 import React, { useState } from 'react';
-import { Text, View, TextInput, Button } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import RadioButtonRN from 'radio-buttons-react-native';
+import { db } from './firebase';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { addDoc, collection } from '@firebase/firestore';
+import { 
+  Text, 
+  View, 
+  TextInput, 
+  StyleSheet, 
+  TouchableOpacity } from 'react-native';
 import { ApplicationProvider, Layout } from '@ui-kitten/components';
 import { mapping, light as lightTheme } from '@eva-design/eva';
-import { db } from './firebase';
-import { ScrollView } from 'react-native-gesture-handler';
-import { addDoc, collection } from '@firebase/firestore';
-import { StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native';
-import { getStorage, ref, uploadBytes } from 'firebase/storage';
-import RadioButtonRN from 'radio-buttons-react-native';
+
 
 const data = [
   {
     label: 'Media Training'
-   },
-   {
+  },
+  {
     label: 'Media Training For Public Safety'
-   },
-   {
-      label: 'Public Speaking'
-     },
-     {
-      label: 'Public Speaking And Speeches'
-     }
-     
-  ];
+  },
+  {
+    label: 'Public Speaking'
+  },
+  {
+    label: 'Public Speaking And Speeches'
+  }
+];
 
   
-// Get a reference to the Firebase storage service
+// fire storage reference
 const storage = getStorage();
 
-// Create a reference to the "Media Training" folder
+// Media Training Folder Ref in Fire Storage 
 const mediaTrainingRef = ref(storage, 'Media Training');
 
+//Media Training PDF File Upload from Link
 const MediaTrainingUpload = async (uri) => {
   try {
     const response = await fetch(uri);
@@ -45,10 +49,12 @@ const MediaTrainingUpload = async (uri) => {
   }
 };
 
+// Media Training For PS Folder Ref in Fire Storage 
 const mediaTrainingForPublicSafetyRef = ref(storage, 'Media Training For Public Safety');
 
+// Media Training for PS PDF File Upload from Link
 const MediaTrainingForPublicSafetyUpload = async (uri) => {
-    try {
+  try {
       const response = await fetch(uri);
       const blob = await response.blob();
       const fileRef = ref(mediaTrainingForPublicSafetyRef, 'filename.pdf');
@@ -59,8 +65,10 @@ const MediaTrainingForPublicSafetyUpload = async (uri) => {
     }
   };
 
+// Public Safety Folder Ref in Fire Storage 
 const PublicSpeakingRef = ref(storage, 'Public Speaking');
 
+// Public Safety PDF File Upload from Link
 const PublicSpeakingUpload = async (uri) => {
     try {
       const response = await fetch(uri);
@@ -75,7 +83,7 @@ const PublicSpeakingUpload = async (uri) => {
 
   const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches');
 
- const PublicSpeakingAndSpeechesUpload = async (uri) => {
+  const PublicSpeakingAndSpeechesUpload = async (uri) => {
     try {
       const response = await fetch(uri);
       const blob = await response.blob();
@@ -86,253 +94,256 @@ const PublicSpeakingUpload = async (uri) => {
       console.error('Error uploading file: ', error);
     }
   };
-
-function AdminScreen(props) {
-
-  const [mediaTrainingQuestions, setMediaTrainingQuestions] = useState([
-    {
-    question: '',
-    options: ['', '', '', ''],
-  },
-  {
-    question: '',
-    options: ['', '', '', ''],
-  },
-  {
-    question: '',
-    options: ['', '', '', ''],
-  },
-  ]);
+  
+  function AdminScreen(props) {
+    
+    const [mediaTrainingQuestions, setMediaTrainingQuestions] = useState([
+      {
+        question: '',
+        options: ['', '', '', ''],
+      },
+      {
+        question: '',
+        options: ['', '', '', ''],
+      },
+      {
+        question: '',
+        options: ['', '', '', ''],
+      },
+    ]);
 
   
-  const [mediaTrainingAnswer, setMediaTrainingAnswer] = useState('');
-  const [mediaTrainingLink, setMediaTrainingLink] = useState('');
-  const [mediaTrainingPDF, setMediaTrainingPDF] = useState('');
-  const [mediaTrainingTitle, setMediaTrainingTitle] = useState('');
+    const [mediaTrainingAnswer, setMediaTrainingAnswer] = useState('');
+    const [mediaTrainingLink, setMediaTrainingLink] = useState('');
+    const [mediaTrainingPDF, setMediaTrainingPDF] = useState('');
+    const [mediaTrainingTitle, setMediaTrainingTitle] = useState('');
+    
+    const [mediaTrainingForPublicSafetyQuestions, setMediaTrainingForPublicSafetyQuestions] = useState([
+      {
+        question: '',
+        options: ['', '', '', ''],
+      },
+      {
+        question: '',
+        options: ['', '', '', ''],
+      },
+      {
+        question: '',
+        options: ['', '', '', ''],
+      },
+    ]);
 
-  const [mediaTrainingForPublicSafetyQuestions, setMediaTrainingForPublicSafetyQuestions] = useState([
-    {
-    question: '',
-    options: ['', '', '', ''],
-  },
-  {
-    question: '',
-    options: ['', '', '', ''],
-  },
-  {
-    question: '',
-    options: ['', '', '', ''],
-  },
-  ]);
+    const [mediaTrainingForPublicSafetyAnswer, setMediaTrainingForPublicSafetyAnswer] = useState('');
+    const [mediaTrainingForPublicSafetyLink, setMediaTrainingForPublicSafetyLink] = useState ('');
+    const [mediaTrainingForPublicSafetyPDF, setMediaTrainingForPublicSafetyPDF] = useState ('');
+    const [mediaTrainingForPublicSafetyTitle, setMediaTrainingForPublicSafetyTitle] = useState ('');
 
-  const [mediaTrainingForPublicSafetyAnswer, setMediaTrainingForPublicSafetyAnswer] = useState('');
-  const [mediaTrainingForPublicSafetyLink, setMediaTrainingForPublicSafetyLink] = useState ('');
-  const [mediaTrainingForPublicSafetyPDF, setMediaTrainingForPublicSafetyPDF] = useState ('');
-  const [mediaTrainingForPublicSafetyTitle, setMediaTrainingForPublicSafetyTitle] = useState ('');
+    const [publicSpeakingQuestions, setPublicSpeakingQuestions] = useState([
+      {
+        question: '',
+        options: ['', '', '', ''],
+      },
+      {
+        question: '',
+        options: ['', '', '', ''],
+      },
+      {
+        question: '',
+        options: ['', '', '', ''],
+      },
+    ]);
 
-  const [publicSpeakingQuestions, setPublicSpeakingQuestions] = useState([
-    {
-    question: '',
-    options: ['', '', '', ''],
-  },
-  {
-    question: '',
-    options: ['', '', '', ''],
-  },
-  {
-    question: '',
-    options: ['', '', '', ''],
-  },
-  ]);
+    const [publicSpeakingAnswer, setPublicSpeakingAnswer] = useState('');
+    const [publicSpeakingLink, setPublicSpeakingLink] = useState('');
+    const [publicSpeakingPDF, setPublicSpeakingPDF] = useState('');
+    const [publicSpeakingTitle, setPublicSpeakingTitle] = useState('');
 
-  const [publicSpeakingAnswer, setPublicSpeakingAnswer] = useState('');
-  const [publicSpeakingLink, setPublicSpeakingLink] = useState('');
-  const [publicSpeakingPDF, setPublicSpeakingPDF] = useState('');
-  const [publicSpeakingTitle, setPublicSpeakingTitle] = useState('');
-
-  const [publicSpeakingAndSpeechesQuestions, setPublicSpeakingAndSpeechesQuestions] = useState([
-    {
-    question: '',
-    options: ['', '', '', ''],
-  },
-  {
-    question: '',
-    options: ['', '', '', ''],
-  },
-  {
-    question: '',
-    options: ['', '', '', ''],
-  },
-  ]);
+    const [publicSpeakingAndSpeechesQuestions, setPublicSpeakingAndSpeechesQuestions] = useState([
+      {
+        question: '',
+        options: ['', '', '', ''],
+      },
+      {
+        question: '',
+        options: ['', '', '', ''],
+      },
+      {
+        question: '',
+        options: ['', '', '', ''],
+      },
+    ]);
   
-  const [publicSpeakingAndSpeechesAnswer, setPublicSpeakingAndSpeechesAnswer] = useState('');
-  const [publicSpeakingAndSpeechesLink, setPublicSpeakingAndSpeechesLink] = useState('');
-  const [publicSpeakingAndSpeechesPDF, setPublicSpeakingAndSpeechesPDF] = useState('');
-  const [publicSpeakingAndSpeechesTitle, setPublicSpeakingAndSpeechesTitle] = useState('');
+    const [publicSpeakingAndSpeechesAnswer, setPublicSpeakingAndSpeechesAnswer] = useState('');
+    const [publicSpeakingAndSpeechesLink, setPublicSpeakingAndSpeechesLink] = useState('');
+    const [publicSpeakingAndSpeechesPDF, setPublicSpeakingAndSpeechesPDF] = useState('');
+    const [publicSpeakingAndSpeechesTitle, setPublicSpeakingAndSpeechesTitle] = useState('');
 
-  const handleMediaTrainingSubmit = async () => {
-    try {
-      await addDoc(collection(db, 'MediaTraining'), {
-        title: mediaTrainingTitle,
-        questions: mediaTrainingQuestions,
-        link: mediaTrainingLink,
-        pdf: mediaTrainingPDF
-      });
-      await MediaTrainingUpload(mediaTrainingPDF);
-      setMediaTrainingTitle('');
-      setMediaTrainingLink('');
-      setMediaTrainingPDF('');
-      setMediaTrainingQuestions([
-        { question: '', options: ['', '', '', ''] },
-        { question: '', options: ['', '', '', ''] },
-        { question: '', options: ['', '', '', ''] },
-      ]);
-    } catch (error) {
-      console.error('Error adding document: ', error);
-    }
-  };
-  
+    const handleMediaTrainingSubmit = async () => {
 
-  const handleMediaTrainingForPublicSafetySubmit = async () => {
-    try {
-      await addDoc(collection(db, 'MediaTrainingForPublicSafety'), {
-        title: mediaTrainingForPublicSafetyTitle,
-        question: mediaTrainingForPublicSafetyQuestions,
-        link: mediaTrainingForPublicSafetyLink,
-        pdf: mediaTrainingForPublicSafetyPDF
-      });
-      await MediaTrainingForPublicSafetyUpload(mediaTrainingForPublicSafetyPDF);
-      setMediaTrainingForPublicSafetyTitle('');
-      setMediaTrainingForPublicSafetyLink('');
-      setMediaTrainingForPublicSafetyPDF('');
-      setMediaTrainingQuestions([
-        { question: '', options: ['', '', '', ''] },
-        { question: '', options: ['', '', '', ''] },
-        { question: '', options: ['', '', '', ''] },
-      ]);
-    } catch (error) {
+      try {
+        await addDoc(collection(db, 'MediaTraining'), {
+          title: mediaTrainingTitle,
+          questions: mediaTrainingQuestions,
+          link: mediaTrainingLink,
+          pdf: mediaTrainingPDF
+        });
+        
+        await MediaTrainingUpload(mediaTrainingPDF);
+        setMediaTrainingTitle('');
+        setMediaTrainingLink('');
+        setMediaTrainingPDF('');
+        setMediaTrainingQuestions([
+          { question: '', options: ['', '', '', ''] },
+          { question: '', options: ['', '', '', ''] },
+          { question: '', options: ['', '', '', ''] },
+        ]);
+      } catch (error) {
         console.error('Error adding document: ', error);
-    }
-  };
-
-  const handlePublicSpeakingSubmit = async () => {
-    try {
-      await addDoc(collection(db, 'PublicSpeaking'), {
-        title: publicSpeakingTitle,
-        question: publicSpeakingQuestions,
-        link: publicSpeakingLink,
-        pdf: publicSpeakingPDF
-      });
-      await PublicSpeakingUpload(publicSpeakingPDF);
-      setPublicSpeakingTitle('');
-      setPublicSpeakingLink('');
-      setPublicSpeakingPDF('');
-      setPublicSpeakingQuestions([
-        { question: '', options: ['', '', '', ''] },
-        { question: '', options: ['', '', '', ''] },
-        { question: '', options: ['', '', '', ''] },
-      ]);
-    } catch (error) {
-        console.error('Error adding document: ', error);
-    }
-  };
-
-  const handlePublicSpeakingAndSpeechesSubmit = async () => {
-    try {
-      await addDoc(collection(db, 'PublicSpeakingAndSpeeches'), {
-        title: publicSpeakingAndSpeechesTitle,
-        question: publicSpeakingAndSpeechesQuestions,
-        link: publicSpeakingAndSpeechesLink,
-        pdf: publicSpeakingAndSpeechesPDF
-      });
-      await PublicSpeakingAndSpeechesUpload(publicSpeakingAndSpeechesPDF);
-      setPublicSpeakingAndSpeechesTitle('');
-      setPublicSpeakingAndSpeechesLink('');
-      setPublicSpeakingAndSpeechesPDF('');
-      setPublicSpeakingAndSpeechesQuestions([
-        { question: '', options: ['', '', '', ''] },
-        { question: '', options: ['', '', '', ''] },
-        { question: '', options: ['', '', '', ''] },
-      ]);
-    } catch (error) {
-        console.error('Error adding document: ', error);
-    }
-  };
+      }
+    };
   
 
-  const [accountType, setAccountType] = useState('')
+    const handleMediaTrainingForPublicSafetySubmit = async () => {
+      try {
+        await addDoc(collection(db, 'MediaTrainingForPublicSafety'), {
+          title: mediaTrainingForPublicSafetyTitle,
+          question: mediaTrainingForPublicSafetyQuestions,
+          link: mediaTrainingForPublicSafetyLink,
+          pdf: mediaTrainingForPublicSafetyPDF
+        });
+        await MediaTrainingForPublicSafetyUpload(mediaTrainingForPublicSafetyPDF);
+        setMediaTrainingForPublicSafetyTitle('');
+        setMediaTrainingForPublicSafetyLink('');
+        setMediaTrainingForPublicSafetyPDF('');
+        setMediaTrainingQuestions([
+          { question: '', options: ['', '', '', ''] },
+          { question: '', options: ['', '', '', ''] },
+          { question: '', options: ['', '', '', ''] },
+        ]);
+      } catch (error) {
+        console.error('Error adding document: ', error);
+      }
+    };
 
-  return (
+    const handlePublicSpeakingSubmit = async () => {
+      try {
+        await addDoc(collection(db, 'PublicSpeaking'), {
+          title: publicSpeakingTitle,
+          question: publicSpeakingQuestions,
+          link: publicSpeakingLink,
+          pdf: publicSpeakingPDF
+        });
+
+        await PublicSpeakingUpload(publicSpeakingPDF);
+        setPublicSpeakingTitle('');
+        setPublicSpeakingLink('');
+        setPublicSpeakingPDF('');
+        setPublicSpeakingQuestions([
+          { question: '', options: ['', '', '', ''] },
+          { question: '', options: ['', '', '', ''] },
+          { question: '', options: ['', '', '', ''] },
+        ]);
+      } catch (error) {
+        console.error('Error adding document: ', error);
+      }
+    };
+    
+    const handlePublicSpeakingAndSpeechesSubmit = async () => {
+      try {
+        await addDoc(collection(db, 'PublicSpeakingAndSpeeches'), {
+          title: publicSpeakingAndSpeechesTitle,
+          question: publicSpeakingAndSpeechesQuestions,
+          link: publicSpeakingAndSpeechesLink,
+          pdf: publicSpeakingAndSpeechesPDF
+        });
+        
+        await PublicSpeakingAndSpeechesUpload(publicSpeakingAndSpeechesPDF);
+        setPublicSpeakingAndSpeechesTitle('');
+        setPublicSpeakingAndSpeechesLink('');
+        setPublicSpeakingAndSpeechesPDF('');
+        setPublicSpeakingAndSpeechesQuestions([
+          { question: '', options: ['', '', '', ''] },
+          { question: '', options: ['', '', '', ''] },
+          { question: '', options: ['', '', '', ''] },
+        ]);
+      } catch (error) {
+        console.error('Error adding document: ', error);
+      }
+    };
+  
+    const [accountType, setAccountType] = useState('')
+    
+    return (
+
     <ApplicationProvider mapping={mapping} theme={lightTheme}>
       <Layout style={{ flex: 1, padding: 16 }}>
-      <ScrollView>
-        
+        <ScrollView>
         <View>
-        <Text>Please choose an account type</Text>
-                <RadioButtonRN
-                selectedBtn={(e) => setAccountType(e.label)}
-                data={data}
-                />
-        </View>
-
-         {/* Media Training */}
-    
-         {accountType === 'Media Training' && (
-         <View style={{ marginBottom: 16 }}>
-          <Text style={styles.titleText}>Media Training Questions</Text>
-
-          <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-          onChangeText={setMediaTrainingTitle}
-          value={mediaTrainingTitle}
-          placeholder='Title'
-        />
-         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-          onChangeText={setMediaTrainingLink}
-          value={mediaTrainingLink}
-          placeholder='Video Link'
-        />
-         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-          onChangeText={setMediaTrainingPDF}
-          value={mediaTrainingPDF}
-          placeholder='PDF Link'
-        />
-          {mediaTrainingQuestions.map(({ question, options }, index) => (
-          <View key={index}>
-
-        <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-          onChangeText={(text) => {
-            const updatedQuestions = [...mediaTrainingQuestions];
-            updatedQuestions[index].question = text;
-            setMediaTrainingQuestions(updatedQuestions);
-          }}
-          value={question}
-          placeholder={`Question ${index + 1}`}
-        />
-        {options.map((option, optionIndex) => (
-          <TextInput
-            key={optionIndex}
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={(text) => {
-              const updatedQuestions = [...mediaTrainingQuestions];
-              updatedQuestions[index].options[optionIndex] = text;
-              setMediaTrainingQuestions(updatedQuestions);
-            }}
-            value={option}
-            placeholder={`Option ${optionIndex + 1}`}
+          
+          <Text>Please choose an account type</Text>
+          <RadioButtonRN
+          selectedBtn={(e) => setAccountType(e.label)}
+          data={data}
           />
-        ))}
-        
-      </View>
-    ))}
-    <TouchableOpacity style={styles.button} onPress={handleMediaTrainingSubmit}>
-      <Text style={styles.buttonText}>Create Module</Text>
-    </TouchableOpacity>
-  </View>
-)}
+          </View>
+          
+          {/* Media Training */}
+          
+          {accountType === 'Media Training' && (
+          <View style={{ marginBottom: 16 }}>
+            <Text style={styles.titleText}>Media Training Questions</Text>
+            <TextInput
+            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+            onChangeText={setMediaTrainingTitle}
+            value={mediaTrainingTitle}
+            placeholder='Title'
+            />
+            
+            <TextInput
+            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+            onChangeText={setMediaTrainingLink}
+            value={mediaTrainingLink}
+            placeholder='Video Link'
+            />
+
+            <TextInput
+            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+            onChangeText={setMediaTrainingPDF}
+            value={mediaTrainingPDF}
+            placeholder='PDF Link'
+            />
+            {mediaTrainingQuestions.map(({ question, options }, index) => (
+            <View key={index}>
+              <TextInput
+              style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+              onChangeText={(text) => {
+                const updatedQuestions = [...mediaTrainingQuestions];
+                updatedQuestions[index].question = text;
+                setMediaTrainingQuestions(updatedQuestions);
+              }}
+              value={question}
+              placeholder={`Question ${index + 1}`}
+              />
+              {options.map((option, optionIndex) => (
+              <TextInput
+              key={optionIndex}
+              style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+              onChangeText={(text) => {
+                const updatedQuestions = [...mediaTrainingQuestions];
+                updatedQuestions[index].options[optionIndex] = text;
+                setMediaTrainingQuestions(updatedQuestions);
+              }}
+              value={option}
+              placeholder={`Option ${optionIndex + 1}`}
+              />
+              ))}
+              </View>
+              ))}
+              <TouchableOpacity style={styles.button} onPress={handleMediaTrainingSubmit}>
+                <Text style={styles.buttonText}>Create Module</Text>
+                </TouchableOpacity>
+                </View>
+                )}
 
         
          {/* Media Training For Public Safety */}
