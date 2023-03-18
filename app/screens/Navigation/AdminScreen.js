@@ -3,7 +3,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import RadioButtonRN from 'radio-buttons-react-native';
 import { db } from './firebase';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
-import { addDoc, collection } from '@firebase/firestore';
+import { addDoc, collection, setDoc } from '@firebase/firestore';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import { 
   Text, 
   View, 
@@ -13,6 +14,8 @@ import {
 import { ApplicationProvider, Layout } from '@ui-kitten/components';
 import { mapping, light as lightTheme } from '@eva-design/eva';
 
+
+const auth = getAuth();
 
 const data = [
   {
@@ -97,6 +100,7 @@ const PublicSpeakingUpload = async (uri) => {
   
   function AdminScreen(props) {
     
+    
     const [mediaTrainingQuestions, setMediaTrainingQuestions] = useState([
       {
         question: '',
@@ -177,37 +181,50 @@ const PublicSpeakingUpload = async (uri) => {
     const [publicSpeakingAndSpeechesLink, setPublicSpeakingAndSpeechesLink] = useState('');
     const [publicSpeakingAndSpeechesPDF, setPublicSpeakingAndSpeechesPDF] = useState('');
     const [publicSpeakingAndSpeechesTitle, setPublicSpeakingAndSpeechesTitle] = useState('');
+    const [accountType, setAccountType] = useState('')
 
-    const handleMediaTrainingSubmit = async () => {
+   const handleMediaTrainingSubmit = async () => {
+  try {
+    let collectionName;
+    switch (accountType) {
+      case 'Media Training':
+        collectionName = 'MediaTraining';
+        break;
+      // add more cases for other account types
+      default:
+        console.error('Invalid account type');
+        return;
+    }
 
-      try {
-        await addDoc(collection(db, 'MediaTraining'), {
-          title: mediaTrainingTitle,
-          questions: mediaTrainingQuestions,
-          link: mediaTrainingLink,
-          pdf: mediaTrainingPDF
-        });
-        
-        await MediaTrainingUpload(mediaTrainingPDF);
-        setMediaTrainingTitle('');
-        setMediaTrainingLink('');
-        setMediaTrainingPDF('');
-        setMediaTrainingQuestions([
-          { question: '', options: ['', '', '', ''] },
-          { question: '', options: ['', '', '', ''] },
-          { question: '', options: ['', '', '', ''] },
-        ]);
-      } catch (error) {
-        console.error('Error adding document: ', error);
-      }
-    };
+    await addDoc(collection(db, collectionName), {
+      title: mediaTrainingTitle,
+      questions: mediaTrainingQuestions,
+      link: mediaTrainingLink,
+      pdf: mediaTrainingPDF
+    });
+
+    await MediaTrainingUpload(mediaTrainingPDF);
+    setMediaTrainingTitle('');
+    setMediaTrainingLink('');
+    setMediaTrainingPDF('');
+    setMediaTrainingQuestions([
+      { question: '', options: ['', '', '', ''] },
+      { question: '', options: ['', '', '', ''] },
+      { question: '', options: ['', '', '', ''] },
+    ]);
+  } catch (error) {
+    console.error('Error adding document: ', error);
+  }
+};
+    
+   
   
 
     const handleMediaTrainingForPublicSafetySubmit = async () => {
       try {
         await addDoc(collection(db, 'MediaTrainingForPublicSafety'), {
           title: mediaTrainingForPublicSafetyTitle,
-          question: mediaTrainingForPublicSafetyQuestions,
+          questions: mediaTrainingForPublicSafetyQuestions,
           link: mediaTrainingForPublicSafetyLink,
           pdf: mediaTrainingForPublicSafetyPDF
         });
@@ -229,7 +246,7 @@ const PublicSpeakingUpload = async (uri) => {
       try {
         await addDoc(collection(db, 'PublicSpeaking'), {
           title: publicSpeakingTitle,
-          question: publicSpeakingQuestions,
+          questions: publicSpeakingQuestions,
           link: publicSpeakingLink,
           pdf: publicSpeakingPDF
         });
@@ -252,7 +269,7 @@ const PublicSpeakingUpload = async (uri) => {
       try {
         await addDoc(collection(db, 'PublicSpeakingAndSpeeches'), {
           title: publicSpeakingAndSpeechesTitle,
-          question: publicSpeakingAndSpeechesQuestions,
+          questions: publicSpeakingAndSpeechesQuestions,
           link: publicSpeakingAndSpeechesLink,
           pdf: publicSpeakingAndSpeechesPDF
         });
@@ -271,7 +288,8 @@ const PublicSpeakingUpload = async (uri) => {
       }
     };
   
-    const [accountType, setAccountType] = useState('')
+    
+    
     
     return (
 

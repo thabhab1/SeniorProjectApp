@@ -10,6 +10,7 @@ import { useCallback } from 'react';
 import { Button } from 'react-native';
 import { Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+
 export default function pdfReader(props) {
     const [data, setData] = useState('');
 
@@ -28,10 +29,11 @@ export default function pdfReader(props) {
 
   
 console.log(props);
-const test = props.route.params.item.link;
+const test = props.route.params.item.pdf;
+console.log("PDF link: ", test);
     useEffect(() => {
         async function fetchData() {
-        const querySnapshot = await getDocs(collection(db, 'test'));
+        const querySnapshot = await getDocs(collection(db, 'Media Training'));
         const docData = querySnapshot.docs.map((doc) => doc.data().data);
         setData(JSON.stringify(docData));
         }
@@ -44,18 +46,20 @@ const test = props.route.params.item.link;
     console.log(output)
 
     
-    const videoTest = props.route.params.item.videoLink;
-    
+    const videoTest = props.route.params.item.link;
+    //item: props.route.params.item
     var str = videoTest.substring(videoTest.indexOf("=") + 1);
     console.log(str);
 
-
+    console.log("PDF link: ", test);
     return(
         <ScrollView>
         <View style = {styles.container}>
            <Text style = {styles.headerTitle}>Modules</Text>
+          
            <PdfReader
             source={ {
+                
                 uri: test,
             }}
             style={{ flex: 1, height: 500, marginBottom: 20}}
