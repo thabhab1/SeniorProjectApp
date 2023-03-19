@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
 function Quiz(props) {
-  console.log(props)
   data = props.route.params.item
   q1 = data.questions[0]
   q2 = data.questions[1]
@@ -68,7 +67,7 @@ function Quiz(props) {
       <Text style={styles.inputTextStyle}>{quiz[currentQuestion].question}</Text>
       <RadioForm>
         {quiz[currentQuestion].options.map((option, index) => (
-          <RadioButton style={styles.inputButton} key={index}>
+          <RadioButton style={styles.answerSelectionButton} key={index}>
             <RadioButtonInput
               obj={option}
               index={index}
@@ -107,6 +106,17 @@ const styles = StyleSheet.create({
       marginBottom: 30,
       alignSelf: 'center',
   },
+  answerSelectionButton: {
+    backgroundColor: '#f8deaa',
+    padding: 20,
+    borderRadius: 10,
+    marginBottom: 20,
+    shadowColor: 'black',
+    shadowOffset: {height: 2, width: 0.5},
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+    elevation: 3, 
+},
   inputButton: {
       backgroundColor: '#f8deaa',
       padding: 20,
@@ -137,9 +147,6 @@ const styles = StyleSheet.create({
       marginBottom: 25,
       
   },
-  
-  
-
 
 })
 

@@ -2,7 +2,7 @@ import {collection, doc, getDoc,getDocs, query, querySnapshot, where} from "fire
 import { db } from './firebase';
 import React, {useEffect, useState} from 'react'
 import { NavigationContainer } from '@react-navigation/native';
-import pdfReader from './pdfReader'
+import PDFReader from './PDFReader'
 import {getAuth} from 'firebase/auth'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
