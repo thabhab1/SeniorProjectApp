@@ -1,9 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
 import { SafeAreaView, StyleSheet, View, Text, TextInput, Image, TouchableOpacity, Alert,  } from 'react-native';
-import { MaterialIcons } from 'react-native-vector-icons/MaterialIcons';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
-import { firebase } from '@react-native-firebase/auth';
 
 const auth = getAuth();
 

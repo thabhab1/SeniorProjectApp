@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import { Text, View, TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import PdfReader from '@bildau/rn-pdf-reader';
-import {collection, doc, getDoc,getDocs} from "firebase/firestore";
+import {collection, getDocs} from "firebase/firestore";
 import { db } from './firebase';
 import YoutubePlayer from "react-native-youtube-iframe";
 import { useCallback } from 'react';
-import { Button } from 'react-native';
 import { Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 

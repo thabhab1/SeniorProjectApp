@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, TextInput,ScrollView, Image, TouchableOpacity, StatusBar, Alert} from 'react-native';
-import { MaterialIcons } from 'react-native-vector-icons/MaterialIcons';
 import { db } from './Navigation/firebase';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { collection, addDoc} from "firebase/firestore";

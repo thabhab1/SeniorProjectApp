@@ -1,20 +1,13 @@
-import {collection, doc, getDoc,getDocs, query, querySnapshot, where} from "firebase/firestore";
+import {collection, getDocs, query, where} from "firebase/firestore";
 import { db } from './firebase';
 import React, {useEffect, useState} from 'react'
-import { NavigationContainer } from '@react-navigation/native';
-import PDFReader from './PDFReader'
-import {getAuth} from 'firebase/auth'
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {getAuth} from 'firebase/auth';
 import {
   StyleSheet,
   Text,
   View,
   SafeAreaView,
   FlatList,
-  SectionList,
-  StatusBar,
-  Alert,
-  Button,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';

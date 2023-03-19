@@ -1,12 +1,7 @@
-import { firebase } from '@react-native-firebase/auth';
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, TextInput, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
-import { MaterialIcons } from 'react-native-vector-icons/MaterialIcons';
-import { db } from './Navigation/firebase';
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
-import { useNavigation } from '@react-navigation/native';
-import Modules from './Navigation/Modules';
 
 
 const auth = getAuth();
@@ -31,13 +26,9 @@ function LoginScreen(props) {
                 const user = userCredential.user;
                 console.log(auth.currentUser.email);
                 if(auth.currentUser) {console.log("logged in")}
-
-                // Successfully signed in, navigate to the next screen
-
             })
             .catch((error) => {
                 console.log('Error signing in:', error, );
-                
                 Alert.alert(
                     'Email not found',
                     'This email does not exist, or password is incorrect.',
