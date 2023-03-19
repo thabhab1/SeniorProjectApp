@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import Modules from './Modules';
 import Account from './Account';
 import Help from './Help';
-import pdfReader from './pdfReader';
+import PDFReader from './PDFReader';
 import Quiz from './Quiz';
 import {getAuth} from 'firebase/auth'
 import { db } from './firebase';
@@ -88,17 +88,17 @@ const Stack = createNativeStackNavigator();
 function Root(props) {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Modules" component={loadReader} />
-      <Stack.Screen name="Reader" component={pdfReader} />
-      <Stack.Screen name="Quiz" component={loadQuiz} />
+      <Stack.Screen name="Modules" component={LoadReader} />
+      <Stack.Screen name="Reader" component={PDFReader} />
+      <Stack.Screen name="Quiz" component={LoadQuiz} />
     </Stack.Navigator>
   );
 }
-function loadReader(props)
+function LoadReader(props)
 {
     return Modules(props.navigation);
 }
-function loadQuiz(props)
+function LoadQuiz(props)
 {
     return Quiz(props);
 }

@@ -11,7 +11,7 @@ import { Button } from 'react-native';
 import { Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default function pdfReader(props) {
+export default function PDFReader(props) {
     const [data, setData] = useState('');
 
     const [playing, setPlaying] = useState(false);
@@ -28,7 +28,6 @@ export default function pdfReader(props) {
   }, []);
 
   
-console.log(props);
 const test = props.route.params.item.pdf;
 console.log("PDF link: ", test);
     useEffect(() => {

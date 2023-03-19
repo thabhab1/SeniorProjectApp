@@ -39,64 +39,13 @@ const storage = getStorage();
 // Media Training Folder Ref in Fire Storage 
 const mediaTrainingRef = ref(storage, 'Media Training');
 
-//Media Training PDF File Upload from Link
-const MediaTrainingUpload = async (uri) => {
-  try {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-    const fileRef = ref(mediaTrainingRef, 'filenamed.pdf');
-    await uploadBytes(fileRef, blob);
-    console.log('File uploaded successfully');
-  } catch (error) {
-    console.error('Error uploading file: ', error);
-  }
-};
-
 // Media Training For PS Folder Ref in Fire Storage 
 const mediaTrainingForPublicSafetyRef = ref(storage, 'Media Training For Public Safety');
-
-// Media Training for PS PDF File Upload from Link
-const MediaTrainingForPublicSafetyUpload = async (uri) => {
-  try {
-      const response = await fetch(uri);
-      const blob = await response.blob();
-      const fileRef = ref(mediaTrainingForPublicSafetyRef, 'filename.pdf');
-      await uploadBytes(fileRef, blob);
-      console.log('File uploaded successfully');
-    } catch (error) {
-      console.error('Error uploading file: ', error);
-    }
-  };
 
 // Public Safety Folder Ref in Fire Storage 
 const PublicSpeakingRef = ref(storage, 'Public Speaking');
 
-// Public Safety PDF File Upload from Link
-const PublicSpeakingUpload = async (uri) => {
-    try {
-      const response = await fetch(uri);
-      const blob = await response.blob();
-      const fileRef = ref(PublicSpeakingRef, 'filename.pdf');
-      await uploadBytes(fileRef, blob);
-      console.log('File uploaded successfully');
-    } catch (error) {
-      console.error('Error uploading file: ', error);
-    }
-  };
-
-  const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches');
-
-  const PublicSpeakingAndSpeechesUpload = async (uri) => {
-    try {
-      const response = await fetch(uri);
-      const blob = await response.blob();
-      const fileRef = ref(PublicSpeakingAndSpeechesRef, 'filenamed.pdf');
-      await uploadBytes(fileRef, blob);
-      console.log('File uploaded successfully');
-    } catch (error) {
-      console.error('Error uploading file: ', error);
-    }
-  };
+const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches');
   
   function AdminScreen(props) {
     
