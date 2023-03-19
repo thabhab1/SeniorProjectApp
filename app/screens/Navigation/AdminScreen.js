@@ -3,7 +3,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import RadioButtonRN from 'radio-buttons-react-native';
 import { db } from './firebase';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { addDoc, collection } from '@firebase/firestore';
+import { addDoc, collection, setDoc } from '@firebase/firestore';
 import {getAuth} from 'firebase/auth';
 import { 
   Text, 
