@@ -29,7 +29,6 @@ export default function PDFReader(props) {
 
   
 const test = props.route.params.item.pdf;
-console.log("PDF link: ", test);
     useEffect(() => {
         async function fetchData() {
         const querySnapshot = await getDocs(collection(db, 'Media Training'));
@@ -42,15 +41,12 @@ console.log("PDF link: ", test);
     //var output = data.replace(/^\[(.+)\]$/,'$1');
     var output = data.substr(1,data.length -2)
     output = output.substring(1, output.length-1);
-    console.log(output)
 
     
     const videoTest = props.route.params.item.link;
     //item: props.route.params.item
     var str = videoTest.substring(videoTest.indexOf("=") + 1);
-    console.log(str);
 
-    console.log("PDF link: ", test);
     return(
         <ScrollView>
         <View style = {styles.container}>

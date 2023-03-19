@@ -2,7 +2,7 @@ import {collection, doc, getDoc,getDocs, query, querySnapshot, where} from "fire
 import { db } from './firebase';
 import React, {useEffect, useState} from 'react'
 import { NavigationContainer } from '@react-navigation/native';
-import PDFReader from './PDFReader'
+import PDFReader from './PdfReader'
 import {getAuth} from 'firebase/auth'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
@@ -28,7 +28,6 @@ const auth = getAuth();
 function Modules(props){
   const [data, setData] = useState()
   const [type, setType] = useState("");
-  console.log(props)
   useEffect(() => {
     async function fetchType() {
       const querySnapshot =  await getDocs(query(collection(db, 'users'), where('email', '==', auth.currentUser.email)));

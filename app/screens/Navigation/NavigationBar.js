@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import Modules from './Modules';
 import Account from './Account';
 import Help from './Help';
-import PDFReader from './PDFReader';
+import PDFReader from './PdfReader';
 import Quiz from './Quiz';
 import {getAuth} from 'firebase/auth'
 import { db } from './firebase';
@@ -30,8 +30,7 @@ function NavigationBar(props) {
           const userData = querySnapshot.docs[0].data();
           setType(userData.isAdmin);
         } else {
-
-          console.log('stinky doo doo');
+          console.log('Error somewhere');
         }
       }
       fetchType();
