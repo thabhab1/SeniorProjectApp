@@ -4,7 +4,7 @@ import RadioButtonRN from 'radio-buttons-react-native';
 import { db } from './firebase';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { addDoc, collection, setDoc } from '@firebase/firestore';
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+import {getAuth} from 'firebase/auth';
 import { 
   Text, 
   View, 
