@@ -1,17 +1,45 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { SafeAreaView, StyleSheet, View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import { SafeAreaView, StyleSheet, View, Text, TextInput, Image, TouchableOpacity, Alert,  } from 'react-native';
 import { MaterialIcons } from 'react-native-vector-icons/MaterialIcons';
+import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
+import { firebase } from '@react-native-firebase/auth';
 
+const auth = getAuth();
 
-function LoginScreen(props) {
+function ForgotScreen(props) {
 
     // RegExp to determine if email is valid
     const emailRegex = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
     function isValidEmail(email) {        
         return emailRegex.test(email);
     }
+    
+    const [emailText, setEmailText] = useState('');
+    const handleEmailInput = (text) => {
+        setEmailText(text);
+    }
+    // Will check if the email is valid, and will send a password reset link if the account exists in the database
+    const handleResetButtonPress = () => {
+        if(isValidEmail(emailText)) {
+            sendPasswordResetEmail(auth, emailText)
+            .then(() => console.log('Password reset email sent'))
+            .catch(error => console.error(error));
 
+            Alert.alert(
+                "Great!",
+                "A link has been sent to the email if the account exists.",
+                [{text: 'Okay'},]
+            )
+        }
+        else {
+            Alert.alert(
+                "Invalid Email",
+                "Please enter a valid email.",
+                [{text: 'Okay'},]
+            )
+        }
+    }
     return (
 
         <SafeAreaView style={styles.container}>
@@ -31,10 +59,15 @@ function LoginScreen(props) {
                 {/* User info input fields */}
                 <View style={styles.userInput}>
                     {/* <MaterialIcons name='alternate-email' size={20} color="#666" /> */}
-                    <TextInput placeholder='Email'/>                    
+                    <TextInput 
+                        placeholder='Email'
+                        onChangeText={handleEmailInput}
+                        value={emailText}
+
+                    />                    
                 </View> 
 
-                <TouchableOpacity style={styles.inputButton} onPress={() => {}}>
+                <TouchableOpacity style={styles.inputButton} onPress={handleResetButtonPress}>
                     <Text style={styles.inputTextStyle}>Send Reset Link</Text>
                 </TouchableOpacity>
                 
@@ -106,4 +139,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default LoginScreen;
+export default ForgotScreen;

@@ -16,36 +16,44 @@ function LoginScreen(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-   {/* // RegExp to determine if email is valid
+    // RegExp to determine if email is valid
     const emailRegex = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
     function isValidEmail(email) {        
         return emailRegex.test(email);
     }
-    */}
 
     //logs the user in with email password combo.
     const handleLogin = () => {
-        signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            console.log(auth.currentUser.email);
-            if(auth.currentUser) {console.log("logged in")}
+        if(isValidEmail(email)) {
+            signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                console.log(auth.currentUser.email);
+                if(auth.currentUser) {console.log("logged in")}
 
-            // Successfully signed in, navigate to the next screen
+                // Successfully signed in, navigate to the next screen
 
-          })
-          .catch((error) => {
-            console.log('Error signing in:', error, );
-            console.log();
-            
+            })
+            .catch((error) => {
+                console.log('Error signing in:', error, );
+                
+                Alert.alert(
+                    'Email not found',
+                    'This email does not exist, or password is incorrect.',
+                    [{text: 'Okay'},]
+                )
+                
+            });
+        }
+        else {
             Alert.alert(
-                'Email not found',
-                'This email does not exist, or password is incorrect.',
+                "Invalid Email",
+                "Please enter a valid email.",
                 [{text: 'Okay'},]
             )
-            
-          });
+        }
+        
     };
 
     return (

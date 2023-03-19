@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, TextInput,ScrollView, Image, TouchableOpacity, StatusBar, Alert} from 'react-native';
 import { MaterialIcons } from 'react-native-vector-icons/MaterialIcons';
 import { db } from './Navigation/firebase';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { collection, addDoc} from "firebase/firestore";
 import RadioButtonRN from 'radio-buttons-react-native'
 
@@ -26,11 +26,10 @@ const data = [
 function RegisterScreen(props) {
 
     // RegExp to determine if email is valid
-   {/* const emailRegex = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    const emailRegex = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
     function isValidEmail(email) {        
         return emailRegex.test(email);
     }
-*/}
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -41,49 +40,64 @@ function RegisterScreen(props) {
     const handleRegister = () => {
         const auth = getAuth();
 
-        if(password != reenter || password.length < 6) {
-            Alert.alert(
-                'Invalid Password',
-                'Passwords do not match, or are less than 6 characters. ',
-                [{text: 'Okay'},
-                ]
-            )
-        }
-        else {            
-            createUserWithEmailAndPassword(auth, email, password, accountType)
-            .then((userCredential) => {
-                // Signed in
-                const user = userCredential.user;
+        // Check if the email is valid, else show alert
+        if(isValidEmail(email)) {
+            if(password != reenter || password.length < 6) {
+                Alert.alert(
+                    'Invalid Password',
+                    'Passwords do not match, or are less than 6 characters. ',
+                    [{text: 'Okay'},
+                    ]
+                )
+            }
+            else {      
                 
-                console.log('User registered: ', user.uid);
-                addDoc(collection(db, 'users'), {
-                email: email,
-                password: password,
-                accountType: accountType,
-                isAdmin: isAdmin, // <-- include isAdmin in the data sent to Firestore
-                //type: "normal",
-                })
-                .then((docRef) => {
-                    console.log('User added to Firestore');
-                    console.log("Document ID: " , docRef.id);
+                
+                createUserWithEmailAndPassword(auth, email, password, accountType)
+                .then((userCredential) => {
+                    // Signed in
+                    const user = userCredential.user;
+                    
+                    console.log('User registered: ', user.uid);
+                    addDoc(collection(db, 'users'), {
+                    email: email,
+                    password: password,
+                    accountType: accountType,
+                    isAdmin: isAdmin, // <-- include isAdmin in the data sent to Firestore
+                    //type: "normal",
+                    })
+                    .then((docRef) => {
+                        console.log('User added to Firestore');
+                        console.log("Document ID: " , docRef.id);
+                    })
+                    .catch((error) => {
+                        console.error('Error adding user to Firestore: ', error);
+                    });
+
+                    sendEmailVerification(user);
                 })
                 .catch((error) => {
-                    console.error('Error adding user to Firestore: ', error);
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.error('Error adding user: ', errorMessage, errorCode);
+                    if(errorCode == 'auth/email-already-in-use') {
+                        Alert.alert(
+                            'Email already in use',
+                            'This email already has an account associated with it.',
+                            [{text: 'Okay'},]
+                        )
+                    }
                 });
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.error('Error adding user: ', errorMessage, errorCode);
-                if(errorCode == 'auth/email-already-in-use') {
-                    Alert.alert(
-                        'Email already in use',
-                        'This email already has an account associated with it.',
-                        [{text: 'Okay'},]
-                    )
-                }
-            });
+            }
         }
+        else {
+            Alert.alert(
+                "Invalid Email",
+                "Please enter a valid email.",
+                [{text: 'Okay'},]
+            )
+        }
+
       };
 
       
