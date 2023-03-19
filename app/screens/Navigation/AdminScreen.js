@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import RadioButtonRN from 'radio-buttons-react-native';
 import { db } from './firebase';
-import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { addDoc, collection, setDoc } from '@firebase/firestore';
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import { 
@@ -183,56 +183,85 @@ const PublicSpeakingUpload = async (uri) => {
     const [publicSpeakingAndSpeechesTitle, setPublicSpeakingAndSpeechesTitle] = useState('');
     const [accountType, setAccountType] = useState('')
 
-   const handleMediaTrainingSubmit = async () => {
-  try {
-    let collectionName;
-    switch (accountType) {
-      case 'Media Training':
-        collectionName = 'MediaTraining';
-        break;
-      // add more cases for other account types
-      default:
-        console.error('Invalid account type');
-        return;
-    }
-
-    await addDoc(collection(db, collectionName), {
-      title: mediaTrainingTitle,
-      questions: mediaTrainingQuestions,
-      link: mediaTrainingLink,
-      pdf: mediaTrainingPDF
-    });
-
-    await MediaTrainingUpload(mediaTrainingPDF);
-    setMediaTrainingTitle('');
-    setMediaTrainingLink('');
-    setMediaTrainingPDF('');
-    setMediaTrainingQuestions([
-      { question: '', options: ['', '', '', ''] },
-      { question: '', options: ['', '', '', ''] },
-      { question: '', options: ['', '', '', ''] },
-    ]);
-  } catch (error) {
-    console.error('Error adding document: ', error);
-  }
-};
+    const handleMediaTrainingSubmit = async () => {
+      try {
+        let collectionName;
+        switch (accountType) {
+          case 'Media Training':
+            collectionName = 'MediaTraining';
+            break;
+          // add more cases for other account types
+          default:
+            console.error('Invalid account type');
+            return;
+        }
     
+        // Upload PDF file to Firebase Storage
+        const response = await fetch(mediaTrainingPDF);
+        const blob = await response.blob();
+        const uniqueName = `${Date.now()}-${mediaTrainingTitle}.pdf`; // Unique name for the uploaded file
+        const fileRef = ref(mediaTrainingRef, uniqueName);
+        await uploadBytes(fileRef, blob);
+        console.log('File uploaded successfully');
+    
+        // Add Firestore document with a reference to the uploaded file
+        const downloadUrl = await getDownloadURL(fileRef);
+        await addDoc(collection(db, collectionName), {
+          title: mediaTrainingTitle,
+          questions: mediaTrainingQuestions,
+          link: mediaTrainingLink,
+          pdf: downloadUrl // Use the download URL of the uploaded file as the value for "pdf" field in Firestore
+        });
+    
+        setMediaTrainingTitle('');
+        setMediaTrainingLink('');
+        setMediaTrainingPDF('');
+        setMediaTrainingQuestions([
+          { question: '', options: ['', '', '', ''] },
+          { question: '', options: ['', '', '', ''] },
+          { question: '', options: ['', '', '', ''] },
+        ]);
+      } catch (error) {
+        console.error('Error adding document: ', error);
+      }
+    };
    
   
 
     const handleMediaTrainingForPublicSafetySubmit = async () => {
       try {
-        await addDoc(collection(db, 'MediaTrainingForPublicSafety'), {
+        let collectionName;
+        switch (accountType) {
+          case 'Media Training For Public Safety':
+            collectionName = 'MediaTrainingForPublicSafety';
+            break;
+          // add more cases for other account types
+          default:
+            console.error('Invalid account type');
+            return;
+        }
+    
+        // Upload PDF file to Firebase Storage
+        const response = await fetch(mediaTrainingForPublicSafetyPDF);
+        const blob = await response.blob();
+        const uniqueName = `${Date.now()}-${mediaTrainingForPublicSafetyTitle}.pdf`; // Unique name for the uploaded file
+        const fileRef = ref(mediaTrainingForPublicSafetyRef, uniqueName);
+        await uploadBytes(fileRef, blob);
+        console.log('File uploaded successfully');
+    
+        // Add Firestore document with a reference to the uploaded file
+        const downloadUrl = await getDownloadURL(fileRef);
+        await addDoc(collection(db, collectionName), {
           title: mediaTrainingForPublicSafetyTitle,
           questions: mediaTrainingForPublicSafetyQuestions,
           link: mediaTrainingForPublicSafetyLink,
-          pdf: mediaTrainingForPublicSafetyPDF
+          pdf: downloadUrl // Use the download URL of the uploaded file as the value for "pdf" field in Firestore
         });
-        await MediaTrainingForPublicSafetyUpload(mediaTrainingForPublicSafetyPDF);
+    
         setMediaTrainingForPublicSafetyTitle('');
         setMediaTrainingForPublicSafetyLink('');
         setMediaTrainingForPublicSafetyPDF('');
-        setMediaTrainingQuestions([
+        setMediaTrainingForPublicSafetyQuestions([
           { question: '', options: ['', '', '', ''] },
           { question: '', options: ['', '', '', ''] },
           { question: '', options: ['', '', '', ''] },
@@ -244,14 +273,34 @@ const PublicSpeakingUpload = async (uri) => {
 
     const handlePublicSpeakingSubmit = async () => {
       try {
-        await addDoc(collection(db, 'PublicSpeaking'), {
+        let collectionName;
+        switch (accountType) {
+          case 'Public Speaking':
+            collectionName = 'PublicSpeaking';
+            break;
+          // add more cases for other account types
+          default:
+            console.error('Invalid account type');
+            return;
+        }
+    
+        // Upload PDF file to Firebase Storage
+        const response = await fetch(publicSpeakingPDF);
+        const blob = await response.blob();
+        const uniqueName = `${Date.now()}-${publicSpeakingTitle}.pdf`; // Unique name for the uploaded file
+        const fileRef = ref(PublicSpeakingRef, uniqueName);
+        await uploadBytes(fileRef, blob);
+        console.log('File uploaded successfully');
+    
+        // Add Firestore document with a reference to the uploaded file
+        const downloadUrl = await getDownloadURL(fileRef);
+        await addDoc(collection(db, collectionName), {
           title: publicSpeakingTitle,
           questions: publicSpeakingQuestions,
           link: publicSpeakingLink,
-          pdf: publicSpeakingPDF
+          pdf: downloadUrl // Use the download URL of the uploaded file as the value for "pdf" field in Firestore
         });
-
-        await PublicSpeakingUpload(publicSpeakingPDF);
+    
         setPublicSpeakingTitle('');
         setPublicSpeakingLink('');
         setPublicSpeakingPDF('');
@@ -267,14 +316,34 @@ const PublicSpeakingUpload = async (uri) => {
     
     const handlePublicSpeakingAndSpeechesSubmit = async () => {
       try {
-        await addDoc(collection(db, 'PublicSpeakingAndSpeeches'), {
+        let collectionName;
+        switch (accountType) {
+          case 'Public Speaking And Speeches':
+            collectionName = 'PublicSpeakingAndSpeeches';
+            break;
+          // add more cases for other account types
+          default:
+            console.error('Invalid account type');
+            return;
+        }
+    
+        // Upload PDF file to Firebase Storage
+        const response = await fetch(publicSpeakingAndSpeechesPDF);
+        const blob = await response.blob();
+        const uniqueName = `${Date.now()}-${publicSpeakingAndSpeechesTitle}.pdf`; // Unique name for the uploaded file
+        const fileRef = ref(PublicSpeakingAndSpeechesRef, uniqueName);
+        await uploadBytes(fileRef, blob);
+        console.log('File uploaded successfully');
+    
+        // Add Firestore document with a reference to the uploaded file
+        const downloadUrl = await getDownloadURL(fileRef);
+        await addDoc(collection(db, collectionName), {
           title: publicSpeakingAndSpeechesTitle,
           questions: publicSpeakingAndSpeechesQuestions,
           link: publicSpeakingAndSpeechesLink,
-          pdf: publicSpeakingAndSpeechesPDF
+          pdf: downloadUrl // Use the download URL of the uploaded file as the value for "pdf" field in Firestore
         });
-        
-        await PublicSpeakingAndSpeechesUpload(publicSpeakingAndSpeechesPDF);
+    
         setPublicSpeakingAndSpeechesTitle('');
         setPublicSpeakingAndSpeechesLink('');
         setPublicSpeakingAndSpeechesPDF('');
