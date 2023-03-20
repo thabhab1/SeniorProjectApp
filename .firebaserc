@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "senior-31268"
-  }
+    "default": "senior-design-app-d03f1",
+    "seniordesignapp": "senior-design-app-d03f1"
+  },
+  "targets": {},
+  "etags": {}
 }
