@@ -5,6 +5,8 @@ import { db } from './firebase';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { addDoc, collection, setDoc } from '@firebase/firestore';
 import {getAuth} from 'firebase/auth';
+import * as DocumentPicker from 'expo-document-picker';
+import { Button } from 'react-native';
 
 import { 
   Text, 
@@ -69,9 +71,10 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
   
     const [mediaTrainingAnswer, setMediaTrainingAnswer] = useState('');
     const [mediaTrainingLink, setMediaTrainingLink] = useState('');
-    const [mediaTrainingPDF, setMediaTrainingPDF] = useState('');
+    const [mediaTrainingPDF, setMediaTrainingPDF] = useState({});
     const [mediaTrainingTitle, setMediaTrainingTitle] = useState('');
-    
+    const [mTSelectedPDF, setMTSelectedPDF] = useState(null);
+
     const [mediaTrainingForPublicSafetyQuestions, setMediaTrainingForPublicSafetyQuestions] = useState([
       {
         question: '',
@@ -89,8 +92,9 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
 
     const [mediaTrainingForPublicSafetyAnswer, setMediaTrainingForPublicSafetyAnswer] = useState('');
     const [mediaTrainingForPublicSafetyLink, setMediaTrainingForPublicSafetyLink] = useState ('');
-    const [mediaTrainingForPublicSafetyPDF, setMediaTrainingForPublicSafetyPDF] = useState ('');
+    const [mediaTrainingForPublicSafetyPDF, setMediaTrainingForPublicSafetyPDF] = useState({});
     const [mediaTrainingForPublicSafetyTitle, setMediaTrainingForPublicSafetyTitle] = useState ('');
+    const [mediaTrainingforPublicSafetySelectedPDF, setMediaTrainingforPublicSafetySelectedPDF] = useState(null);
 
     const [publicSpeakingQuestions, setPublicSpeakingQuestions] = useState([
       {
@@ -109,9 +113,9 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
 
     const [publicSpeakingAnswer, setPublicSpeakingAnswer] = useState('');
     const [publicSpeakingLink, setPublicSpeakingLink] = useState('');
-    const [publicSpeakingPDF, setPublicSpeakingPDF] = useState('');
+    const [publicSpeakingPDF, setPublicSpeakingPDF] = useState({});
     const [publicSpeakingTitle, setPublicSpeakingTitle] = useState('');
-
+    const [publicSpeakingSelectedPDF, setPublicSpeakingSelectedPDF] = useState(null);
     const [publicSpeakingAndSpeechesQuestions, setPublicSpeakingAndSpeechesQuestions] = useState([
       {
         question: '',
@@ -127,11 +131,25 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
       },
     ]);
   
+    
     const [publicSpeakingAndSpeechesAnswer, setPublicSpeakingAndSpeechesAnswer] = useState('');
     const [publicSpeakingAndSpeechesLink, setPublicSpeakingAndSpeechesLink] = useState('');
     const [publicSpeakingAndSpeechesPDF, setPublicSpeakingAndSpeechesPDF] = useState('');
     const [publicSpeakingAndSpeechesTitle, setPublicSpeakingAndSpeechesTitle] = useState('');
     const [accountType, setAccountType] = useState('')
+
+    
+
+    const handleMTSelectPDF = async () => {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'application/pdf',
+        copyToCacheDirectory: false,
+      });
+    
+      if (result.type === 'success') {
+        setMTSelectedPDF(result);
+      }
+    };
 
     const handleMediaTrainingSubmit = async () => {
       try {
@@ -146,16 +164,21 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
             return;
         }
     
-        // Upload PDF file to Firebase Storage
-        const response = await fetch(mediaTrainingPDF);
-        const blob = await response.blob();
-        const uniqueName = `${Date.now()}-${mediaTrainingTitle}.pdf`; // Unique name for the uploaded file
-        const fileRef = ref(mediaTrainingRef, uniqueName);
-        await uploadBytes(fileRef, blob);
-        console.log('File uploaded successfully');
+        // Upload PDF file to Firebase Storage if selected
+        let downloadUrl = null;
+        if (mTSelectedPDF) {
+          const response = await fetch(mTSelectedPDF.uri);
+          const blob = await response.blob();
+          const uniqueName = `${Date.now()}-${mediaTrainingTitle}.pdf`; // Unique name for the uploaded file
+          const fileRef = ref(mediaTrainingRef, uniqueName);
+          await uploadBytes(fileRef, blob);
+          console.log('File uploaded successfully');
+      
+          // Get the download URL of the uploaded file
+          downloadUrl = await getDownloadURL(fileRef);
+        }
     
         // Add Firestore document with a reference to the uploaded file
-        const downloadUrl = await getDownloadURL(fileRef);
         await addDoc(collection(db, collectionName), {
           title: mediaTrainingTitle,
           questions: mediaTrainingQuestions,
@@ -171,12 +194,24 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           { question: '', options: ['', '', '', ''] },
           { question: '', options: ['', '', '', ''] },
         ]);
+        setMTSelectedPDF(null);
       } catch (error) {
         console.error('Error adding document: ', error);
       }
+    }
+
+
+
+    const handleMTFPSSelectPDF = async () => {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'application/pdf',
+        copyToCacheDirectory: false,
+      });
+    
+      if (result.type === 'success') {
+        setMediaTrainingforPublicSafetySelectedPDF(result);
+      }
     };
-   
-  
 
     const handleMediaTrainingForPublicSafetySubmit = async () => {
       try {
@@ -191,16 +226,21 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
             return;
         }
     
-        // Upload PDF file to Firebase Storage
-        const response = await fetch(mediaTrainingForPublicSafetyPDF);
-        const blob = await response.blob();
-        const uniqueName = `${Date.now()}-${mediaTrainingForPublicSafetyTitle}.pdf`; // Unique name for the uploaded file
-        const fileRef = ref(mediaTrainingForPublicSafetyRef, uniqueName);
-        await uploadBytes(fileRef, blob);
-        console.log('File uploaded successfully');
+        // Upload PDF file to Firebase Storage if selected
+        let downloadUrl = null;
+        if (mediaTrainingforPublicSafetySelectedPDF) {
+          const response = await fetch(mediaTrainingforPublicSafetySelectedPDF.uri);
+          const blob = await response.blob();
+          const uniqueName = `${Date.now()}-${mediaTrainingForPublicSafetyTitle}.pdf`; // Unique name for the uploaded file
+          const fileRef = ref(mediaTrainingForPublicSafetyRef, uniqueName);
+          await uploadBytes(fileRef, blob);
+          console.log('File uploaded successfully');
+      
+          // Get the download URL of the uploaded file
+          downloadUrl = await getDownloadURL(fileRef);
+        }
     
         // Add Firestore document with a reference to the uploaded file
-        const downloadUrl = await getDownloadURL(fileRef);
         await addDoc(collection(db, collectionName), {
           title: mediaTrainingForPublicSafetyTitle,
           questions: mediaTrainingForPublicSafetyQuestions,
@@ -216,8 +256,21 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           { question: '', options: ['', '', '', ''] },
           { question: '', options: ['', '', '', ''] },
         ]);
+        setMediaTrainingforPublicSafetySelectedPDF(null);
       } catch (error) {
         console.error('Error adding document: ', error);
+      }
+    };
+
+
+    const handlePSSelectPDF = async () => {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'application/pdf',
+        copyToCacheDirectory: false,
+      });
+    
+      if (result.type === 'success') {
+        setPublicSpeakingSelectedPDF(result);
       }
     };
 
@@ -234,16 +287,21 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
             return;
         }
     
-        // Upload PDF file to Firebase Storage
-        const response = await fetch(publicSpeakingPDF);
-        const blob = await response.blob();
-        const uniqueName = `${Date.now()}-${publicSpeakingTitle}.pdf`; // Unique name for the uploaded file
-        const fileRef = ref(PublicSpeakingRef, uniqueName);
-        await uploadBytes(fileRef, blob);
-        console.log('File uploaded successfully');
+        // Upload PDF file to Firebase Storage if selected
+        let downloadUrl = null;
+        if (publicSpeakingSelectedPDF) {
+          const response = await fetch(publicSpeakingSelectedPDF.uri);
+          const blob = await response.blob();
+          const uniqueName = `${Date.now()}-${publicSpeakingTitle}.pdf`; // Unique name for the uploaded file
+          const fileRef = ref(PublicSpeakingRef, uniqueName);
+          await uploadBytes(fileRef, blob);
+          console.log('File uploaded successfully');
+      
+          // Get the download URL of the uploaded file
+          downloadUrl = await getDownloadURL(fileRef);
+        }
     
         // Add Firestore document with a reference to the uploaded file
-        const downloadUrl = await getDownloadURL(fileRef);
         await addDoc(collection(db, collectionName), {
           title: publicSpeakingTitle,
           questions: publicSpeakingQuestions,
@@ -259,6 +317,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           { question: '', options: ['', '', '', ''] },
           { question: '', options: ['', '', '', ''] },
         ]);
+        setPublicSpeakingSelectedPDF(null);
       } catch (error) {
         console.error('Error adding document: ', error);
       }
@@ -325,8 +384,9 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           </View>
           
           {/* Media Training */}
-{accountType === 'Media Training' && (
-  <View style={{ marginBottom: 16 }}>
+          
+          {accountType === 'Media Training' && (
+          <View style={{ marginBottom: 16 }}>
     <Text style={styles.titleText}>Media Training Questions</Text>
     <TextInput
       style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
@@ -341,12 +401,10 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
       value={mediaTrainingLink}
       placeholder='Video Link'
     />
-
-    <TextInput
-      style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-      onChangeText={setMediaTrainingPDF}
-      value={mediaTrainingPDF}
-      placeholder='PDF Link'
+    
+    <Button
+    title="Select PDF"
+    onPress={handleMTSelectPDF}
     />
 
     {mediaTrainingQuestions.map(({ question, options }, index) => (
@@ -377,7 +435,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
                 updatedQuestions[index].correctAnswer = optionIndex;
                 setMediaTrainingQuestions(updatedQuestions);
               }}
-              initial={optionIndex === 0}
+              initial={optionIndex}
               boxStyle={{ width: 24, height: 24 }}
               activeColor={'green'}
               textStyle={{ display: 'none' }}
@@ -423,11 +481,10 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           value={mediaTrainingForPublicSafetyLink}
           placeholder='Video Link'
         />
-         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-          onChangeText={setMediaTrainingForPublicSafetyPDF}
-          value={mediaTrainingForPublicSafetyPDF}
-          placeholder='PDF Link'
+        
+        <Button
+        title="Select PDF"
+        onPress={handleMTFPSSelectPDF}
         />
           {mediaTrainingForPublicSafetyQuestions.map(({ question, options }, index) => (
           <View key={index}>
@@ -483,12 +540,12 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           value={publicSpeakingLink}
           placeholder='Video Link'
         />
-         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-          onChangeText={setPublicSpeakingPDF}
-          value={publicSpeakingPDF}
-          placeholder='PDF Link'
+        
+        <Button
+        title="Select PDF"
+        onPress={handlePSSelectPDF}
         />
+
           {publicSpeakingQuestions.map(({ question, options }, index) => (
           <View key={index}>
 
