@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
 function Quiz(props) {
+  console.log(props);
   data = props.route.params.item
   q1 = data.questions[0]
   q2 = data.questions[1]
@@ -18,7 +19,8 @@ function Quiz(props) {
         {label: q1.options[2], value: 2},
         {label: q1.options[3], value: 3},
       ],
-      answer: 0, // the index of the correct answer in the options array
+      
+      answer: parseInt(q1.correctAnswer), // the index of the correct answer in the options array
     },
     {
       question: q2.question,
@@ -28,7 +30,7 @@ function Quiz(props) {
         {label: q2.options[2], value: 2},
         {label: q2.options[3], value: 3},
       ],
-      answer: 0,
+      answer: parseInt(q2.correctAnswer),
     },
     {
       question: q3.question,
@@ -38,7 +40,7 @@ function Quiz(props) {
         {label: q3.options[2], value: 2},
         {label: q3.options[3], value: 3},
       ],
-      answer: 0,
+      answer: parseInt(q3.correctAnswer),
     },
     // add more quiz questions here
   ];
@@ -56,8 +58,13 @@ function Quiz(props) {
         setCurrentQuestion(currentQuestion + 1); // move to the next question
         setSelectedAnswer(null); // clear the selected answer
       } else {
+        // update the user's score before displaying the results
+        setScore(score + (selectedAnswer === quiz[currentQuestion].answer ? 1 : 0));
+
         // quiz is complete, show the user's score
-        alert(`Quiz complete! You scored ${score}/${quiz.length}`);
+        alert(`Quiz complete! You scored ${score + (selectedAnswer === quiz[currentQuestion].answer ? 1 : 0)}/${quiz.length}`);
+        props.navigation.goBack();
+        
       }
     }
   };

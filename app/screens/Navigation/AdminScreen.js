@@ -5,6 +5,7 @@ import { db } from './firebase';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { addDoc, collection, setDoc } from '@firebase/firestore';
 import {getAuth} from 'firebase/auth';
+
 import { 
   Text, 
   View, 
@@ -324,46 +325,66 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           </View>
           
           {/* Media Training */}
-          
-          {accountType === 'Media Training' && (
-          <View style={{ marginBottom: 16 }}>
-            <Text style={styles.titleText}>Media Training Questions</Text>
-            <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingTitle}
-            value={mediaTrainingTitle}
-            placeholder='Title'
-            />
+{accountType === 'Media Training' && (
+  <View style={{ marginBottom: 16 }}>
+    <Text style={styles.titleText}>Media Training Questions</Text>
+    <TextInput
+      style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+      onChangeText={setMediaTrainingTitle}
+      value={mediaTrainingTitle}
+      placeholder='Title'
+    />
             
-            <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingLink}
-            value={mediaTrainingLink}
-            placeholder='Video Link'
+    <TextInput
+      style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+      onChangeText={setMediaTrainingLink}
+      value={mediaTrainingLink}
+      placeholder='Video Link'
+    />
+
+    <TextInput
+      style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+      onChangeText={setMediaTrainingPDF}
+      value={mediaTrainingPDF}
+      placeholder='PDF Link'
+    />
+
+    {mediaTrainingQuestions.map(({ question, options }, index) => (
+      <View key={index}>
+        <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          onChangeText={(text) => {
+            const updatedQuestions = [...mediaTrainingQuestions];
+            updatedQuestions[index].question = text;
+            setMediaTrainingQuestions(updatedQuestions);
+          }}
+          value={question}
+          placeholder={`Question ${index + 1}`}
+        />
+
+        {options.map((option, optionIndex) => (
+          <View key={optionIndex} style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <RadioButtonRN
+              style={{ margin: 8 }}
+              data={[
+                {
+                  label: '',
+                  value: true,
+                },
+              ]}
+              selectedBtn={(value) => {
+                const updatedQuestions = [...mediaTrainingQuestions];
+                updatedQuestions[index].correctAnswer = optionIndex;
+                setMediaTrainingQuestions(updatedQuestions);
+              }}
+              initial={optionIndex === 0}
+              boxStyle={{ width: 24, height: 24 }}
+              activeColor={'green'}
+              textStyle={{ display: 'none' }}
             />
 
             <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-            onChangeText={setMediaTrainingPDF}
-            value={mediaTrainingPDF}
-            placeholder='PDF Link'
-            />
-            {mediaTrainingQuestions.map(({ question, options }, index) => (
-            <View key={index}>
-              <TextInput
-              style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-              onChangeText={(text) => {
-                const updatedQuestions = [...mediaTrainingQuestions];
-                updatedQuestions[index].question = text;
-                setMediaTrainingQuestions(updatedQuestions);
-              }}
-              value={question}
-              placeholder={`Question ${index + 1}`}
-              />
-              {options.map((option, optionIndex) => (
-              <TextInput
-              key={optionIndex}
-              style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+              style={{ flex: 1, height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
               onChangeText={(text) => {
                 const updatedQuestions = [...mediaTrainingQuestions];
                 updatedQuestions[index].options[optionIndex] = text;
@@ -371,15 +392,17 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
               }}
               value={option}
               placeholder={`Option ${optionIndex + 1}`}
-              />
-              ))}
-              </View>
-              ))}
-              <TouchableOpacity style={styles.button} onPress={handleMediaTrainingSubmit}>
-                <Text style={styles.buttonText}>Create Module</Text>
-                </TouchableOpacity>
-                </View>
-                )}
+            />
+          </View>
+        ))}
+      </View>
+    ))}
+
+    <TouchableOpacity style={styles.button} onPress={handleMediaTrainingSubmit}>
+      <Text style={styles.buttonText}>Create Module</Text>
+    </TouchableOpacity>
+  </View>
+)}
 
         
          {/* Media Training For Public Safety */}
