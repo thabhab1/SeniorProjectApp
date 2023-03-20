@@ -134,10 +134,10 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
     
     const [publicSpeakingAndSpeechesAnswer, setPublicSpeakingAndSpeechesAnswer] = useState('');
     const [publicSpeakingAndSpeechesLink, setPublicSpeakingAndSpeechesLink] = useState('');
-    const [publicSpeakingAndSpeechesPDF, setPublicSpeakingAndSpeechesPDF] = useState('');
+    const [publicSpeakingAndSpeechesPDF, setPublicSpeakingAndSpeechesPDF] = useState({});
     const [publicSpeakingAndSpeechesTitle, setPublicSpeakingAndSpeechesTitle] = useState('');
     const [accountType, setAccountType] = useState('')
-
+    const [publicSpeakingAndSpeechesSelectedPDF, setPublicSpeakingAndSpeechesSelectedPDF] = useState(null);
     
 
     const handleMTSelectPDF = async () => {
@@ -323,6 +323,17 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
       }
     };
     
+    const handlePSAndSpeechesSelectPDF = async () => {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'application/pdf',
+        copyToCacheDirectory: false,
+      });
+    
+      if (result.type === 'success') {
+        setPublicSpeakingAndSpeechesSelectedPDF(result);
+      }
+    };
+
     const handlePublicSpeakingAndSpeechesSubmit = async () => {
       try {
         let collectionName;
@@ -336,16 +347,21 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
             return;
         }
     
-        // Upload PDF file to Firebase Storage
-        const response = await fetch(publicSpeakingAndSpeechesPDF);
-        const blob = await response.blob();
-        const uniqueName = `${Date.now()}-${publicSpeakingAndSpeechesTitle}.pdf`; // Unique name for the uploaded file
-        const fileRef = ref(PublicSpeakingAndSpeechesRef, uniqueName);
-        await uploadBytes(fileRef, blob);
-        console.log('File uploaded successfully');
+        // Upload PDF file to Firebase Storage if selected
+        let downloadUrl = null;
+        if (publicSpeakingAndSpeechesSelectedPDF) {
+          const response = await fetch(publicSpeakingAndSpeechesSelectedPDF.uri);
+          const blob = await response.blob();
+          const uniqueName = `${Date.now()}-${publicSpeakingAndSpeechesTitle}.pdf`; // Unique name for the uploaded file
+          const fileRef = ref(PublicSpeakingAndSpeechesRef, uniqueName);
+          await uploadBytes(fileRef, blob);
+          console.log('File uploaded successfully');
+      
+          // Get the download URL of the uploaded file
+          downloadUrl = await getDownloadURL(fileRef);
+        }
     
         // Add Firestore document with a reference to the uploaded file
-        const downloadUrl = await getDownloadURL(fileRef);
         await addDoc(collection(db, collectionName), {
           title: publicSpeakingAndSpeechesTitle,
           questions: publicSpeakingAndSpeechesQuestions,
@@ -361,6 +377,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           { question: '', options: ['', '', '', ''] },
           { question: '', options: ['', '', '', ''] },
         ]);
+        setPublicSpeakingAndSpeechesSelectedPDF(null);
       } catch (error) {
         console.error('Error adding document: ', error);
       }
@@ -599,11 +616,10 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           value={publicSpeakingAndSpeechesLink}
           placeholder='Video Link'
         />
-         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
-          onChangeText={setPublicSpeakingAndSpeechesPDF}
-          value={publicSpeakingAndSpeechesPDF}
-          placeholder='PDF Link'
+        
+        <Button
+        title="Select PDF"
+        onPress={handlePSAndSpeechesSelectPDF}
         />
           {publicSpeakingAndSpeechesQuestions.map(({ question, options }, index) => (
           <View key={index}>
