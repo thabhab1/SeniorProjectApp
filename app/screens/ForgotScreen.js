@@ -52,9 +52,9 @@ function ForgotScreen(props) {
                 </View>
                 
                 {/* Title text */}
-                <Text style={styles.sectionTitle}>Forgot</Text> 
+                <Text style={styles.sectionTitle}>FORGOT</Text> 
 
-                <Text style={styles.sectionText}>Enter your email to reset your password if an account exists</Text>
+                <Text style={styles.sectionText}>Enter your email to reset the password if it exists</Text>
 
                 {/* User info input fields */}
                 <View style={styles.userInput}>
@@ -68,16 +68,17 @@ function ForgotScreen(props) {
                 </View> 
 
                 <TouchableOpacity style={styles.inputButton} onPress={handleResetButtonPress}>
-                    <Text style={styles.inputTextStyle}>Send Reset Link</Text>
+                    <Text style={styles.inputTextStyle}>SEND RESET LINK</Text>
                 </TouchableOpacity>
                 
                 <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                    <Text style={{ color: '#333'}}>Didn't forget? </Text>
+                    <Text style={{ color: 'black', fontFamily: 'RobotoCondensed-Regular',
+                        fontSize: 16,}}>Didn't forget? </Text>
                     <TouchableOpacity onPress={() => {props.navigation.goBack()}}>
                         <Text style={
-                            {color: 'steelblue',
-                             borderBottomColor: '#f8deaa',
-                              borderBottomWidth: 2,}}> Login </Text>
+                            {color: '#5569FF',
+                            fontFamily: 'RobotoCondensed-Regular',
+                            fontSize: 16,}}> Login </Text>
                     </TouchableOpacity>
                 </View>
 
@@ -102,36 +103,50 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     inputButton: {
-        backgroundColor: '#f8deaa',
+        backgroundColor: '#5569FF',
         padding: 20,
-        borderRadius: 10,
+        borderRadius: 20,
         marginBottom: 20,
         shadowColor: 'black',
         shadowOffset: {height: 2, width: 0.5},
         shadowOpacity: 0.5,
         shadowRadius: 6,
         elevation: 3, 
+        width: '80%',
+        alignSelf: 'center'
+        
     },
     inputTextStyle: {
         textAlign: 'center',
         fontWeight: '700',
         fontSize: 16,
-        color: 'black'
+        color: 'black',
+        fontFamily: 'RobotoCondensed-Regular',
+        letterSpacing: 1.5,
     },
     sectionTitle: {
         fontSize: 28,
-        fontWeight: '500',
-        color: '#333',
+        color: 'black',
         marginBottom: 20,
+        fontFamily: 'RobotoCondensed-Regular',
+        letterSpacing: 1.5,
+        alignSelf: 'center'
 
     },
     sectionText: {
         marginBottom: 10,
+        fontFamily: 'RobotoCondensed-Regular',
+        fontSize: 16,
+        textAlign: 'center'
     },
     userInput: {
-        borderBottomColor: '#ccc',
+        borderBottomColor: 'black',
         borderBottomWidth: 2,
         marginBottom: 25,
+        width: '80%',
+        alignSelf: 'center',
+        fontFamily: 'RobotoCondensed-Regular',
+        letterSpacing: 1.5,
     },
     
     

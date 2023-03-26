@@ -1,6 +1,7 @@
 import {collection, doc, getDoc,getDocs, query, querySnapshot, where} from "firebase/firestore";
 import { db } from './firebase';
 import React, {useEffect, useState} from 'react'
+import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import PDFReader from './PdfReader'
 import {getAuth} from 'firebase/auth'
@@ -26,6 +27,9 @@ const Item = ({title}) => (
 );
 const auth = getAuth();
 function Modules(props){
+
+
+  
   const [data, setData] = useState()
   const [type, setType] = useState("");
   useEffect(() => {
@@ -78,7 +82,7 @@ function Modules(props){
 
 
 
-  const modulesTitle = "My Modules";
+  const modulesTitle = "MY MODULES";
   return(
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -105,9 +109,9 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
   },
   inputButton: {
-      backgroundColor: '#f8deaa',
+      backgroundColor: '#5569FF',
       padding: 20,
-      borderRadius: 10,
+      borderRadius: 20,
       marginBottom: 20,
       shadowColor: 'black',
       shadowOffset: {height: 2, width: 0.5},
@@ -121,17 +125,18 @@ const styles = StyleSheet.create({
       fontWeight: '700',
       color: 'black',
       fontSize: 16,
+      fontFamily: 'RobotoCondensed-Regular',
   },
   sectionTitle: {
       marginTop: 50,
       marginBottom: 40,
-      color: '#333',
-      fontSize: 30,
+      fontSize: 28,
       paddingBottom: 25,
-      borderBottomColor: 'lightgray',
+      borderBottomColor: 'black',
       borderBottomWidth: 2,
-      borderRadius: 5,
-      fontWeight: '600',
+      fontFamily: 'RobotoCondensed-Regular',
+      letterSpacing: 1.5,
+
   },
 })
 export default Modules;

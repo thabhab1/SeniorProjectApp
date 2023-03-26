@@ -68,7 +68,7 @@ function LoginScreen(props) {
                 </View>
                 
                 {/* Title text */}
-                <Text style={styles.sectionTitle}>Login</Text> 
+                <Text style={styles.sectionTitle}>LOGIN</Text> 
 
                 {/* User info input fields */}
                 <View style={styles.userInput}>
@@ -95,27 +95,32 @@ function LoginScreen(props) {
                 </View>
 
                 <TouchableOpacity style={styles.inputButton} onPress={handleLogin}>
-                    <Text style={styles.inputTextStyle}>Login</Text>
+                    <Text style={styles.inputTextStyle}>LOGIN</Text>
                 </TouchableOpacity>
                 
                 <View style={{flexDirection: 'row', justifyContent: 'center', marginBottom: 15}}>
-                    <Text style={{ color: '#333'}}>New to the app? </Text>
+                    <Text style={{ 
+                        color: 'black',
+                        fontFamily: 'RobotoCondensed-Regular',
+                        fontSize: 16,}}>New to the app? </Text>
                     <TouchableOpacity onPress={() => props.navigation.navigate('Register')}>
                         <Text style={
-                            {color: 'steelblue',
-                             borderBottomColor: '#f8deaa',
-                              borderBottomWidth: 2,}}> Register </Text>
+                            {color: '#5569FF',                             
+                            fontFamily: 'RobotoCondensed-Regular',
+                            fontSize: 16,}}> Register </Text>
                     </TouchableOpacity>
                 </View>
 
                 <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                     <TouchableOpacity onPress={() => props.navigation.navigate('Forgot')}>
                         <Text style={
-                            {color: 'steelblue',
-                             borderBottomColor: '#f8deaa',
-                              borderBottomWidth: 2,}}> Forgot </Text>
+                            {color: '#5569FF',
+                            fontFamily: 'RobotoCondensed-Regular',
+                            fontSize: 16,}}> Forgot </Text>
                     </TouchableOpacity>
-                    <Text style={{ color: '#333'}}>your password? </Text>                    
+                    <Text style={{ color: 'black',
+                            fontFamily: 'RobotoCondensed-Regular',
+                        fontSize: 16,}}>your password? </Text>                    
                 </View>
 
                 <StatusBar style='auto'/>
@@ -139,33 +144,39 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     inputButton: {
-        backgroundColor: '#f8deaa',
+        backgroundColor: '#5569FF',
         padding: 20,
-        borderRadius: 10,
+        borderRadius: 20,
         marginBottom: 20,
         shadowColor: 'black',
         shadowOffset: {height: 2, width: 0.5},
         shadowOpacity: 0.5,
         shadowRadius: 6,
-        elevation: 3, 
+        elevation: 3,
+        width: '80%',
+        alignSelf: 'center'
     },
     inputTextStyle: {
         textAlign: 'center',
         fontWeight: '700',
         color: 'black',
         fontSize: 16,
+        fontFamily: 'RobotoCondensed-Regular',
+        letterSpacing: 1.5,
     },
     sectionTitle: {
         fontSize: 28,
-        fontWeight: '500',
-        color: '#333',
         marginBottom: 30,
-
+        fontFamily: 'RobotoCondensed-Regular',
+        letterSpacing: 1.5,
+        textAlign: 'center'
     },
     userInput: {
-        borderBottomColor: '#ccc',
+        borderBottomColor: 'black',
         borderBottomWidth: 2,
         marginBottom: 25,
+        width: '80%',
+        alignSelf: 'center'
         
     },
     

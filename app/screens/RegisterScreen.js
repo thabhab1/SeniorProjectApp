@@ -114,7 +114,7 @@ function RegisterScreen(props) {
                 </View>
                 
                 {/* Title text */}
-                <Text style={styles.sectionTitle}>Register</Text> 
+                <Text style={styles.sectionTitle}>REGISTER</Text> 
 
                 {/* User info input fields */}
                 <View style={styles.userInput}>
@@ -153,7 +153,7 @@ function RegisterScreen(props) {
                 </View>
                 <View>
                     <Text>Please choose an account type</Text>
-                <RadioButtonRN 
+                <RadioButtonRN style={{}}
     selectedBtn={(e) => setAccountType(e.label)}
   data={data}
   
@@ -168,16 +168,18 @@ function RegisterScreen(props) {
                 */}
 
                 <TouchableOpacity style={styles.inputButton}>
-                    <Text style={styles.inputTextStyle} onPress={handleRegister} >Register</Text>
+                    <Text style={styles.inputTextStyle} onPress={handleRegister} >REGISTER</Text>
                 </TouchableOpacity>
                 
                 <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                    <Text style={{ color: '#333'}}>Already registered? </Text>
+                    <Text style={{ color: 'black',
+                        fontFamily: 'RobotoCondensed-Regular',
+                        fontSize: 16,}}>Already registered? </Text>
                     <TouchableOpacity onPress={() => {props.navigation.goBack()}}>
                         <Text style={
-                            {color: 'steelblue',
-                             borderBottomColor: '#f8deaa',
-                              borderBottomWidth: 2,}}> Login </Text>
+                            {color: '#5569FF',
+                            fontFamily: 'RobotoCondensed-Regular',
+                            fontSize: 16,}}> Login </Text>
                     </TouchableOpacity>
                 </View>
 
@@ -204,34 +206,43 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     inputButton: {
-        backgroundColor: '#f8deaa',
+        backgroundColor: '#5569FF',
         padding: 20,
-        borderRadius: 10,
+        borderRadius: 20,
         marginBottom: 20,
         shadowColor: 'black',
         shadowOffset: {height: 2, width: 0.5},
         shadowOpacity: 0.5,
         shadowRadius: 6,
         elevation: 3, 
+        width: '80%',
+        alignSelf: 'center',
+
     },
     inputTextStyle: {
         textAlign: 'center',
         fontWeight: '700',
         color: 'black',
         fontSize: 16,
+        fontFamily: 'RobotoCondensed-Regular',
+        letterSpacing: 1.5,
     },
     sectionTitle: {
         fontSize: 28,
         fontWeight: '500',
-        color: '#333',
+        color: 'black',
         marginBottom: 30,
         paddingRight: 10,
+        fontFamily: 'RobotoCondensed-Regular',
+        letterSpacing: 1.5,
+        alignSelf: 'center'
     },
     userInput: {
-        borderBottomColor: '#ccc',
+        borderBottomColor: 'black',
         borderBottomWidth: 2,
         marginBottom: 25,
-
+        width: '80%',
+        alignSelf: 'center'
 
     },
     

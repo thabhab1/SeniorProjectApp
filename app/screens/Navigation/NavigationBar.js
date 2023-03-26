@@ -54,7 +54,7 @@ function NavigationBar(props) {
                             iconName = focused ? 'settings' : 'settings-outline';
                         }
 
-                        return <Ionicons name={iconName} size={size} color={'#0e274a'}/>
+                        return <Ionicons name={iconName} size={size} color={'black'}/>
 
                     },
                     tabBarHideOnKeyboard: true

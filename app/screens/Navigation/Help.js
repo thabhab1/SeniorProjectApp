@@ -37,7 +37,7 @@ function Account(props) {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView >
-                <Text style={styles.sectionTitle}>Contact Us</Text>
+                <Text style={styles.sectionTitle}>CONTACT US</Text>
                 
                 <View style={{marginBottom: 30}}>
                     <Text style={styles.sectionText}>Question or suggestion? Email us!</Text>
@@ -56,7 +56,7 @@ function Account(props) {
 
                 {/* Send Message button to send all information in an email, after all fields are entered */}
                 <TouchableOpacity style={styles.inputButton} onPress={() => handleMessage()}>
-                    <Text style={styles.inputTextStyle}>Send Email</Text>
+                    <Text style={styles.inputTextStyle}>SEND EMAIL</Text>
                 </TouchableOpacity>
             </ScrollView>
             
@@ -73,9 +73,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     inputButton: {
-        backgroundColor: '#f8deaa',
+        backgroundColor: '#5569FF',
         padding: 20,
-        borderRadius: 10,
+        borderRadius: 20,
         marginVertical: 20,
         shadowColor: 'black',
         shadowOffset: {height: 2, width: 0.5},
@@ -103,23 +103,23 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: 'black',
         fontSize: 16,
+        fontFamily: 'RobotoCondensed-Regular',
+        letterSpacing: 1.5,
     },
     sectionText: {
         fontSize: 20,
-        color: '#333',
-        fontWeight: '600',
         lineHeight: 23,
+        fontFamily: 'RobotoCondensed-Regular',
     },
     sectionTitle: {
         marginTop: 50,
         marginBottom: 30,
-        fontSize: 30,
+        fontSize: 28,
         paddingBottom: 25,
-        color: '#333',
-        borderBottomColor: 'lightgray',
+        borderBottomColor: 'black',
         borderBottomWidth: 2,
-        borderRadius: 5,
-        fontWeight: '600',
+        fontFamily: 'RobotoCondensed-Regular',
+        letterSpacing: 1.5,
     },
 })
 
