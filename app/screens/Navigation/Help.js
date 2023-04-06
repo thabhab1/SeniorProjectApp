@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '500',
         marginBottom: 10,
-        backgroundColor: '#EEE',
+        backgroundColor: '#f5f5f5',
         borderRadius: 5,
         shadowColor: 'black',
         shadowOffset: {height: 2, width: 0.5},
