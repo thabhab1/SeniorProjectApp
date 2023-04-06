@@ -62,7 +62,7 @@ function LoginScreen(props) {
             <View>
                 {/* Login Image */}
                 <View>
-                    <Image source={require('../assets/loginImage.png')}
+                    <Image source={require('../assets/solislogowhite.png')}
                         style={styles.imageStyle}                    
                     />
                 </View>
@@ -74,7 +74,7 @@ function LoginScreen(props) {
                 <View style={styles.userInput}>
                     {/* <MaterialIcons name='alternate-email' size={20} color="#666" /> */}
                     <TextInput 
-                    placeholder='Email'
+
                     value={email}
                     onChangeText={(text) => setEmail(text)}
                     autoCompleteType="email"
@@ -82,17 +82,19 @@ function LoginScreen(props) {
                     autoCapitalize="none"
                     />                    
                 </View> 
+                <Text style={styles.sectionText}>email</Text>
 
                 <View style={(styles.userInput)}>
                     <View style={{justifyContent: 'space-between'}}>
                         <TextInput 
-                        placeholder='Password' 
+                        
                         value={password}
                         onChangeText={(text) => setPassword(text)}
                         secureTextEntry={true} 
                         style={{}}/>
                     </View>                    
                 </View>
+                <Text style={styles.sectionText}>password</Text>
 
                 <TouchableOpacity style={styles.inputButton} onPress={handleLogin}>
                     <Text style={styles.inputTextStyle}>LOGIN</Text>
@@ -101,12 +103,12 @@ function LoginScreen(props) {
                 <View style={{flexDirection: 'row', justifyContent: 'center', marginBottom: 15}}>
                     <Text style={{ 
                         color: 'black',
-                        fontFamily: 'RobotoCondensed-Regular',
+                        fontFamily: 'Oswald-Regular',
                         fontSize: 16,}}>New to the app? </Text>
                     <TouchableOpacity onPress={() => props.navigation.navigate('Register')}>
                         <Text style={
-                            {color: '#5569FF',                             
-                            fontFamily: 'RobotoCondensed-Regular',
+                            {color: '#5569FF',                           
+                            fontFamily: 'Oswald-Regular',
                             fontSize: 16,}}> Register </Text>
                     </TouchableOpacity>
                 </View>
@@ -115,11 +117,11 @@ function LoginScreen(props) {
                     <TouchableOpacity onPress={() => props.navigation.navigate('Forgot')}>
                         <Text style={
                             {color: '#5569FF',
-                            fontFamily: 'RobotoCondensed-Regular',
+                            fontFamily: 'Oswald-Regular',
                             fontSize: 16,}}> Forgot </Text>
                     </TouchableOpacity>
                     <Text style={{ color: 'black',
-                            fontFamily: 'RobotoCondensed-Regular',
+                            fontFamily: 'Oswald-Regular',
                         fontSize: 16,}}>your password? </Text>                    
                 </View>
 
@@ -142,40 +144,51 @@ const styles = StyleSheet.create({
         width: 200,
         marginBottom: 30,
         alignSelf: 'center',
+        resizeMode: 'contain',
     },
     inputButton: {
-        backgroundColor: '#5569FF',
-        padding: 20,
+        backgroundColor: 'black',
+        paddingTop: 6,
+        paddingBottom: 10,
         borderRadius: 20,
         marginBottom: 20,
+        marginTop: 40,
         shadowColor: 'black',
         shadowOffset: {height: 2, width: 0.5},
         shadowOpacity: 0.5,
         shadowRadius: 6,
         elevation: 3,
-        width: '80%',
-        alignSelf: 'center'
+        width: '65%',
+        alignSelf: 'center',
+        
     },
     inputTextStyle: {
         textAlign: 'center',
-        fontWeight: '700',
-        color: 'black',
-        fontSize: 16,
-        fontFamily: 'RobotoCondensed-Regular',
+        fontSize: 28,
+        fontFamily: 'Oswald-Regular',
         letterSpacing: 1.5,
+        color: 'white',
+        fontWeight: ''
+
     },
     sectionTitle: {
         fontSize: 28,
         marginBottom: 30,
-        fontFamily: 'RobotoCondensed-Regular',
+        fontFamily: 'Oswald-Regular',
         letterSpacing: 1.5,
+        textAlign: 'center'
+    },
+    sectionText: {
+        marginBottom: 10,
+        fontFamily: 'Oswald-Regular',
+        fontSize: 16,
         textAlign: 'center'
     },
     userInput: {
         borderBottomColor: 'black',
         borderBottomWidth: 2,
-        marginBottom: 25,
-        width: '80%',
+        marginBottom: 2,
+        width: '65%',
         alignSelf: 'center'
         
     },

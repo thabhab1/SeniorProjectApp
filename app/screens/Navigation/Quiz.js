@@ -71,18 +71,23 @@ function Quiz(props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.inputTextStyle}>{quiz[currentQuestion].question}</Text>
+      <Text style={styles.sectionText}>{quiz[currentQuestion].question}</Text>
       <RadioForm>
         {quiz[currentQuestion].options.map((option, index) => (
           <RadioButton style={styles.answerSelectionButton} key={index}>
             <RadioButtonInput
+              
               obj={option}
               index={index}
               isSelected={selectedAnswer === index}
               onPress={() => setSelectedAnswer(index)}
             />
             <RadioButtonLabel
-              style={styles.inputButton}
+              labelStyle={{
+                fontFamily: 'Oswald-Regular',
+                fontSize: 18,
+                paddingBottom: 0,
+                marginBottom: 0}}
               obj={option}
               index={index}
               labelHorizontal={true}
@@ -114,32 +119,42 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
   },
   answerSelectionButton: {
-    backgroundColor: '#f8deaa',
+    backgroundColor: '#f5f5f5',
     padding: 20,
     borderRadius: 10,
-    marginBottom: 20,
+    marginBottom: 15,
     shadowColor: 'black',
     shadowOffset: {height: 2, width: 0.5},
     shadowOpacity: 0.5,
     shadowRadius: 6,
     elevation: 3, 
-},
+  },
   inputButton: {
-      backgroundColor: '#f8deaa',
-      padding: 20,
-      borderRadius: 10,
-      marginBottom: 20,
-      shadowColor: 'black',
-      shadowOffset: {height: 2, width: 0.5},
-      shadowOpacity: 0.5,
-      shadowRadius: 6,
-      elevation: 3, 
+    backgroundColor: 'black',
+    paddingTop: 6,
+    paddingBottom: 10,
+    borderRadius: 20,
+    marginBottom: 20,
+    marginTop: 40,
+    shadowColor: 'black',
+    color: 'white',
+    shadowOffset: {height: 2, width: 0.5},
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+    elevation: 3,
+    width: '65%',
+    alignSelf: 'center',
+    fontFamily: 'Oswald-Regular'
+
   },
   inputTextStyle: {
-      textAlign: 'center',
-      fontWeight: '700',
-      color: 'black',
-      fontSize: 16,
+    textAlign: 'center',
+    fontSize: 28,
+    fontFamily: 'Oswald-Regular',
+    letterSpacing: 1.5,
+    color: 'white',
+    fontWeight: ''
+
   },
   sectionTitle: {
       fontSize: 28,
@@ -147,6 +162,11 @@ const styles = StyleSheet.create({
       color: '#333',
       marginBottom: 30,
 
+  },
+  sectionText: {
+    fontSize: 24,
+    marginBottom: 24,
+    fontFamily: 'Oswald-Regular',
   },
   userInput: {
       borderBottomColor: '#ccc',

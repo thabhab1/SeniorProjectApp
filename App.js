@@ -17,7 +17,7 @@ const auth = getAuth();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    'RobotoCondensed-Regular': require('./app/assets/fonts/RobotoCondensed-Regular.ttf'),
+    'Oswald-Regular': require('./app/assets/fonts/static/Oswald-Regular.ttf'),
   });
 
   const [isSignedIn, setIsSignedIn] = useState(false);

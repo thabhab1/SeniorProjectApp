@@ -46,7 +46,7 @@ function ForgotScreen(props) {
             <View>
                 {/* Forgot Image */}
                 <View>
-                    <Image source={require('../assets/forgotImage.png')}
+                    <Image source={require('../assets/solislogowhite.png')}
                         style={styles.imageStyle}                    
                     />
                 </View>
@@ -60,24 +60,28 @@ function ForgotScreen(props) {
                 <View style={styles.userInput}>
                     {/* <MaterialIcons name='alternate-email' size={20} color="#666" /> */}
                     <TextInput 
-                        placeholder='Email'
+                        
                         onChangeText={handleEmailInput}
                         value={emailText}
 
-                    />                    
+                    />   
+                            
                 </View> 
 
+                <Text style={styles.sectionText}>email</Text>
+
                 <TouchableOpacity style={styles.inputButton} onPress={handleResetButtonPress}>
-                    <Text style={styles.inputTextStyle}>SEND RESET LINK</Text>
+                    
+                    <Text style={styles.inputTextStyle}>RESET</Text>
                 </TouchableOpacity>
                 
                 <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                    <Text style={{ color: 'black', fontFamily: 'RobotoCondensed-Regular',
+                    <Text style={{ color: 'black', fontFamily: 'Oswald-Regular',
                         fontSize: 16,}}>Didn't forget? </Text>
                     <TouchableOpacity onPress={() => {props.navigation.goBack()}}>
                         <Text style={
                             {color: '#5569FF',
-                            fontFamily: 'RobotoCondensed-Regular',
+                            fontFamily: 'Oswald-Regular',
                             fontSize: 16,}}> Login </Text>
                     </TouchableOpacity>
                 </View>
@@ -101,51 +105,54 @@ const styles = StyleSheet.create({
         width: 200,
         marginBottom: 30,
         alignSelf: 'center',
+        resizeMode: 'contain',
     },
     inputButton: {
-        backgroundColor: '#5569FF',
-        padding: 20,
+        backgroundColor: 'black',
+        paddingTop: 6,
+        paddingBottom: 10,
         borderRadius: 20,
         marginBottom: 20,
+        marginTop: 40,
         shadowColor: 'black',
         shadowOffset: {height: 2, width: 0.5},
         shadowOpacity: 0.5,
         shadowRadius: 6,
-        elevation: 3, 
+        elevation: 3,
         width: '80%',
         alignSelf: 'center'
-        
+
     },
     inputTextStyle: {
         textAlign: 'center',
-        fontWeight: '700',
-        fontSize: 16,
-        color: 'black',
-        fontFamily: 'RobotoCondensed-Regular',
+        fontSize: 28,
+        fontFamily: 'Oswald-Regular',
         letterSpacing: 1.5,
+        color: 'white',
     },
     sectionTitle: {
         fontSize: 28,
         color: 'black',
         marginBottom: 20,
-        fontFamily: 'RobotoCondensed-Regular',
+        fontFamily: 'Oswald-Regular',
         letterSpacing: 1.5,
         alignSelf: 'center'
 
     },
     sectionText: {
         marginBottom: 10,
-        fontFamily: 'RobotoCondensed-Regular',
+        fontFamily: 'Oswald-Regular',
         fontSize: 16,
         textAlign: 'center'
     },
     userInput: {
         borderBottomColor: 'black',
         borderBottomWidth: 2,
-        marginBottom: 25,
+        marginBottom: 2,
+        marginTop: 30,
         width: '80%',
         alignSelf: 'center',
-        fontFamily: 'RobotoCondensed-Regular',
+        fontFamily: 'Oswald-Regular',
         letterSpacing: 1.5,
     },
     

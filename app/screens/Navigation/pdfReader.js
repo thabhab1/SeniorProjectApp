@@ -71,7 +71,7 @@ const test = props.route.params.item.pdf;
      
 
            <TouchableOpacity style={styles.inputButton} onPress={() => props.navigation.navigate('Quiz', {item: props.route.params.item})}>
-                 <Text style={styles.inputTextStyle}>Take Quiz</Text>
+                 <Text style={styles.inputTextStyle}>TAKE QUIZ</Text>
            </TouchableOpacity>
         
         </View>
@@ -96,21 +96,29 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     inputButton: {
-        backgroundColor: '#f8deaa',
-        padding: 20,
-        borderRadius: 10,
+        backgroundColor: 'black',
+        paddingTop: 6,
+        paddingBottom: 10,
+        borderRadius: 20,
         marginBottom: 20,
+        marginTop: 40,
         shadowColor: 'black',
         shadowOffset: {height: 2, width: 0.5},
         shadowOpacity: 0.5,
         shadowRadius: 6,
-        elevation: 3, 
+        elevation: 3,
+        width: '65%',
+        alignSelf: 'center',
+        
     },
     inputTextStyle: {
         textAlign: 'center',
-        fontWeight: '700',
-        color: 'black',
-        fontSize: 16,
+        fontSize: 28,
+        fontFamily: 'Oswald-Regular',
+        letterSpacing: 1.5,
+        color: 'white',
+        fontWeight: ''
+
     },
     sectionTitle: {
         fontSize: 28,
@@ -130,9 +138,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 28,
         fontWeight: '500',
-        color: '#333',
+        letterSpacing: 1,
         marginBottom: 20,
         flex: 1,
+        fontFamily: 'Oswald-Regular',
+
 
     },
 

@@ -38,7 +38,7 @@ function NavigationBar(props) {
     return (
         <NavigationContainer>        
             <Tab.Navigator 
-                initialRouteName={accountName}
+                initialRouteName={modulesName}
                 screenOptions={({route}) => ({
                     tabBarIcon: ({focused, color, size}) => {
                         let iconName = '';
@@ -52,6 +52,9 @@ function NavigationBar(props) {
                         }
                         else if (rn === helpName) {
                             iconName = focused ? 'settings' : 'settings-outline';
+                        }
+                        else if (rn == "Admin") {
+                            iconName = focused ? 'add-circle' : 'add-circle-outline';
                         }
 
                         return <Ionicons name={iconName} size={size} color={'black'}/>

@@ -19,6 +19,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import { Image } from "react-native";
 
 const Item = ({title}) => (
   <View>
@@ -86,6 +87,14 @@ function Modules(props){
   return(
     <SafeAreaView style={styles.container}>
       <ScrollView>
+
+      <View style={{}}>
+          <Image source={require('../../assets/solislogowhite.png')}
+              style={styles.imageStyle}                    
+          />
+      </View>
+
+      <Text style={styles.sectionTitleTwo } >LET'S START LEARNING</Text>      
         
       <Text style={styles.sectionTitle}>{modulesTitle}</Text>
         <FlatList
@@ -108,35 +117,56 @@ const styles = StyleSheet.create({
       paddingHorizontal: 20,
       backgroundColor: 'white',
   },
+  imageStyle: {
+
+
+    resizeMode: 'contain',
+    height: 80,
+     width: 120
+  },
   inputButton: {
-      backgroundColor: '#5569FF',
-      padding: 20,
-      borderRadius: 20,
-      marginBottom: 20,
-      shadowColor: 'black',
-      shadowOffset: {height: 2, width: 0.5},
-      shadowOpacity: 0.5,
-      shadowRadius: 6,
-      elevation: 3, 
-      
+    backgroundColor: 'black',
+    paddingTop: 6,
+    paddingBottom: 10,
+    borderRadius: 30,
+    marginBottom: 20,
+    shadowColor: 'black',
+    shadowOffset: {height: 2, width: 0.5},
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+    elevation: 3,
+    width: '100%',
+    alignSelf: 'center',
+    
   },
   inputTextStyle: {
       textAlign: 'center',
-      fontWeight: '700',
-      color: 'black',
-      fontSize: 16,
-      fontFamily: 'RobotoCondensed-Regular',
+      fontSize: 28,
+      fontFamily: 'Oswald-Regular',
+      letterSpacing: 1.5,
+      color: 'white',
+      fontWeight: ''
+  
   },
   sectionTitle: {
-      marginTop: 50,
       marginBottom: 40,
-      fontSize: 28,
-      paddingBottom: 25,
-      borderBottomColor: 'black',
-      borderBottomWidth: 2,
-      fontFamily: 'RobotoCondensed-Regular',
+      fontSize: 24,
+      paddingBottom: 5,
+      borderTopColor: 'black',
+      borderTopWidth: 2,
+      fontFamily: 'Oswald-Regular',
       letterSpacing: 1.5,
 
   },
+  sectionTitleTwo: {
+    fontSize: 24,
+    paddingTop: 4,
+    paddingBottom: 5,
+    borderTopColor: 'black',
+    borderTopWidth: 2,
+    fontFamily: 'Oswald-Regular',
+    letterSpacing: 1.5,
+
+}
 })
 export default Modules;

@@ -393,7 +393,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
         <ScrollView>
         <View>
           
-          <Text>Please choose an account type</Text>
+          <Text style={styles.titleText}>Please choose an account type</Text>
           <RadioButtonRN
           selectedBtn={(e) => setAccountType(e.label)}
           data={data}
@@ -406,28 +406,32 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           <View style={{ marginBottom: 16 }}>
     <Text style={styles.titleText}>Media Training Questions</Text>
     <TextInput
-      style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+      style={styles.textInput}
       onChangeText={setMediaTrainingTitle}
       value={mediaTrainingTitle}
       placeholder='Title'
     />
             
     <TextInput
-      style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+      style={styles.textInput}
       onChangeText={setMediaTrainingLink}
       value={mediaTrainingLink}
       placeholder='Video Link'
     />
     
-    <Button
-    title="Select PDF"
-    onPress={handleMTSelectPDF}
-    />
+    <View style={{marginBottom: 14,}}>
+      <Button
+      
+      title="Select PDF"
+      onPress={handleMTSelectPDF}
+      />      
+    </View>
+
 
     {mediaTrainingQuestions.map(({ question, options }, index) => (
       <View key={index}>
         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          style={styles.textInput}
           onChangeText={(text) => {
             const updatedQuestions = [...mediaTrainingQuestions];
             updatedQuestions[index].question = text;
@@ -487,27 +491,31 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           <Text style={styles.titleText}>Media Training For Public Safety Questions</Text>
 
           <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          style={styles.textInput}
           onChangeText={setMediaTrainingForPublicSafetyTitle}
           value={mediaTrainingForPublicSafetyTitle}
           placeholder='Title'
         />
          <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          style={styles.textInput}
           onChangeText={setMediaTrainingForPublicSafetyLink}
           value={mediaTrainingForPublicSafetyLink}
           placeholder='Video Link'
         />
         
-        <Button
-        title="Select PDF"
-        onPress={handleMTFPSSelectPDF}
-        />
+        <View style={{marginBottom: 14}}>
+          <Button
+            
+                  title="Select PDF"
+                  onPress={handleMTFPSSelectPDF}
+                  />          
+        </View>
+        
           {mediaTrainingForPublicSafetyQuestions.map(({ question, options }, index) => (
           <View key={index}>
 
         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          style={styles.textInput}
           onChangeText={(text) => {
             const updatedQuestions = [...mediaTrainingForPublicSafetyQuestions];
             updatedQuestions[index].question = text;
@@ -519,7 +527,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
         {options.map((option, optionIndex) => (
           <TextInput
             key={optionIndex}
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+            style={{ height: 100, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
             onChangeText={(text) => {
               const updatedQuestions = [...mediaTrainingForPublicSafetyQuestions];
               updatedQuestions[index].options[optionIndex] = text;
@@ -546,28 +554,32 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           <Text style={styles.titleText}>Public Speaking Questions</Text>
 
           <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          style={styles.textInput}
           onChangeText={setPublicSpeakingTitle}
           value={publicSpeakingTitle}
           placeholder='Title'
         />
          <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          style={styles.textInput}
           onChangeText={setPublicSpeakingLink}
           value={publicSpeakingLink}
           placeholder='Video Link'
         />
         
-        <Button
-        title="Select PDF"
-        onPress={handlePSSelectPDF}
-        />
+        <View style={{marginBottom: 14}}>
+          <Button
+            
+            title="Select PDF"
+            onPress={handlePSSelectPDF}
+            />
+        </View>
+        
 
           {publicSpeakingQuestions.map(({ question, options }, index) => (
           <View key={index}>
 
         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          style={styles.textInput}
           onChangeText={(text) => {
             const updatedQuestions = [...publicSpeakingQuestions];
             updatedQuestions[index].question = text;
@@ -579,7 +591,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
         {options.map((option, optionIndex) => (
           <TextInput
             key={optionIndex}
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+            style={styles.textInput}
             onChangeText={(text) => {
               const updatedQuestions = [...publicSpeakingQuestions];
               updatedQuestions[index].options[optionIndex] = text;
@@ -605,27 +617,30 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           <Text style={styles.titleText}>Public Speaking And Speeches Questions</Text>
 
           <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          style={styles.textInput}
           onChangeText={setPublicSpeakingAndSpeechesTitle}
           value={publicSpeakingAndSpeechesTitle}
           placeholder='Title'
         />
          <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          style={styles.textInput}
           onChangeText={setPublicSpeakingAndSpeechesLink}
           value={publicSpeakingAndSpeechesLink}
           placeholder='Video Link'
         />
-        
-        <Button
-        title="Select PDF"
-        onPress={handlePSAndSpeechesSelectPDF}
-        />
+      
+        <View style={{marginBottom: 14}}>
+          <Button
+          title="Select PDF"
+          onPress={handlePSAndSpeechesSelectPDF}
+          />          
+        </View>
+
           {publicSpeakingAndSpeechesQuestions.map(({ question, options }, index) => (
           <View key={index}>
 
         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+          style={styles.textInput}
           onChangeText={(text) => {
             const updatedQuestions = [...publicSpeakingAndSpeechesQuestions];
             updatedQuestions[index].question = text;
@@ -637,7 +652,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
         {options.map((option, optionIndex) => (
           <TextInput
             key={optionIndex}
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+            style={styles.textInput}
             onChangeText={(text) => {
               const updatedQuestions = [...publicSpeakingAndSpeechesQuestions];
               updatedQuestions[index].options[optionIndex] = text;
@@ -684,21 +699,36 @@ const styles = StyleSheet.create({
       marginBottom: 10,
     },
     button: {
-        backgroundColor: '#f8deaa',
-        padding: 20,
-        borderRadius: 10,
-        marginBottom: 20,
-        shadowColor: 'black',
-        shadowOffset: {height: 2, width: 0.5},
-        shadowOpacity: 0.5,
-        shadowRadius: 6,
-        elevation: 3, 
+      backgroundColor: 'black',
+      paddingTop: 6,
+      paddingBottom: 10,
+      borderRadius: 20,
+      marginBottom: 20,
+      marginTop: 15,
+      shadowColor: 'black',
+      shadowOffset: {height: 2, width: 0.5},
+      shadowOpacity: 0.5,
+      shadowRadius: 6,
+      elevation: 3,
+      width: '100%',
+      alignSelf: 'center',
+      
     },
     buttonText: {
         textAlign: 'center',
-        fontWeight: '700',
-        color: 'black',
-        fontSize: 16,
+        fontSize: 28,
+        fontFamily: 'Oswald-Regular',
+        letterSpacing: 1.5,
+        color: 'white',
+        fontWeight: ''
+
+    },
+    textInput: {
+      height: 40,
+      borderColor: 'gray', 
+      borderWidth: 1, 
+      marginBottom: 8,
+      paddingLeft: 5,
     },
     titleText: {
         textAlign: 'center',

@@ -73,16 +73,29 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     inputButton: {
-        backgroundColor: '#5569FF',
-        padding: 20,
+        backgroundColor: 'black',
+        paddingTop: 6,
+        paddingBottom: 10,
         borderRadius: 20,
-        marginVertical: 20,
+        marginBottom: 20,
+        marginTop: 20,
         shadowColor: 'black',
         shadowOffset: {height: 2, width: 0.5},
         shadowOpacity: 0.5,
         shadowRadius: 6,
-        elevation: 3,    
+        elevation: 3,
+        width: '100%',
+        alignSelf: 'center',
         
+    },
+    inputTextStyle: {
+        textAlign: 'center',
+        fontSize: 28,
+        fontFamily: 'Oswald-Regular',
+        letterSpacing: 1.5,
+        color: 'white',
+        fontWeight: ''
+    
     },
     inputField: {
         fontSize: 16,
@@ -98,28 +111,21 @@ const styles = StyleSheet.create({
         padding: 8,      
         
     },
-    inputTextStyle: {
-        textAlign: 'center',
-        fontWeight: '700',
-        color: 'black',
-        fontSize: 16,
-        fontFamily: 'RobotoCondensed-Regular',
-        letterSpacing: 1.5,
-    },
     sectionText: {
         fontSize: 20,
         lineHeight: 23,
-        fontFamily: 'RobotoCondensed-Regular',
+        fontFamily: 'Oswald-Regular',
     },
     sectionTitle: {
         marginTop: 50,
-        marginBottom: 30,
-        fontSize: 28,
+        marginBottom: 40,
+        fontSize: 24,
         paddingBottom: 25,
         borderBottomColor: 'black',
         borderBottomWidth: 2,
-        fontFamily: 'RobotoCondensed-Regular',
+        fontFamily: 'Oswald-Regular',
         letterSpacing: 1.5,
+  
     },
 })
 

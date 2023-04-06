@@ -108,7 +108,7 @@ function RegisterScreen(props) {
             <View>
                 {/* Login Image */}
                 <View>
-                    <Image source={require('../assets/registerImage.png')}
+                    <Image source={require('../assets/solislogowhite.png')}
                         style={styles.imageStyle}                    
                     />
                 </View>
@@ -120,7 +120,6 @@ function RegisterScreen(props) {
                 <View style={styles.userInput}>
                     {/* <MaterialIcons name='alternate-email' size={20} color="#666" /> */}
                     <TextInput 
-                    placeholder='Email'
                     value={email}
                     onChangeText={setEmail}
                     autoCompleteType="email"
@@ -128,6 +127,7 @@ function RegisterScreen(props) {
                     autoCapitalize="none"
                     />                    
                 </View> 
+                <Text style={styles.sectionText}>email</Text>
 
                {/* <View style={styles.userInput}>
                     {/* <MaterialIcons name='alternate-email' size={20} color="#666" /> 
@@ -136,28 +136,36 @@ function RegisterScreen(props) {
                 
                 <View style={styles.userInput}>
                     <TextInput 
-                    placeholder='Password' 
+
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry={true}
                     />
                 </View>
+                <Text style={styles.sectionText}>password</Text>
+
                 {/* reenter passwords to make sure that the user knows what password theyre setting */}
                 <View style={styles.userInput}>
                     <TextInput 
-                    placeholder='Re-enter Password' 
                     value={reenter}
                     onChangeText={setReenter}
                     secureTextEntry={true}
                     />
                 </View>
+                <Text style={styles.sectionText}>email</Text>
+
                 <View>
-                    <Text>Please choose an account type</Text>
-                <RadioButtonRN style={{}}
-    selectedBtn={(e) => setAccountType(e.label)}
-  data={data}
-  
-/>
+
+
+                <View style={{width: '65%', alignSelf: 'center'}}>
+                    <Text style={styles.sectionText}>Please choose an account type</Text>
+                    <RadioButtonRN style={{}}
+                        selectedBtn={(e) => setAccountType(e.label)}
+                      data={data}
+
+                    />
+                </View>
+                    
 
 
 
@@ -171,14 +179,14 @@ function RegisterScreen(props) {
                     <Text style={styles.inputTextStyle} onPress={handleRegister} >REGISTER</Text>
                 </TouchableOpacity>
                 
-                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                <View style={{flexDirection: 'row', justifyContent: 'center', marginBottom: 30}}>
                     <Text style={{ color: 'black',
-                        fontFamily: 'RobotoCondensed-Regular',
+                        fontFamily: 'Oswald-Regular',
                         fontSize: 16,}}>Already registered? </Text>
                     <TouchableOpacity onPress={() => {props.navigation.goBack()}}>
                         <Text style={
                             {color: '#5569FF',
-                            fontFamily: 'RobotoCondensed-Regular',
+                            fontFamily: 'Oswald-Regular',
                             fontSize: 16,}}> Login </Text>
                     </TouchableOpacity>
                 </View>
@@ -204,28 +212,32 @@ const styles = StyleSheet.create({
         width: 200,
         marginBottom: 30,
         alignSelf: 'center',
+        resizeMode: 'contain',
     },
     inputButton: {
-        backgroundColor: '#5569FF',
-        padding: 20,
+        backgroundColor: 'black',
+        paddingTop: 6,
+        paddingBottom: 10,
         borderRadius: 20,
         marginBottom: 20,
+        marginTop: 40,
         shadowColor: 'black',
         shadowOffset: {height: 2, width: 0.5},
         shadowOpacity: 0.5,
         shadowRadius: 6,
-        elevation: 3, 
-        width: '80%',
+        elevation: 3,
+        width: '65%',
         alignSelf: 'center',
-
+        
     },
     inputTextStyle: {
         textAlign: 'center',
-        fontWeight: '700',
-        color: 'black',
-        fontSize: 16,
-        fontFamily: 'RobotoCondensed-Regular',
+        fontSize: 28,
+        fontFamily: 'Oswald-Regular',
         letterSpacing: 1.5,
+        color: 'white',
+        fontWeight: ''
+
     },
     sectionTitle: {
         fontSize: 28,
@@ -233,15 +245,20 @@ const styles = StyleSheet.create({
         color: 'black',
         marginBottom: 30,
         paddingRight: 10,
-        fontFamily: 'RobotoCondensed-Regular',
+        fontFamily: 'Oswald-Regular',
         letterSpacing: 1.5,
         alignSelf: 'center'
+    },
+    sectionText: {
+        marginBottom: 10,
+        fontFamily: 'Oswald-Regular',
+        fontSize: 16,
+        textAlign: 'center'
     },
     userInput: {
         borderBottomColor: 'black',
         borderBottomWidth: 2,
-        marginBottom: 25,
-        width: '80%',
+        width: '65%',
         alignSelf: 'center'
 
     },
