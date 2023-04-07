@@ -50,6 +50,8 @@ const test = props.route.params.item.pdf;
     return(
         <ScrollView>
         <View style = {styles.container}>
+            <View style={{marginTop: 20}}/>
+            
            <Text style = {styles.headerTitle}>Modules</Text>
           
            <PdfReader
@@ -100,8 +102,8 @@ const styles = StyleSheet.create({
         paddingTop: 6,
         paddingBottom: 10,
         borderRadius: 20,
-        marginBottom: 20,
-        marginTop: 40,
+        marginBottom: 50,
+        marginTop: -40,
         shadowColor: 'black',
         shadowOffset: {height: 2, width: 0.5},
         shadowOpacity: 0.5,

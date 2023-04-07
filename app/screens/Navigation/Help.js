@@ -10,28 +10,27 @@ function Account(props) {
     const [message, setMessage] = useState();
 
     const handleMessage = () => {
-        //check if any of the fields are empty, throw an alert if any are.
-        if (!fullName || !subject || !message) {
-            Alert.alert(
-                'Empty Fields',
-                'You must fill in all fields before sending a message',
-                [{text: "Okay"}]
-            )
-        }      
-        //the appropriate data was inputted so send the email via users email app. Reset fields afterwards
-        else {
-            const to = "chicken@umich.edu"
-            const subject = "Subject: " + subject;
-            const body = "Full Name: " + fullName + "\nSubject: " + subject + "\nMessage: " + message;
-            const url = `mailto:${to}?subject=${subject}&body=${body}`;
-            Linking.openURL(url, () => {
-                setFullName('');
-                setMessage('');
-                setSubject('');
-            });
-
-        }
-        console.log(fullName, subject, message);
+        // Check if any of the fields are empty, throw an alert if any are.
+      if (!fullName || !subject || !message) {
+        Alert.alert(
+          'Empty Fields',
+          'You must fill in all fields before sending a message',
+          [{text: "Okay"}]
+        )
+      }      
+      // The appropriate data was inputted so send the email via user's email app. Reset fields afterwards
+      else {
+        const to = "chicken@umich.edu";
+        const emailSubject = "Subject: " + subject; // Rename the subject variable
+        const emailBody = "Full Name: " + fullName + "\n\nSubject: " + emailSubject + "\n\nMessage: " + message; // Separate fields with line breaks
+        const url = `mailto:${to}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`; // Encode special characters in subject and body
+        Linking.openURL(url).then(() => { // Use Promise syntax to reset fields after email is sent
+          setFullName('');
+          setMessage('');
+          setSubject('');
+        });
+      }
+      console.log(fullName, subject, message);
     }
 
     return (

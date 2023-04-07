@@ -391,7 +391,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
     <ApplicationProvider mapping={mapping} theme={lightTheme}>
       <Layout style={{ flex: 1, padding: 16 }}>
         <ScrollView>
-        <View>
+        <View style={{marginTop: 10}}>
           
           <Text style={styles.titleText}>Please choose an account type</Text>
           <RadioButtonRN
@@ -403,7 +403,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           {/* Media Training */}
           
           {accountType === 'Media Training' && (
-          <View style={{ marginBottom: 16 }}>
+          <View style={{  borderTopWidth: 2, borderColor: 'lightgrey', marginBottom: 16, marginTop: 20 }}>
     <Text style={styles.titleText}>Media Training Questions</Text>
     <TextInput
       style={styles.textInput}
@@ -419,7 +419,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
       placeholder='Video Link'
     />
     
-    <View style={{marginBottom: 14,}}>
+    <View style={{}}>
       <Button
       
       title="Select PDF"
@@ -430,21 +430,23 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
 
     {mediaTrainingQuestions.map(({ question, options }, index) => (
       <View key={index}>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(text) => {
-            const updatedQuestions = [...mediaTrainingQuestions];
-            updatedQuestions[index].question = text;
-            setMediaTrainingQuestions(updatedQuestions);
-          }}
-          value={question}
-          placeholder={`Question ${index + 1}`}
-        />
+        <View style={{marginTop: 25, borderTopWidth: 2, borderColor: 'lightgrey', paddingTop: 30, }}>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(text) => {
+              const updatedQuestions = [...mediaTrainingQuestions];
+              updatedQuestions[index].question = text;
+              setMediaTrainingQuestions(updatedQuestions);
+            }}
+            value={question}
+            placeholder={`Question ${index + 1}`}
+          />
+        </View>
 
         {options.map((option, optionIndex) => (
-          <View key={optionIndex} style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View key={optionIndex} style={{flexDirection: 'row', alignItems: 'center' }}>
             <RadioButtonRN
-              style={{ margin: 8 }}
+              style={{ marginHorizontal: 15, marginBottom: 18  }}
               data={[
                 {
                   label: '',
@@ -457,13 +459,14 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
                 setMediaTrainingQuestions(updatedQuestions);
               }}
               initial={optionIndex}
-              boxStyle={{ width: 24, height: 24 }}
+              
+              box={false}
               activeColor={'green'}
               textStyle={{ display: 'none' }}
             />
 
             <TextInput
-              style={{ flex: 1, height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+              style={styles.textInput}
               onChangeText={(text) => {
                 const updatedQuestions = [...mediaTrainingQuestions];
                 updatedQuestions[index].options[optionIndex] = text;
@@ -477,6 +480,8 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
       </View>
     ))}
 
+              <View style={{marginBottom: 0}}/>
+
     <TouchableOpacity style={styles.button} onPress={handleMediaTrainingSubmit}>
       <Text style={styles.buttonText}>Create Module</Text>
     </TouchableOpacity>
@@ -487,7 +492,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
          {/* Media Training For Public Safety */}
     
          {accountType === 'Media Training For Public Safety' && (
-         <View style={{ marginBottom: 16 }}>
+         <View style={{  borderTopWidth: 2, borderColor: 'lightgrey', marginBottom: 16, marginTop: 20 }}>
           <Text style={styles.titleText}>Media Training For Public Safety Questions</Text>
 
           <TextInput
@@ -503,7 +508,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           placeholder='Video Link'
         />
         
-        <View style={{marginBottom: 14}}>
+        <View style={{}}>
           <Button
             
                   title="Select PDF"
@@ -511,23 +516,48 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
                   />          
         </View>
         
+        
           {mediaTrainingForPublicSafetyQuestions.map(({ question, options }, index) => (
           <View key={index}>
 
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(text) => {
-            const updatedQuestions = [...mediaTrainingForPublicSafetyQuestions];
-            updatedQuestions[index].question = text;
-            setMediaTrainingForPublicSafetyQuestions(updatedQuestions);
-          }}
-          value={question}
-          placeholder={`Question ${index + 1}`}
-        />
+            <View style={{marginTop: 25, borderTopWidth: 2, borderColor: 'lightgrey', paddingTop: 30,}}>
+
+              <TextInput
+                style={styles.textInput}
+                onChangeText={(text) => {
+                  const updatedQuestions = [...mediaTrainingForPublicSafetyQuestions];
+                  updatedQuestions[index].question = text;
+                  setMediaTrainingForPublicSafetyQuestions(updatedQuestions);
+                }}
+                value={question}
+                placeholder={`Question ${index + 1}`}
+              />
+            </View>
+        
         {options.map((option, optionIndex) => (
+          <View key={optionIndex} style={{flexDirection: 'row', alignItems: 'center' }}>
+            <RadioButtonRN
+              style={{ marginHorizontal: 15, marginBottom: 18  }}
+              data={[
+                {
+                  label: '',
+                  value: true,
+                },
+              ]}
+              selectedBtn={(value) => {
+                const updatedQuestions = [...mediaTrainingForPublicSafetyQuestions];
+                updatedQuestions[index].correctAnswer = optionIndex;
+                setMediaTrainingForPublicSafetyQuestions(updatedQuestions);
+              }}
+              initial={optionIndex}
+              
+              box={false}
+              activeColor={'green'}
+              textStyle={{ display: 'none' }}
+            />
           <TextInput
             key={optionIndex}
-            style={{ height: 100, borderColor: 'gray', borderWidth: 1, marginBottom: 8 }}
+            style={styles.textInput}
             onChangeText={(text) => {
               const updatedQuestions = [...mediaTrainingForPublicSafetyQuestions];
               updatedQuestions[index].options[optionIndex] = text;
@@ -536,6 +566,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
             value={option}
             placeholder={`Option ${optionIndex + 1}`}
           />
+          </View>
         ))}
         
       </View>
@@ -550,7 +581,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
         {/* Public Speaking */}
     
         {accountType === 'Public Speaking' && (
-         <View style={{ marginBottom: 16 }}>
+         <View style={{  borderTopWidth: 2, borderColor: 'lightgrey', marginBottom: 16, marginTop: 20 }}>
           <Text style={styles.titleText}>Public Speaking Questions</Text>
 
           <TextInput
@@ -566,7 +597,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           placeholder='Video Link'
         />
         
-        <View style={{marginBottom: 14}}>
+        <View style={{}}>
           <Button
             
             title="Select PDF"
@@ -578,28 +609,51 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           {publicSpeakingQuestions.map(({ question, options }, index) => (
           <View key={index}>
 
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(text) => {
-            const updatedQuestions = [...publicSpeakingQuestions];
-            updatedQuestions[index].question = text;
-            setPublicSpeakingQuestions(updatedQuestions);
-          }}
-          value={question}
-          placeholder={`Question ${index + 1}`}
-        />
+          <View style={{marginTop: 25, borderTopWidth: 2, borderColor: 'lightgrey', paddingTop: 30,}}>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={(text) => {
+                const updatedQuestions = [...publicSpeakingQuestions];
+                updatedQuestions[index].question = text;
+                setPublicSpeakingQuestions(updatedQuestions);
+              }}
+              value={question}
+              placeholder={`Question ${index + 1}`}
+            />
+          </View>
         {options.map((option, optionIndex) => (
-          <TextInput
-            key={optionIndex}
-            style={styles.textInput}
-            onChangeText={(text) => {
-              const updatedQuestions = [...publicSpeakingQuestions];
-              updatedQuestions[index].options[optionIndex] = text;
-              setPublicSpeakingQuestions(updatedQuestions);
-            }}
-            value={option}
-            placeholder={`Option ${optionIndex + 1}`}
-          />
+          <View key={optionIndex} style={{flexDirection: 'row', alignItems: 'center' }}>
+              <RadioButtonRN
+                style={{ marginHorizontal: 15, marginBottom: 18  }}
+                data={[
+                  {
+                    label: '',
+                    value: true,
+                  },
+                ]}
+                selectedBtn={(value) => {
+                  const updatedQuestions = [...publicSpeakingQuestions];
+                  updatedQuestions[index].correctAnswer = optionIndex;
+                  setPublicSpeakingQuestions(updatedQuestions);
+                }}
+                initial={optionIndex}
+
+                box={false}
+                activeColor={'green'}
+                textStyle={{ display: 'none' }}
+              />
+            <TextInput
+              key={optionIndex}
+              style={styles.textInput}
+              onChangeText={(text) => {
+                const updatedQuestions = [...publicSpeakingQuestions];
+                updatedQuestions[index].options[optionIndex] = text;
+                setPublicSpeakingQuestions(updatedQuestions);
+              }}
+              value={option}
+              placeholder={`Option ${optionIndex + 1}`}
+            />
+          </View>
         ))}
         
       </View>
@@ -613,7 +667,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
         {/* Public Speaking And Speeches */}
     
         {accountType === 'Public Speaking And Speeches' && (
-         <View style={{ marginBottom: 16 }}>
+         <View style={{  borderTopWidth: 2, borderColor: 'lightgrey', marginBottom: 16, marginTop: 20 }}>
           <Text style={styles.titleText}>Public Speaking And Speeches Questions</Text>
 
           <TextInput
@@ -628,8 +682,9 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           value={publicSpeakingAndSpeechesLink}
           placeholder='Video Link'
         />
-      
-        <View style={{marginBottom: 14}}>
+
+
+        <View style={{}}>
           <Button
           title="Select PDF"
           onPress={handlePSAndSpeechesSelectPDF}
@@ -639,28 +694,53 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           {publicSpeakingAndSpeechesQuestions.map(({ question, options }, index) => (
           <View key={index}>
 
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(text) => {
-            const updatedQuestions = [...publicSpeakingAndSpeechesQuestions];
-            updatedQuestions[index].question = text;
-            setPublicSpeakingAndSpeechesQuestions(updatedQuestions);
-          }}
-          value={question}
-          placeholder={`Question ${index + 1}`}
-        />
+            <View style={{marginTop: 25, borderTopWidth: 2, borderColor: 'lightgrey', paddingTop: 30,}}>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={(text) => {
+                  const updatedQuestions = [...publicSpeakingAndSpeechesQuestions];
+                  updatedQuestions[index].question = text;
+                  setPublicSpeakingAndSpeechesQuestions(updatedQuestions);
+                }}
+                value={question}
+                placeholder={`Question ${index + 1}`}
+              />
+            </View>
+
+        
         {options.map((option, optionIndex) => (
-          <TextInput
-            key={optionIndex}
-            style={styles.textInput}
-            onChangeText={(text) => {
-              const updatedQuestions = [...publicSpeakingAndSpeechesQuestions];
-              updatedQuestions[index].options[optionIndex] = text;
-              setPublicSpeakingAndSpeechesQuestions(updatedQuestions);
-            }}
-            value={option}
-            placeholder={`Option ${optionIndex + 1}`}
-          />
+          <View key={optionIndex} style={{flexDirection: 'row', alignItems: 'center' }}>
+              <RadioButtonRN
+                style={{ marginHorizontal: 15, marginBottom: 18  }}
+                data={[
+                  {
+                    label: '',
+                    value: true,
+                  },
+                ]}
+                selectedBtn={(value) => {
+                  const updatedQuestions = [...publicSpeakingAndSpeechesQuestions];
+                  updatedQuestions[index].correctAnswer = optionIndex;
+                  setPublicSpeakingAndSpeechesQuestions(updatedQuestions);
+                }}
+                initial={optionIndex}
+
+                box={false}
+                activeColor={'green'}
+                textStyle={{ display: 'none' }}
+              />
+            <TextInput
+              key={optionIndex}
+              style={styles.textInput}
+              onChangeText={(text) => {
+                const updatedQuestions = [...publicSpeakingAndSpeechesQuestions];
+                updatedQuestions[index].options[optionIndex] = text;
+                setPublicSpeakingAndSpeechesQuestions(updatedQuestions);
+              }}
+              value={option}
+              placeholder={`Option ${optionIndex + 1}`}
+            />
+          </View>
         ))}
         
       </View>
@@ -703,8 +783,7 @@ const styles = StyleSheet.create({
       paddingTop: 6,
       paddingBottom: 10,
       borderRadius: 20,
-      marginBottom: 20,
-      marginTop: 15,
+      marginTop: 20,
       shadowColor: 'black',
       shadowOffset: {height: 2, width: 0.5},
       shadowOpacity: 0.5,
@@ -728,13 +807,17 @@ const styles = StyleSheet.create({
       borderColor: 'gray', 
       borderWidth: 1, 
       marginBottom: 8,
-      paddingLeft: 5,
+      paddingLeft: 10,
+      borderRadius: 4,
+      fontSize: 14,
+      flex: 1,
     },
     titleText: {
         textAlign: 'center',
         fontWeight: '500',
         color: 'black',
-        fontSize: 16,
+        fontFamily: 'Oswald-Regular',
+        fontSize: 20,
         marginBottom: 8,
         marginTop: 10
     },
