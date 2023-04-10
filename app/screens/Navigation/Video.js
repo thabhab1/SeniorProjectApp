@@ -11,7 +11,7 @@ import { Button } from 'react-native';
 import { Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default function PDFReader(props) {
+export default function Video(props){
     const [data, setData] = useState('');
 
     const [playing, setPlaying] = useState(false);
@@ -46,38 +46,21 @@ const test = props.route.params.item.pdf;
     const videoTest = props.route.params.item.link;
     //item: props.route.params.item
     var str = videoTest.substring(videoTest.indexOf("=") + 1);
+  
+return(
+    <View>
+    <Text style={styles.headerTitle}>Module Video:</Text><YoutubePlayer
+        height={300}
+        play={playing}
+        videoId={str}
+        onChangeState={onStateChange} />
 
-    return(
-        <ScrollView>
-        <View style = {styles.container}>
-            <View style={{marginTop: 20}}/>
-            
-           <Text style = {styles.headerTitle}>Modules</Text>
-          
-           <PdfReader
-            source={ {
-                
-                uri: test,
-            }}
-            style={{ flex: 1, height: 500, marginBottom: 20}}
-            />
-
-     
-     
-        </View>
-        <View style = {styles.container}>
-        <View style={{marginTop: 20}}/>
-            
-           <TouchableOpacity style={styles.inputButton} onPress={() => props.navigation.navigate('Video', {item: props.route.params.item})}>
-                 <Text style={styles.inputTextStyle}>Watch Video</Text>
+<TouchableOpacity style={styles.inputButton} onPress={() => props.navigation.navigate('Quiz', {item: props.route.params.item})}>
+                 <Text style={styles.inputTextStyle}>Take Quiz</Text>
            </TouchableOpacity>
-        
-        </View>
-        </ScrollView>
-    );
+    </View>
+);
 }
-
- 
 
 const styles = StyleSheet.create({
     container: {

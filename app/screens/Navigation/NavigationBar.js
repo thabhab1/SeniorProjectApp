@@ -13,7 +13,7 @@ import { db } from './firebase';
 import {collection, getDocs, query, where} from "firebase/firestore";
 const Tab = createBottomTabNavigator();
 import AdminScreen from './AdminScreen';
-
+import Video from './Video'
 
 const modulesName = 'Modules';
 const accountName = 'Account';
@@ -93,6 +93,7 @@ function Root(props) {
       <Stack.Screen name="Modules" component={LoadReader} />
       <Stack.Screen name="Reader" component={PDFReader} />
       <Stack.Screen name="Quiz" component={LoadQuiz} />
+      <Stack.Screen name="Video" component={LoadVideo} />
     </Stack.Navigator>
   );
 }
@@ -103,5 +104,9 @@ function LoadReader(props)
 function LoadQuiz(props)
 {
     return Quiz(props);
+}
+function LoadVideo(props)
+{
+  return Video(props);
 }
 export default NavigationBar;

@@ -455,7 +455,7 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
               ]}
               selectedBtn={(value) => {
                 const updatedQuestions = [...mediaTrainingQuestions];
-                updatedQuestions[index].correctAnswer = optionIndex;
+                updatedQuestions[index].correctAnswer = value;
                 setMediaTrainingQuestions(updatedQuestions);
               }}
               initial={optionIndex}
