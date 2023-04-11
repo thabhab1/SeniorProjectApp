@@ -36,7 +36,7 @@ function RegisterScreen(props) {
     const [reenter, setReenter] = useState('');
     const [accountType, setAccountType] = useState('');
     const [isAdmin, setIsAdmin] = useState(false); // <-- new state for isAdmin
-
+    const [completed, setCompleted] = useState([""])
     const handleRegister = () => {
         const auth = getAuth();
 
@@ -52,8 +52,9 @@ function RegisterScreen(props) {
             }
             else {      
                 
-                
-                createUserWithEmailAndPassword(auth, email, password, accountType)
+                nullarr = [""];
+                setCompleted(nullarr);
+                createUserWithEmailAndPassword(auth, email, password, accountType, completed)
                 .then((userCredential) => {
                     // Signed in
                     const user = userCredential.user;
@@ -63,7 +64,8 @@ function RegisterScreen(props) {
                     email: email,
                     password: password,
                     accountType: accountType,
-                    isAdmin: isAdmin, // <-- include isAdmin in the data sent to Firestore
+                    isAdmin: isAdmin,
+                    completed: completed // <-- include isAdmin in the data sent to Firestore
                     //type: "normal",
                     })
                     .then((docRef) => {
@@ -152,7 +154,7 @@ function RegisterScreen(props) {
                     secureTextEntry={true}
                     />
                 </View>
-                <Text style={styles.sectionText}>email</Text>
+                <Text style={styles.sectionText}>re-enter password</Text>
 
                 <View>
 

@@ -1,13 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import {getAuth} from 'firebase/auth'
+import {collection, doc, getDoc,getDocs, query, querySnapshot, where, updateDoc} from "firebase/firestore";
+import { db } from './firebase';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+
 
 function Quiz(props) {
-  console.log(props);
   data = props.route.params.item
   q1 = data.questions[0]
   q2 = data.questions[1]
   q3 = data.questions[2]
+
+
+
+console.log(data.title);
+  const auth = getAuth();
+
+  const [type, setType] = useState("");
+  const [userInfo, setUserInfo] = useState("");
+
+
+
+  useEffect(() => {
+    async function fetchType() {
+      const querySnapshot = await getDocs(
+        query(collection(db, "users"), where("email", "==", auth.currentUser.email))
+      );
+      if (querySnapshot.docs.length > 0) {
+        const userData = querySnapshot.docs[0].data();
+        setType(userData.accountType);
+        setUserInfo(userData);
+        console.log("super poop");
+    
+        const docRef = doc(db, "users", querySnapshot.docs[0].id);
+        const docData = await getDoc(docRef);
+        const completedArray = docData.get("completed");
+        const updatedCompletedArray = [data.title, ...completedArray];
+    
+        await updateDoc(docRef, { completed: updatedCompletedArray });
+        console.log(`Title '${data.title}' added to 'completed' array for user '${userData.email}'`);
+      } else {
+        console.log("User not found");
+      }
+    }
+    
+    fetchType();
+  }, []);
 
   // define the quiz questions and possible answers
   const quiz = [
@@ -63,6 +104,7 @@ function Quiz(props) {
 
         // quiz is complete, show the user's score
         alert(`Quiz complete! You scored ${score + (selectedAnswer === quiz[currentQuestion].answer ? 1 : 0)}/${quiz.length}`);
+        
         props.navigation.goBack();
         
       }

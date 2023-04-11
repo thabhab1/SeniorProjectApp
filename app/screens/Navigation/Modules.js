@@ -27,20 +27,22 @@ const Item = ({title}) => (
   </View>
 );
 const auth = getAuth();
-function Modules(props){
-
-
-  
-  const [data, setData] = useState()
+function Modules(props) {
+  const [data, setData] = useState();
   const [type, setType] = useState("");
+  const [userInfo, setUserInfo] = useState("");
+
   useEffect(() => {
     async function fetchType() {
-      const querySnapshot =  await getDocs(query(collection(db, 'users'), where('email', '==', auth.currentUser.email)));
+      const querySnapshot = await getDocs(
+        query(collection(db, "users"), where("email", "==", auth.currentUser.email))
+      );
       if (querySnapshot.docs.length > 0) {
         const userData = querySnapshot.docs[0].data();
         setType(userData.accountType);
+        setUserInfo(userData);
       } else {
-        console.log('User not found');
+        console.log("User not found");
       }
     }
     fetchType();
@@ -51,40 +53,67 @@ function Modules(props){
       if (!type) {
         return;
       }
+
       let querySnap;
       switch (type) {
-        case 'Public Speaking':
-          querySnap = await getDocs(collection(db, 'PublicSpeaking'));
+        case "Public Speaking":
+          querySnap = await getDocs(collection(db, "PublicSpeaking"));
           break;
-        case 'Public Speaking And Speeches':
-          querySnap = await getDocs(collection(db, 'PublicSpeakingAndSpeeches'));
+        case "Public Speaking And Speeches":
+          querySnap = await getDocs(collection(db, "PublicSpeakingAndSpeeches"));
           break;
-        case 'Media Training':
-          querySnap = await getDocs(collection(db, 'MediaTraining'));
+        case "Media Training":
+          querySnap = await getDocs(collection(db, "MediaTraining"));
           break;
-        case 'Media Training For Public Safety':
-          querySnap = await getDocs(collection(db, 'MediaTrainingForPublicSafety'));
+        case "Media Training For Public Safety":
+          querySnap = await getDocs(collection(db, "MediaTrainingForPublicSafety"));
           break;
         default:
-          console.log('Invalid account type');
+          console.log("Invalid account type");
           return;
       }
-      const docData = [];
 
-      querySnap.forEach((doc)=>{
+      const docData = [];
+      querySnap.forEach((doc) => {
         docData.push(doc.data());
       });
 
       setData(docData);
+
+      // Find similarities between the completed array in the type object and the title property of each object in the data array
+      
     }
     fetchData();
   }, [type]);
-
-
-
-
   const modulesTitle = "MY MODULES";
+
+  i=0
+  j=0;
+  if(userInfo!=null & data!=null)
+  {
+    for(j=0;j<data.length;j++)
+    {
+    if(data[j].title == userInfo.completed[i])
+      {
+        data[j].completed = "";
+      }
+
+    }
+    j=0;
+  for(i=0;i<userInfo.completed.length;i++)
+  {
+    for(j=0;j<data.length;j++)
+    {
+    if(data[j].title == userInfo.completed[i])
+      {
+        data[j].completed = "completed";
+      }
+
+    }
+  }
+}
   return(
+    
     <SafeAreaView style={styles.container}>
       <ScrollView>
 
@@ -101,6 +130,7 @@ function Modules(props){
           data={data}
           renderItem={({item}) => <TouchableOpacity style={styles.inputButton}  onPress={() => {props.navigate('Reader',{ item : item})}}>
             <Text style={styles.inputTextStyle}>{item.title}</Text>
+            <Text style={styles.subtextStyle}>{item.completed}</Text>
             </TouchableOpacity>
             }
           keyExtractor={item => item.id}
@@ -148,6 +178,15 @@ const styles = StyleSheet.create({
       fontWeight: ''
   
   },
+  subtextStyle: {
+    textAlign: 'center',
+    fontSize: 14,
+    fontFamily: 'Oswald-Regular',
+    letterSpacing: 1,
+    color: 'gray',
+    fontWeight: ''
+
+},
   sectionTitle: {
       marginBottom: 40,
       fontSize: 24,
