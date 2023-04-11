@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import {getAuth} from 'firebase/auth'
-import {collection, doc, getDoc,getDocs, query, querySnapshot, where, updateDoc} from "firebase/firestore";
+import {addDoc, collection, doc, getDoc,getDocs, query, querySnapshot, where, updateDoc} from "firebase/firestore";
 import { db } from './firebase';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -21,8 +21,13 @@ console.log(data.title);
 
   const [type, setType] = useState("");
   const [userInfo, setUserInfo] = useState("");
-
-
+  const [to, setTo] = useState("")
+  const message = new Map([
+    ['subject', ''],
+    ['html', '']
+  ])
+  message.set('subject', data.title);
+  message.set('html',`Congratulations, you have successfully completed ${data.title}`);
 
   useEffect(() => {
     async function fetchType() {
@@ -42,9 +47,21 @@ console.log(data.title);
     
         await updateDoc(docRef, { completed: updatedCompletedArray });
         console.log(`Title '${data.title}' added to 'completed' array for user '${userData.email}'`);
+        // Add Firestore document with a reference to the uploaded file
+    
+        await addDoc(collection(db, 'email'), {
+      to: auth.currentUser.email,
+      message: {
+        subject: 'Module Completion!',
+        html: `Congratulations, you have successfully completed ${data.title}.`,
+      },
+    });
+
       } else {
         console.log("User not found");
       }
+
+    
     }
     
     fetchType();
@@ -85,18 +102,22 @@ console.log(data.title);
     },
     // add more quiz questions here
   ];
-
-  const [currentQuestion, setCurrentQuestion] = useState(0); // the index of the current question being displayed
-  const [score, setScore] = useState(0); // the user's score
-  const [selectedAnswer, setSelectedAnswer] = useState(null); // the index of the selected answer
+// the index of the current question being displayed
+  const [currentQuestion, setCurrentQuestion] = useState(0); 
+  // the user's score
+  const [score, setScore] = useState(0); 
+  // the index of the selected answer
+  const [selectedAnswer, setSelectedAnswer] = useState(null); 
 
   const handleAnswer = () => {
     if (selectedAnswer !== null) {
       if (selectedAnswer === quiz[currentQuestion].answer) {
-        setScore(score + 1); // increase the user's score if the answer is correct
+         // increase the user's score if the answer is correct
+        setScore(score + 1);
       }
+      // move to the next question
       if (currentQuestion < quiz.length - 1) {
-        setCurrentQuestion(currentQuestion + 1); // move to the next question
+        setCurrentQuestion(currentQuestion + 1); 
         setSelectedAnswer(null); // clear the selected answer
       } else {
         // update the user's score before displaying the results
@@ -104,13 +125,12 @@ console.log(data.title);
 
         // quiz is complete, show the user's score
         alert(`Quiz complete! You scored ${score + (selectedAnswer === quiz[currentQuestion].answer ? 1 : 0)}/${quiz.length}`);
-        
         props.navigation.goBack();
-        
       }
     }
   };
 
+ 
   return (
     <View style={styles.container}>
       <Text style={styles.sectionText}>{quiz[currentQuestion].question}</Text>
