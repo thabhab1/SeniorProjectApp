@@ -455,13 +455,13 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
               ]}
               selectedBtn={(value) => {
                 const updatedQuestions = [...mediaTrainingQuestions];
-                updatedQuestions[index].correctAnswer = value;
+                updatedQuestions[index].correctAnswer = value ? optionIndex : null;
                 setMediaTrainingQuestions(updatedQuestions);
               }}
-              initial={optionIndex}
+              initial={optionIndex === mediaTrainingQuestions[index].correctAnswer}
               
               box={false}
-              activeColor={'green'}
+              inactiveColor={'gray'}
               textStyle={{ display: 'none' }}
             />
 
@@ -546,13 +546,12 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
               ]}
               selectedBtn={(value) => {
                 const updatedQuestions = [...mediaTrainingForPublicSafetyQuestions];
-                updatedQuestions[index].correctAnswer = optionIndex;
+                updatedQuestions[index].correctAnswer = value ? optionIndex : null;
                 setMediaTrainingForPublicSafetyQuestions(updatedQuestions);
               }}
-              initial={optionIndex}
-              
+              initial={optionIndex === mediaTrainingForPublicSafetyQuestions[index].correctAnswer}
               box={false}
-              activeColor={'green'}
+              inactiveColor={'gray'}
               textStyle={{ display: 'none' }}
             />
           <TextInput
@@ -633,13 +632,13 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
                 ]}
                 selectedBtn={(value) => {
                   const updatedQuestions = [...publicSpeakingQuestions];
-                  updatedQuestions[index].correctAnswer = optionIndex;
+                  updatedQuestions[index].correctAnswer = value ? optionIndex : null;
                   setPublicSpeakingQuestions(updatedQuestions);
                 }}
-                initial={optionIndex}
+                initial={optionIndex === publicSpeakingQuestions[index].correctAnswer}
 
                 box={false}
-                activeColor={'green'}
+                inactiveColor={'gray'}
                 textStyle={{ display: 'none' }}
               />
             <TextInput
@@ -720,13 +719,13 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
                 ]}
                 selectedBtn={(value) => {
                   const updatedQuestions = [...publicSpeakingAndSpeechesQuestions];
-                  updatedQuestions[index].correctAnswer = optionIndex;
+                  updatedQuestions[index].correctAnswer = value ? optionIndex : null;
                   setPublicSpeakingAndSpeechesQuestions(updatedQuestions);
                 }}
-                initial={optionIndex}
+                initial={optionIndex === publicSpeakingAndSpeechesQuestions[index].correctAnswer}
 
                 box={false}
-                activeColor={'green'}
+                inactiveColor={'gray'}
                 textStyle={{ display: 'none' }}
               />
             <TextInput
