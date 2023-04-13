@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import {getAuth} from 'firebase/auth'
@@ -6,6 +6,7 @@ import {addDoc, collection, doc, getDoc,getDocs, query, querySnapshot, where, up
 import { db } from './firebase';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import MyContext from './MyContext';
 
 
 function Quiz(props) {
@@ -14,9 +15,10 @@ function Quiz(props) {
   q2 = data.questions[1]
   q3 = data.questions[2]
 
-
+  const { notificationVar, setnotificationVar } = useContext(MyContext)
 
 console.log(data.title);
+
   const auth = getAuth();
 
   const [type, setType] = useState("");
@@ -48,14 +50,25 @@ console.log(data.title);
         await updateDoc(docRef, { completed: updatedCompletedArray });
         console.log(`Title '${data.title}' added to 'completed' array for user '${userData.email}'`);
         // Add Firestore document with a reference to the uploaded file
-    
-        await addDoc(collection(db, 'email'), {
-      to: auth.currentUser.email,
-      message: {
-        subject: 'Module Completion!',
-        html: `Congratulations, you have successfully completed ${data.title}.`,
-      },
-    });
+        
+        // If notifications are set to true, send an email, otherwise don't
+        if(notificationVar == true) {
+          console.log("notifications are enabled")
+        }
+        else {
+          console.log("notifications are disabled")
+        
+        }
+        if(notificationVar == true){
+          await addDoc(collection(db, 'email'), {
+            to: auth.currentUser.email,
+            message: {
+              subject: 'Module Completion!',
+              html: `Congratulations, you have successfully completed ${data.title}.`,
+            },
+          });
+        }
+        
 
       } else {
         console.log("User not found");

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage} from 'react-native';
 import LoginScreen from './app/screens/LoginScreen';
 import RegisterScreen from './app/screens/RegisterScreen';
 import ForgotScreen from './app/screens/ForgotScreen';
@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useContext, useState, useEffect, useCallback} from 'react';
 import { getAuth, onAuthStateChanged } from '@firebase/auth';
 import { useFonts } from 'expo-font';
+import MyContext from './app/screens/Navigation/MyContext';
 import * as SplashScreen from 'expo-splash-screen';
 
 const Stack = createNativeStackNavigator();
@@ -16,6 +17,21 @@ const auth = getAuth();
 
 
 export default function App() {
+  const [notificationVar, setnotificationVar] = useState(false);
+  useEffect(() => {
+    // load the variable from AsyncStorage when the component mounts
+    AsyncStorage.getItem('notificationVar').then((value) => {
+      if (value !== null) {
+        setnotificationVar(JSON.parse(value));
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    // save the variable to AsyncStorage whenever it changes
+    AsyncStorage.setItem('notificationVar', JSON.stringify(notificationVar));
+  }, [notificationVar]);
+  
   const [fontsLoaded] = useFonts({
     'Oswald-Regular': require('./app/assets/fonts/static/Oswald-Regular.ttf'),
   });
@@ -31,6 +47,7 @@ export default function App() {
       }
     });
   }, []);
+  
 
   if(!fontsLoaded) {
     <Text>Loading...</Text>
@@ -38,7 +55,11 @@ export default function App() {
     return (
       //navigation container to navigate between screens
 
-      auth.currentUser ? (<NavigationBar/>) : 
+      auth.currentUser ? (
+        <MyContext.Provider value={{ notificationVar, setnotificationVar }}>
+         <NavigationBar/>
+        </MyContext.Provider>) 
+       : 
       (
         <NavigationContainer>
           <Stack.Navigator style={styles.container}>

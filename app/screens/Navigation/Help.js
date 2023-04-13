@@ -11,7 +11,7 @@ function Account(props) {
 
     const handleMessage = () => {
         // Check if any of the fields are empty, throw an alert if any are.
-      if (!fullName || !subject || !message) {
+      if (!subject || !message) {
         Alert.alert(
           'Empty Fields',
           'You must fill in all fields before sending a message',
@@ -20,9 +20,9 @@ function Account(props) {
       }      
       // The appropriate data was inputted so send the email via user's email app. Reset fields afterwards
       else {
-        const to = "chicken@umich.edu";
-        const emailSubject = "Subject: " + subject; // Rename the subject variable
-        const emailBody = "Full Name: " + fullName + "\n\nSubject: " + emailSubject + "\n\nMessage: " + message; // Separate fields with line breaks
+        const to = "solismediastrats@gmail.com";
+        const emailSubject =  subject; // Rename the subject variable
+        const emailBody =  message; // Separate fields with line breaks
         const url = `mailto:${to}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`; // Encode special characters in subject and body
         Linking.openURL(url).then(() => { // Use Promise syntax to reset fields after email is sent
           setFullName('');
@@ -30,7 +30,7 @@ function Account(props) {
           setSubject('');
         });
       }
-      console.log(fullName, subject, message);
+      console.log(subject, message);
     }
 
     return (
@@ -42,10 +42,7 @@ function Account(props) {
                     <Text style={styles.sectionText}>Question or suggestion? Email us!</Text>
                 </View>
                 
-                {/* Contact Form Inputs */}
-                <TextInput style={styles.inputField} placeholder='*Full Name'
-                    value={fullName} onChangeText={(text) => setFullName(text)} maxLength={40}
-                />
+                {/* Contact Form Inputs */}                
                 <TextInput style={styles.inputField} placeholder='*Subject' 
                     value={subject} onChangeText={(text) => setSubject(text)} maxLength={40}
                 />

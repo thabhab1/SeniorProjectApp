@@ -2,9 +2,13 @@ import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getAuth, signOut } from '@firebase/auth';
+import MyContext from './MyContext';
+import { useContext } from 'react';
 
 function Account(props) {
     const auth = getAuth();
+
+    const { notificationVar, setnotificationVar } = useContext(MyContext);
 
     const handleLogout = () => {
         signOut(auth)
@@ -29,11 +33,15 @@ function Account(props) {
             <TouchableOpacity style={styles.inputButton} onPress={() => {
                 Alert.alert(
                     'Notifications',
-                    'Tapping Yes will enable email notifications. Would you like to receive email notifications?',
-                    [{text: 'Yes I do', onPress: () => {
+                    'Tapping Yes/No will enable/disable email notifications. Would you like to receive email notifications?',
+                    [{text: 'Yes', onPress: () => {
+                        setnotificationVar(true);
                         console.log("User has enabled email notifications.")
                     }},
-                     {text: 'No'}]
+                     {text: 'No', onPress: () => {
+                        setnotificationVar(false);
+                        console.log("User has disabled email notifications.")
+                    }}]
                 )
             }}>
                 <Text style={styles.inputTextStyle}>NOTIFICATIONS</Text>
