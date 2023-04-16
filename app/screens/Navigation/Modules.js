@@ -21,6 +21,7 @@ import {
 } from 'react-native';
 import { Image } from "react-native";
 
+//component to render items inside of flatlist
 const Item = ({title}) => (
   <View>
     <Text>{title}</Text>
@@ -28,10 +29,13 @@ const Item = ({title}) => (
 );
 const auth = getAuth();
 function Modules(props) {
+
+ 
   const [data, setData] = useState();
   const [type, setType] = useState("");
   const [userInfo, setUserInfo] = useState("");
 
+  //fetches  userdata from firestore
   useEffect(() => {
     async function fetchType() {
       const querySnapshot = await getDocs(
@@ -48,6 +52,7 @@ function Modules(props) {
     fetchType();
   }, []);
 
+  //fetches data based on usertype
   useEffect(() => {
     async function fetchData() {
       if (!type) {
@@ -80,8 +85,9 @@ function Modules(props) {
 
       setData(docData);
 
-      // Find similarities between the completed array in the type object and the title property of each object in the data array
-      
+      //looks for similarities between the 
+      // array in the object 
+      //and the title of each object in the data
     }
     fetchData();
   }, [type]);
@@ -112,6 +118,7 @@ function Modules(props) {
     }
   }
 }
+//renders module page
   return(
     
     <SafeAreaView style={styles.container}>

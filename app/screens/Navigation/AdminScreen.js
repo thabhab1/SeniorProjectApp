@@ -366,7 +366,8 @@ const PublicSpeakingAndSpeechesRef = ref(storage, 'Public Speaking And Speeches'
           title: publicSpeakingAndSpeechesTitle,
           questions: publicSpeakingAndSpeechesQuestions,
           link: publicSpeakingAndSpeechesLink,
-          pdf: downloadUrl // Use the download URL of the uploaded file as the value for "pdf" field in Firestore
+          // Use the download URL of the uploaded file as the value for "pdf" field in Firestore
+          pdf: downloadUrl 
         });
     
         setPublicSpeakingAndSpeechesTitle('');

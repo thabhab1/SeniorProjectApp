@@ -40,7 +40,6 @@ console.log(data.title);
         const userData = querySnapshot.docs[0].data();
         setType(userData.accountType);
         setUserInfo(userData);
-        console.log("super poop");
     
         const docRef = doc(db, "users", querySnapshot.docs[0].id);
         const docData = await getDoc(docRef);
